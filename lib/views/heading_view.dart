@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 
 class HeadingView extends StatelessWidget {
-  const HeadingView({super.key});
+  final String cityName, condition;
+  final int temperature, min, max;
+  const HeadingView(
+      {super.key,
+      required this.cityName,
+      required this.temperature,
+      required this.condition,
+      required this.min,
+      required this.max});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 320,
       padding: const EdgeInsets.all(0),
-      child: const Column(
+      child: Column(
         children: [
-          Text("Paris"),
-          Text("11°"),
-          Text("Nuages prédominants"),
+          Text(cityName),
+          Text("$temperature°"),
+          Text(condition),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.arrow_upward),
-              Text("19°"),
-              SizedBox(
+              const Icon(Icons.arrow_upward),
+              Text("$max°"),
+              const SizedBox(
                 width: 5,
               ),
-              Icon(Icons.arrow_downward),
-              Text("8°"),
+              const Icon(Icons.arrow_downward),
+              Text("$min°"),
             ],
           ),
         ],

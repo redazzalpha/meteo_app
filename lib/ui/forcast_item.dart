@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ForcastItem extends StatelessWidget {
   final String hour, icon;
-  final double temperature;
+  final int temperature;
 
   const ForcastItem(
       {super.key,
@@ -12,13 +12,14 @@ class ForcastItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.all(5),
       child: Column(
         children: [
           Text(
             hour,
           ),
-          Image.asset(
+          Image.network(
             icon,
             width: 30,
           ),

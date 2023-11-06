@@ -48,6 +48,18 @@ class _HomeState extends State<Home> {
     });
   }
 
+  List<Widget> buildLayouts() {
+    if (_datas.isEmpty) return const <Widget>[];
+    return <Widget>[
+      AppHeading(
+        datas: _datas,
+      ),
+      AppForcast(
+        datas: _datas,
+      ),
+    ];
+  }
+
   // overrides
   @override
   void initState() {
@@ -73,14 +85,7 @@ class _HomeState extends State<Home> {
             child: ListView(
               children: [
                 Column(
-                  children: [
-                    AppHeading(
-                      datas: _datas,
-                    ),
-                    AppForcast(
-                      datas: _datas,
-                    ),
-                  ],
+                  children: buildLayouts(),
                 ),
               ],
             ),

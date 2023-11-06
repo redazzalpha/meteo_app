@@ -7,9 +7,14 @@ class AppHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        HeadingView(),
+        HeadingView(
+            cityName: datas["city_info"]["name"],
+            condition: datas["fcst_day_0"]["condition"],
+            temperature: datas["current_condition"]["tmp"],
+            min: datas["fcst_day_0"]["tmin"],
+            max: datas["fcst_day_0"]["tmax"]),
       ],
     );
   }

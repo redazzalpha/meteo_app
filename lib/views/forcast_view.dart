@@ -7,13 +7,24 @@ class ForcastView extends StatelessWidget {
 
   const ForcastView({super.key, required this.previsions});
 
+  int temperatureToInt(double temperature) {
+    List<String> temperatureSplit = temperature.toString().split(".");
+    int computedTemperature = int.parse(temperatureSplit[0]);
+    int decimal = int.parse(temperatureSplit[1]);
+    if (decimal > 4) return (computedTemperature + 1);
+    return computedTemperature;
+  }
+
   List<Widget> buildItems() {
     List<Widget> forcastItems = <Widget>[];
-    for (int i = 0; i < 9; i++) {
-      forcastItems.add(ForcastItem(
-          hour: previsions[i].hour,
+    for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
+      forcastItems.add(
+        ForcastItem(
+          hour: i == 0 ? "Maint." : previsions[i].hour,
           icon: previsions[i].icon,
-          temperature: previsions[i].temperature));
+          temperature: temperatureToInt(previsions[i].temperature),
+        ),
+      );
     }
 
     return forcastItems;
@@ -30,11 +41,16 @@ class ForcastView extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(15),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Prévision heure par heure"),
+          Container(
+            decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.white))),
+          ),
           SizedBox(
-            width: 300,
-            height: 300,
+            width: 800,
+            height: 80,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: buildItems(),

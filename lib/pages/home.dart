@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
       if (_datas.isNotEmpty) {
         setState(() {
           _background =
-              "assets/weather/${_datas["fcst_day_0"]["condition"]}.gif";
+              "assets/weather/${_datas["current_condition"]["condition"]}.gif";
         });
       }
     });

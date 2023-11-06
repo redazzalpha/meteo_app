@@ -11,7 +11,7 @@ class AppHeading extends StatelessWidget {
       children: [
         HeadingView(
             cityName: datas["city_info"]["name"],
-            condition: datas["fcst_day_0"]["condition"],
+            condition: datas["current_condition"]["condition"],
             temperature: datas["current_condition"]["tmp"],
             min: datas["fcst_day_0"]["tmin"],
             max: datas["fcst_day_0"]["tmax"]),

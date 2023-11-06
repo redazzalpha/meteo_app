@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/prevision.dart';
+import 'package:meteo_app_v2/templates/template_card_row.dart';
 import 'package:meteo_app_v2/ui/forcast_item.dart';
 
 class ForcastView extends StatelessWidget {
@@ -32,52 +33,10 @@ class ForcastView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(91, 255, 255, 255),
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
-        ),
-      ),
-      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.access_time,
-                size: 15,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                "Prévision heure par heure",
-              ),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(
-              top: 5,
-              bottom: 5,
-            ),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.white),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 800,
-            height: 80,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: buildItems(),
-            ),
-          )
-        ],
-      ),
+    return TemplateCardRow(
+      widgets: buildItems(),
+      title: "Prévision heure par heure",
+      titleIcon: Icons.access_time,
     );
   }
 }

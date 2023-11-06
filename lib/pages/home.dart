@@ -51,8 +51,14 @@ class _HomeState extends State<Home> {
   List<Widget> buildLayouts() {
     if (_datas.isEmpty) return const <Widget>[];
     return <Widget>[
+      const SizedBox(
+        height: 30,
+      ),
       AppHeading(
         datas: _datas,
+      ),
+      const SizedBox(
+        height: 25,
       ),
       AppForcast(
         datas: _datas,
@@ -80,7 +86,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(color: Color.fromARGB(49, 0, 0, 0)),
             child: ListView(
               children: [

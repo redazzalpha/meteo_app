@@ -13,24 +13,45 @@ class HeadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
       width: 320,
       padding: const EdgeInsets.all(0),
       child: Column(
         children: [
-          Text(cityName),
-          Text("$temperature°"),
-          Text(condition),
+          Text(
+            cityName,
+            style: textTheme.headlineLarge!.copyWith(
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          Text(
+            "$temperature°",
+            style: textTheme.displayLarge!.copyWith(
+              fontWeight: FontWeight.w200,
+            ),
+          ),
+          Text(
+            condition,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.arrow_upward),
-              Text("$max°"),
+              const Icon(
+                Icons.arrow_upward,
+              ),
+              Text(
+                "$max°",
+              ),
               const SizedBox(
                 width: 5,
               ),
-              const Icon(Icons.arrow_downward),
-              Text("$min°"),
+              const Icon(
+                Icons.arrow_downward,
+              ),
+              Text(
+                "$min°",
+              ),
             ],
           ),
         ],

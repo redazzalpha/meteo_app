@@ -39,14 +39,34 @@ class ForcastView extends StatelessWidget {
           Radius.circular(15),
         ),
       ),
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Prévision heure par heure"),
+          const Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                size: 15,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "Prévision heure par heure",
+              ),
+            ],
+          ),
           Container(
+            margin: const EdgeInsets.only(
+              top: 5,
+              bottom: 5,
+            ),
             decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.white))),
+              border: Border(
+                bottom: BorderSide(color: Colors.white),
+              ),
+            ),
           ),
           SizedBox(
             width: 800,

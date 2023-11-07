@@ -20,28 +20,23 @@ class _BarValueState extends State<BarValue> {
     _currentWidth = _containerKey.currentContext!.size!.width;
     _step = _currentWidth / 70;
     _valuePos = (double.parse(widget.value.toString()) + 20) * _step;
+    log("-- compute slider");
   }
 
   @override
   void initState() {
     super.initState();
-    log("-- init state here");
+    log("-- inti state");
   }
 
   @override
   Widget build(BuildContext context) {
-    log("-- build here");
+    log("-- widget build");
 
     return OrientationBuilder(
       builder: (context, orientation) {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
-            computeSliderPos();
-            log("-- setstate here with _currentWidth: ${_currentWidth.toString()}");
-            log("-- setstate here with _step: ${_step.toString()}");
-            log("-- setstate here with _valuePos: ${_valuePos.toString()}");
-          },
-        );
+        WidgetsBinding.instance.addPostFrameCallback((_) => computeSliderPos());
+        log("-- orientation builder");
 
         return Stack(
           children: [

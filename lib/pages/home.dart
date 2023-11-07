@@ -10,7 +10,6 @@ import 'package:meteo_app_v2/layouts/app_heading.dart';
 class Home extends StatefulWidget {
   // constructor
   const Home({super.key});
-  final String test = "salut les coupains comment ça va chez ?";
   // overrides
   @override
   State<StatefulWidget> createState() => _HomeState();
@@ -23,29 +22,32 @@ class _HomeState extends State<Home> {
   String _background = "assets/weather/base.gif";
 
   // methods
-  void fetchData(String localisation) async {
-    var response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+  Future<Map<String, dynamic>?> fetchData(String localisation) async {
     try {
-      setState(() {
-        _datas = jsonDecode(response.body) as Map<String, dynamic>;
-      });
-
-      log("data fetched!");
+      var response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+      return jsonDecode(response.body) as Map<String, dynamic>;
     } catch (e) {
       log("-- error fetch data: $e");
+      return null;
     }
   }
 
   void refreshDataTimer({int milliseconds = 1000}) async {
-    Timer.periodic(Duration(milliseconds: milliseconds), (timer) {
-      fetchData("Paris");
-      if (_datas.isNotEmpty) {
-        setState(() {
-          _background =
-              "assets/weather/${_datas["current_condition"]["condition"]}.gif";
+    Timer.periodic(
+      Duration(milliseconds: milliseconds),
+      (_) {
+        fetchData("Paris").then((datas) {
+          if (datas != null) {
+            setState(() {
+              _datas = datas;
+              _background =
+                  "assets/weather/${_datas['current_condition']['condition_key']}.gif";
+              log("-- async data fetched");
+            });
+          }
         });
-      }
-    });
+      },
+    );
   }
 
   List<Widget> buildLayouts() {

@@ -19,9 +19,12 @@ class ForcastView extends StatelessWidget {
   List<Widget> buildItems() {
     List<Widget> forcastItems = <Widget>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
+      String computedHour = previsions[i].hour.length == 3
+          ? "0${previsions[i].hour}"
+          : previsions[i].hour;
       forcastItems.add(
         ForcastItem(
-          hour: i == 0 ? "Maint." : previsions[i].hour,
+          hour: i == 0 ? "Maint." : computedHour,
           icon: previsions[i].icon,
           temperature: temperatureToInt(previsions[i].temperature),
         ),

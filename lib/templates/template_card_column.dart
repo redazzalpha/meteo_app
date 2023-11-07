@@ -28,7 +28,7 @@ class TemplateCardColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
+          Row(
             children: [
               Icon(
                 titleIcon,
@@ -57,7 +57,7 @@ class TemplateCardColumn extends StatelessWidget {
             width: width,
             height: height,
             child: ListView(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               children: widgets,
             ),
           )

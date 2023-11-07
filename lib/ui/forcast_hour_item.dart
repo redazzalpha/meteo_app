@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ForcastItem extends StatelessWidget {
+class ForcastHourItem extends StatelessWidget {
   final String hour, icon;
   final int temperature;
 
-  const ForcastItem(
+  const ForcastHourItem(
       {super.key,
       required this.hour,
       required this.icon,

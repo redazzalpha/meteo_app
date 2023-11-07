@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app_v2/test.dart';
+import 'package:meteo_app_v2/app.dart';
 
-void main() => runApp(const Test());
+void main() => runApp(const App());

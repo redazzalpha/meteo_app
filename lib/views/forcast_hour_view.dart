@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app_v2/classes/prevision.dart';
+import 'package:meteo_app_v2/classes/prevision_hour.dart';
 import 'package:meteo_app_v2/templates/template_card_row.dart';
-import 'package:meteo_app_v2/ui/forcast_item.dart';
+import 'package:meteo_app_v2/ui/forcast_hour_item.dart';
 
-class ForcastView extends StatelessWidget {
-  final List<Prevision> previsions;
+class ForcastHourView extends StatelessWidget {
+  final List<PrevisionHour> previsions;
 
-  const ForcastView({super.key, required this.previsions});
+  const ForcastHourView({super.key, required this.previsions});
 
   int temperatureToInt(double temperature) {
     List<String> temperatureSplit = temperature.toString().split(".");
@@ -23,7 +23,7 @@ class ForcastView extends StatelessWidget {
           ? "0${previsions[i].hour}"
           : previsions[i].hour;
       forcastItems.add(
-        ForcastItem(
+        ForcastHourItem(
           hour: i == 0 ? "Maint." : computedHour,
           icon: previsions[i].icon,
           temperature: temperatureToInt(previsions[i].temperature),

@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app_v2/classes/prevision.dart';
-import 'package:meteo_app_v2/views/forcast_view.dart';
+import 'package:meteo_app_v2/classes/prevision_hour.dart';
+import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
-class AppForcast extends StatelessWidget {
+class AppForcastHour extends StatelessWidget {
   final Map<String, dynamic> datas;
 
-  const AppForcast({super.key, required this.datas});
+  const AppForcastHour({super.key, required this.datas});
 
   void createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
-      List<Prevision> previsions) {
+      List<PrevisionHour> previsions) {
     int i = 0;
 
     // day part
     while (currentHour + i < 24) {
       final hourly = hourlyData["${currentHour + i}H00"];
-      previsions.add(Prevision(
+      previsions.add(
+        PrevisionHour(
           hour: "${currentHour + i} h",
           icon: hourly["ICON"],
-          temperature: double.parse((hourly["TMP2m"]).toString())));
+          temperature: double.parse((hourly["TMP2m"]).toString()),
+        ),
+      );
       i++;
     }
 
     // set day after
     hourlyData = datas["fcst_day_1"]["hourly_data"];
-    int tempCurrentHour = currentHour;
+    final int tempCurrentHour = currentHour;
     currentHour = 0;
     i = 0;
 
     // night part
     while (currentHour + i < tempCurrentHour) {
       final hourly = hourlyData["${currentHour + i}H00"];
-      previsions.add(Prevision(
+      previsions.add(PrevisionHour(
           hour: "${currentHour + i} h",
           icon: hourly["ICON"],
           temperature: double.parse((hourly["TMP2m"]).toString())));
@@ -38,11 +41,11 @@ class AppForcast extends StatelessWidget {
     }
   }
 
-  List<Prevision> buildPrevisions() {
-    final List<Prevision> previsions = <Prevision>[];
-    Map<String, dynamic> hourlyData = datas["fcst_day_0"]["hourly_data"];
+  List<PrevisionHour> buildPrevisions() {
+    final List<PrevisionHour> previsions = <PrevisionHour>[];
+    final Map<String, dynamic> hourlyData = datas["fcst_day_0"]["hourly_data"];
     final String hour = datas["current_condition"]["hour"].split(":")[0];
-    int currentHour = int.parse(hour);
+    final int currentHour = int.parse(hour);
 
     createPrevisions(currentHour, hourlyData, previsions);
 
@@ -51,7 +54,7 @@ class AppForcast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ForcastView(
+    return ForcastHourView(
       previsions: buildPrevisions(),
     );
   }

@@ -4,7 +4,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:meteo_app_v2/layouts/app_forcast.dart';
+import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
+import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 
 class Home extends StatefulWidget {
@@ -62,9 +63,13 @@ class _HomeState extends State<Home> {
       const SizedBox(
         height: 25,
       ),
-      AppForcast(
+      AppForcastHour(
         datas: _datas,
       ),
+      const SizedBox(
+        height: 25,
+      ),
+      AppForcastDay(datas: _datas),
     ];
   }
 

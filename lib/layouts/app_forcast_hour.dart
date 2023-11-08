@@ -7,6 +7,26 @@ class AppForcastHour extends StatelessWidget {
 
   const AppForcastHour({super.key, required this.datas});
 
+  String computedHour(String currentTime) {
+    if (currentTime == datas["current_condition"]["hour"]) return "Maint.";
+
+    final String computedHour =
+        currentTime.length == 4 ? "0$currentTime" : currentTime;
+
+    return computedHour.replaceAll(":00", " h");
+  }
+
+  int normalizeTemperature(dynamic temperature) {
+    if (temperature.runtimeType.toString() == "double") {
+      List<String> temperatureSplit = temperature.toString().split(".");
+      int computedTemperature = int.parse(temperatureSplit[0]);
+      int decimal = int.parse(temperatureSplit[1]);
+      if (decimal > 4) return (computedTemperature + 1);
+      return computedTemperature;
+    }
+    return temperature;
+  }
+
   void createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
       List<PrevisionHour> previsions) {
     int i = 0;
@@ -16,10 +36,9 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: "${currentHour + i} h",
+          hour: computedHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
-          temperature: double.parse((hourly["TMP2m"]).toString()),
-          currentTime: datas["current_condition"]["hour"],
+          temperature: normalizeTemperature(hourly["TMP2m"]),
         ),
       );
       i++;
@@ -36,10 +55,9 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: "${currentHour + i} h",
+          hour: computedHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
-          temperature: double.parse((hourly["TMP2m"]).toString()),
-          currentTime: datas["current_condition"]["hour"],
+          temperature: normalizeTemperature(hourly["TMP2m"]),
         ),
       );
       i++;

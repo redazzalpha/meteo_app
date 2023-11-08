@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class BarValue extends StatefulWidget {
@@ -21,7 +19,6 @@ class _BarValueState extends State<BarValue> {
     _currentWidth = _containerKey.currentContext!.size!.width;
     _step = _currentWidth / 70;
     _valuePos = (double.parse(widget.value.toString()) + 20) * _step;
-    log("-- compute slider");
   }
 
   @override

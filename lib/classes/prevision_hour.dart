@@ -7,6 +7,5 @@ class PrevisionHour extends MasterPrevison {
     required this.hour,
     required super.icon,
     required super.temperature,
-    required super.currentTime,
   });
 }

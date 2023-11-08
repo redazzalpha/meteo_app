@@ -11,6 +11,5 @@ class PrevisionDay extends MasterPrevison {
     required this.max,
     required super.icon,
     required super.temperature,
-    required super.currentTime,
   });
 }

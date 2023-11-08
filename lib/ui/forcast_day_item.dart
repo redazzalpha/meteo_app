@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/ui/bar_value.dart';
@@ -15,7 +13,6 @@ class ForcastDayItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(prevision.temperature.toString());
     return Container(
       padding: EdgeInsets.zero,
       child: Row(

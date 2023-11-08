@@ -3,7 +3,24 @@ import 'package:flutter/material.dart';
 class BarValue extends StatefulWidget {
   final int value;
   final bool isDot;
-  const BarValue({super.key, this.value = 0, this.isDot = false});
+  final List<Color> gradientColors;
+  const BarValue({
+    super.key,
+    this.value = 0,
+    this.isDot = false,
+    this.gradientColors = const <Color>[
+      Colors.blueAccent,
+      Colors.blue,
+      Colors.greenAccent,
+      Colors.green,
+      Colors.yellowAccent,
+      Colors.yellow,
+      Colors.orangeAccent,
+      Colors.orange,
+      Colors.redAccent,
+      Colors.red,
+    ],
+  });
 
   @override
   State<StatefulWidget> createState() => _BarValueState();
@@ -22,11 +39,6 @@ class _BarValueState extends State<BarValue> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (context, orientation) {
@@ -38,28 +50,30 @@ class _BarValueState extends State<BarValue> {
               height: 10,
             ),
             Container(
+              height: 7,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade600,
+                borderRadius: const BorderRadius.all(
+                  Radius.elliptical(50, 50),
+                ),
+              ),
+              margin: const EdgeInsets.only(top: 1.4),
+            ),
+            Container(
               key: _containerKey,
               height: 7,
               width: double.infinity,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.elliptical(50, 50)),
-                  gradient:
-                      LinearGradient(tileMode: TileMode.mirror, colors: <Color>[
-                    Colors.blueAccent,
-                    Colors.blue,
-                    Colors.greenAccent,
-                    Colors.green,
-                    Colors.yellowAccent,
-                    Colors.yellow,
-                    Colors.orangeAccent,
-                    Colors.orange,
-                    Colors.redAccent,
-                    Colors.red,
-                  ])),
-              margin: const EdgeInsets.only(top: 1.4),
-              child: const Column(
-                children: [],
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(
+                  Radius.elliptical(50, 50),
+                ),
+                gradient: LinearGradient(
+                  tileMode: TileMode.mirror,
+                  colors: widget.gradientColors,
+                ),
               ),
+              margin: const EdgeInsets.only(top: 1.4),
             ),
             if (widget.isDot)
               Positioned(

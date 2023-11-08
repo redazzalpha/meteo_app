@@ -18,34 +18,41 @@ class ForcastDayItem extends StatelessWidget {
       child: Row(
         children: [
           Text(prevision.dayShort),
-          const SizedBox(
-            width: 50,
-          ),
-          Image.network(
-            prevision.icon,
-            width: 30,
-          ),
-          const SizedBox(
-            width: 50,
-          ),
-          Text(
-            "${prevision.min}°",
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          SizedBox(
-            width: 150,
-            child: BarValue(
-              value: prevision.temperature,
-              isDot: isDot,
+          Container(
+            padding: const EdgeInsets.only(
+              left: 20,
+            ),
+            child: Image.network(
+              prevision.icon,
+              width: 30,
             ),
           ),
-          const SizedBox(
-            width: 20,
+          Container(
+            padding: const EdgeInsets.only(
+              left: 15,
+              right: 10,
+            ),
+            child: Text(
+              "${prevision.min}°",
+            ),
           ),
-          Text(
-            "${prevision.max}°",
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              width: 300,
+              child: BarValue(
+                value: prevision.temperature,
+                isDot: isDot,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(
+              left: 10,
+            ),
+            child: Text(
+              "${prevision.max}°",
+            ),
           ),
         ],
       ),

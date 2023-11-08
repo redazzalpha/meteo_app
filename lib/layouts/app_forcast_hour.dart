@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
+import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
 class AppForcastHour extends StatelessWidget {
@@ -7,24 +8,14 @@ class AppForcastHour extends StatelessWidget {
 
   const AppForcastHour({super.key, required this.datas});
 
-  String computedHour(String currentTime) {
-    if (currentTime == datas["current_condition"]["hour"]) return "Maint.";
+  String normalizeHour(String currentTime) {
+    if ((currentTime.length == 4 ? "0$currentTime" : currentTime) ==
+        datas["current_condition"]["hour"]) return "Maint.";
 
-    final String computedHour =
+    final String normalizeHour =
         currentTime.length == 4 ? "0$currentTime" : currentTime;
 
-    return computedHour.replaceAll(":00", " h");
-  }
-
-  int normalizeTemperature(dynamic temperature) {
-    if (temperature.runtimeType.toString() == "double") {
-      List<String> temperatureSplit = temperature.toString().split(".");
-      int computedTemperature = int.parse(temperatureSplit[0]);
-      int decimal = int.parse(temperatureSplit[1]);
-      if (decimal > 4) return (computedTemperature + 1);
-      return computedTemperature;
-    }
-    return temperature;
+    return normalizeHour.replaceAll(":00", " h");
   }
 
   void createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
@@ -36,7 +27,7 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: computedHour("${currentHour + i}:00"),
+          hour: normalizeHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
           temperature: normalizeTemperature(hourly["TMP2m"]),
         ),
@@ -45,7 +36,6 @@ class AppForcastHour extends StatelessWidget {
     }
 
     // set day after
-    hourlyData = datas["fcst_day_1"]["hourly_data"];
     final int tempCurrentHour = currentHour;
     currentHour = 0;
     i = 0;
@@ -55,7 +45,7 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: computedHour("${currentHour + i}:00"),
+          hour: normalizeHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
           temperature: normalizeTemperature(hourly["TMP2m"]),
         ),

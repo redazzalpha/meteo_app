@@ -18,16 +18,24 @@ class TemplateCardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
       decoration: const BoxDecoration(
         color: Color.fromARGB(91, 0, 0, 0),
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+      padding: const EdgeInsets.only(
+        top: 5,
+        bottom: 5,
+        left: 10,
+        right: 10,
+      ),
+      // main column
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //  title
           Row(
             children: [
               Icon(
@@ -42,6 +50,7 @@ class TemplateCardRow extends StatelessWidget {
               ),
             ],
           ),
+          // horizontal line
           Container(
             margin: const EdgeInsets.only(
               top: 5,
@@ -53,6 +62,7 @@ class TemplateCardRow extends StatelessWidget {
               ),
             ),
           ),
+          // items list
           SizedBox(
             width: width,
             height: height,

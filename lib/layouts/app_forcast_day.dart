@@ -17,8 +17,9 @@ class AppForcastDay extends StatelessWidget {
           icon: dailyDatas["icon"],
           min: dailyDatas["tmin"],
           max: dailyDatas["tmax"],
-          currentTemperature:
+          temperature:
               double.parse((datas["current_condition"]["tmp"]).toString()),
+          currentTime: datas["current_condition"]["hour"],
         ),
       );
     }

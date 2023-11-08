@@ -8,25 +8,12 @@ class ForcastHourView extends StatelessWidget {
 
   const ForcastHourView({super.key, required this.previsions});
 
-  int temperatureToInt(double temperature) {
-    List<String> temperatureSplit = temperature.toString().split(".");
-    int computedTemperature = int.parse(temperatureSplit[0]);
-    int decimal = int.parse(temperatureSplit[1]);
-    if (decimal > 4) return (computedTemperature + 1);
-    return computedTemperature;
-  }
-
   List<Widget> buildItems() {
     List<Widget> forcastItems = <Widget>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
-      String computedHour = previsions[i].hour.length == 3
-          ? "0${previsions[i].hour}"
-          : previsions[i].hour;
       forcastItems.add(
         ForcastHourItem(
-          hour: i == 0 ? "Maint." : computedHour,
-          icon: previsions[i].icon,
-          temperature: temperatureToInt(previsions[i].temperature),
+          prevision: previsions[i],
         ),
       );
     }

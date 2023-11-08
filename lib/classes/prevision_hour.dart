@@ -1,7 +1,12 @@
-class PrevisionHour {
-  final String hour, icon;
-  final double temperature;
+import 'package:meteo_app_v2/classes/master_prevision.dart';
 
-  const PrevisionHour(
-      {required this.hour, required this.temperature, required this.icon});
+class PrevisionHour extends MasterPrevison {
+  final String hour;
+
+  const PrevisionHour({
+    required this.hour,
+    required super.icon,
+    required super.temperature,
+    required super.currentTime,
+  });
 }

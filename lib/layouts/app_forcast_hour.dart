@@ -19,6 +19,7 @@ class AppForcastHour extends StatelessWidget {
           hour: "${currentHour + i} h",
           icon: hourly["ICON"],
           temperature: double.parse((hourly["TMP2m"]).toString()),
+          currentTime: datas["current_condition"]["hour"],
         ),
       );
       i++;
@@ -33,10 +34,14 @@ class AppForcastHour extends StatelessWidget {
     // night part
     while (currentHour + i < tempCurrentHour) {
       final hourly = hourlyData["${currentHour + i}H00"];
-      previsions.add(PrevisionHour(
+      previsions.add(
+        PrevisionHour(
           hour: "${currentHour + i} h",
           icon: hourly["ICON"],
-          temperature: double.parse((hourly["TMP2m"]).toString())));
+          temperature: double.parse((hourly["TMP2m"]).toString()),
+          currentTime: datas["current_condition"]["hour"],
+        ),
+      );
       i++;
     }
   }

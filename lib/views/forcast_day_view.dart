@@ -20,7 +20,9 @@ class ForcastDayView extends StatelessWidget {
     List<Widget> forcastItems = <Widget>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
       forcastItems.add(
-        ForcastDayItem(),
+        ForcastDayItem(
+          prevision: previsions[i],
+        ),
       );
     }
 

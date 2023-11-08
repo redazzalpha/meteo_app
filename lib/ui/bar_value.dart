@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class BarValue extends StatefulWidget {
   final int value;
-  const BarValue({super.key, this.value = 0});
+  final bool isDot;
+  const BarValue({super.key, this.value = 0, this.isDot = false});
 
   @override
   State<StatefulWidget> createState() => _BarValueState();
@@ -26,17 +27,13 @@ class _BarValueState extends State<BarValue> {
   @override
   void initState() {
     super.initState();
-    log("-- inti state");
   }
 
   @override
   Widget build(BuildContext context) {
-    log("-- widget build");
-
     return OrientationBuilder(
       builder: (context, orientation) {
         WidgetsBinding.instance.addPostFrameCallback((_) => computeSliderPos());
-        log("-- orientation builder");
 
         return Stack(
           children: [
@@ -67,17 +64,18 @@ class _BarValueState extends State<BarValue> {
                 children: [],
               ),
             ),
-            Positioned(
-              left: _valuePos,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.grey.shade800,
+            if (widget.isDot)
+              Positioned(
+                left: _valuePos,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey.shade800,
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },

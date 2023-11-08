@@ -22,6 +22,7 @@ class ForcastDayView extends StatelessWidget {
       forcastItems.add(
         ForcastDayItem(
           prevision: previsions[i],
+          isDot: i == 0 ? true : false,
         ),
       );
     }
@@ -33,8 +34,8 @@ class ForcastDayView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TemplateCardColumn(
       widgets: buildItems(),
-      height: 50,
-      title: "Prévision pour 5 jours",
+      height: 150,
+      title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,
     );
   }

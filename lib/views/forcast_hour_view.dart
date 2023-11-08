@@ -25,7 +25,7 @@ class ForcastHourView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TemplateCardRow(
       widgets: buildItems(),
-      title: "Prévision heure par heure",
+      title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
     );
   }

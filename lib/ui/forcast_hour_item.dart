@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
 
@@ -9,7 +7,6 @@ class ForcastHourItem extends StatelessWidget {
   const ForcastHourItem({super.key, required this.prevision});
 
   String computedHour() {
-    log("current time: ${prevision.currentTime} - prevision.hour: ${prevision.hour}");
     if (int.parse((prevision.currentTime.split(":")[0])) ==
         int.parse(prevision.hour.split(" ")[0])) return "Maint.";
     final String computedHour =

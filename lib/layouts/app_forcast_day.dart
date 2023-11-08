@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
+import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends StatelessWidget {
@@ -7,15 +8,10 @@ class AppForcastDay extends StatelessWidget {
 
   const AppForcastDay({super.key, required this.datas});
 
-  int normalizeTemperature(dynamic temperature) {
-    if (temperature.runtimeType.toString() == "double") {
-      List<String> temperatureSplit = temperature.toString().split(".");
-      int computedTemperature = int.parse(temperatureSplit[0]);
-      int decimal = int.parse(temperatureSplit[1]);
-      if (decimal > 4) return (computedTemperature + 1);
-      return computedTemperature;
-    }
-    return temperature;
+  String normalizeDay(Map<String, dynamic> dailyDatas) {
+    return dailyDatas["day_short"] == datas["fcst_day_0"]["day_short"]
+        ? "Auj."
+        : dailyDatas["day_short"];
   }
 
   List<PrevisionDay> buildPrevisions() {
@@ -24,7 +20,7 @@ class AppForcastDay extends StatelessWidget {
       final Map<String, dynamic> dailyDatas = datas["fcst_day_$i"];
       previsions.add(
         PrevisionDay(
-          dayShort: dailyDatas["day_short"],
+          dayShort: normalizeDay(dailyDatas),
           icon: dailyDatas["icon"],
           min: dailyDatas["tmin"],
           max: dailyDatas["tmax"],

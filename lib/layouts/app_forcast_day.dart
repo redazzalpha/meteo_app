@@ -7,6 +7,17 @@ class AppForcastDay extends StatelessWidget {
 
   const AppForcastDay({super.key, required this.datas});
 
+  int normalizeTemperature(dynamic temperature) {
+    if (temperature.runtimeType.toString() == "double") {
+      List<String> temperatureSplit = temperature.toString().split(".");
+      int computedTemperature = int.parse(temperatureSplit[0]);
+      int decimal = int.parse(temperatureSplit[1]);
+      if (decimal > 4) return (computedTemperature + 1);
+      return computedTemperature;
+    }
+    return temperature;
+  }
+
   List<PrevisionDay> buildPrevisions() {
     final List<PrevisionDay> previsions = <PrevisionDay>[];
     for (int i = 0; i < 5; i++) {
@@ -17,7 +28,7 @@ class AppForcastDay extends StatelessWidget {
           icon: dailyDatas["icon"],
           min: dailyDatas["tmin"],
           max: dailyDatas["tmax"],
-          temperature: datas["current_condition"]["tmp"],
+          temperature: normalizeTemperature(datas["current_condition"]["tmp"]),
         ),
       );
     }

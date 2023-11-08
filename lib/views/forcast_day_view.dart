@@ -8,14 +8,6 @@ class ForcastDayView extends StatelessWidget {
 
   const ForcastDayView({super.key, required this.previsions});
 
-  int temperatureToInt(double temperature) {
-    List<String> temperatureSplit = temperature.toString().split(".");
-    int computedTemperature = int.parse(temperatureSplit[0]);
-    int decimal = int.parse(temperatureSplit[1]);
-    if (decimal > 4) return (computedTemperature + 1);
-    return computedTemperature;
-  }
-
   List<Widget> buildItems() {
     List<Widget> forcastItems = <Widget>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {

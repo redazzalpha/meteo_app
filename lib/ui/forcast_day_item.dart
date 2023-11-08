@@ -37,7 +37,7 @@ class ForcastDayItem extends StatelessWidget {
           SizedBox(
             width: 150,
             child: BarValue(
-              value: int.parse(prevision.temperature.toString().split(".")[0]),
+              value: prevision.temperature,
               isDot: isDot,
             ),
           ),

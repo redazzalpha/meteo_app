@@ -4,10 +4,23 @@ class BarValue extends StatefulWidget {
   final int value;
   final bool isDot;
   final List<Color> gradientColors;
+  final List<double> stops;
   const BarValue({
     super.key,
     this.value = 0,
     this.isDot = false,
+    this.stops = const <double>[
+      0,
+      .1,
+      .2,
+      .4,
+      .5,
+      .6,
+      .7,
+      .8,
+      .9,
+      1,
+    ],
     this.gradientColors = const <Color>[
       Colors.blueAccent,
       Colors.blue,
@@ -34,7 +47,8 @@ class _BarValueState extends State<BarValue> {
 
   void computeSliderPos() {
     _currentWidth = _containerKey.currentContext!.size!.width;
-    _step = _currentWidth / 70;
+    _step = _currentWidth /
+        70; // divided by 70 cause the 70 values between min (-20°) and max (50°)
     _valuePos = (double.parse(widget.value.toString()) + 20) * _step;
   }
 
@@ -43,12 +57,14 @@ class _BarValueState extends State<BarValue> {
     return OrientationBuilder(
       builder: (context, orientation) {
         WidgetsBinding.instance.addPostFrameCallback((_) => computeSliderPos());
-
+        // main stack
         return Stack(
           children: [
+            // sized box height padding
             const SizedBox(
               height: 10,
             ),
+            // value bar back
             Container(
               height: 7,
               width: double.infinity,
@@ -60,6 +76,7 @@ class _BarValueState extends State<BarValue> {
               ),
               margin: const EdgeInsets.only(top: 1.4),
             ),
+            // value bar front
             Container(
               key: _containerKey,
               height: 7,
@@ -69,12 +86,14 @@ class _BarValueState extends State<BarValue> {
                   Radius.elliptical(50, 50),
                 ),
                 gradient: LinearGradient(
+                  stops: widget.stops,
                   tileMode: TileMode.mirror,
                   colors: widget.gradientColors,
                 ),
               ),
               margin: const EdgeInsets.only(top: 1.4),
             ),
+            // button slider
             if (widget.isDot)
               Positioned(
                 left: _valuePos,

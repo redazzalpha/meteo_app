@@ -11,6 +11,7 @@ import 'package:meteo_app_v2/layouts/app_heading.dart';
 class Home extends StatefulWidget {
   // constructor
   const Home({super.key});
+
   // overrides
   @override
   State<StatefulWidget> createState() => _HomeState();
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
   String _background = "assets/weather/base.gif";
 
   // methods
-  Future<Map<String, dynamic>?> fetchData(String localisation) async {
+  Future<Map<String, dynamic>?> _fetchData(String localisation) async {
     try {
       var response = await http.get(Uri.parse("$_dataUrl/$localisation"));
       return jsonDecode(response.body) as Map<String, dynamic>;
@@ -33,11 +34,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void refreshDataTimer({int milliseconds = 1000}) async {
+  void _refreshDataTimer({int milliseconds = 1000}) async {
     Timer.periodic(
       Duration(milliseconds: milliseconds),
       (_) {
-        fetchData("Paris").then((datas) {
+        _fetchData("Paris").then((datas) {
           if (datas != null) {
             setState(() {
               _datas = datas;
@@ -51,7 +52,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<Widget> buildLayouts() {
+  List<Widget> _buildLayouts() {
     if (_datas.isEmpty) return const <Widget>[];
     return <Widget>[
       const SizedBox(
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    refreshDataTimer(milliseconds: 3000);
+    _refreshDataTimer(milliseconds: 3000);
   }
 
   @override
@@ -98,7 +99,7 @@ class _HomeState extends State<Home> {
             child: ListView(
               children: [
                 Column(
-                  children: buildLayouts(),
+                  children: _buildLayouts(),
                 ),
               ],
             ),

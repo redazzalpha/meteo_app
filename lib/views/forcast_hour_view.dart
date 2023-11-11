@@ -8,7 +8,7 @@ class ForcastHourView extends StatelessWidget {
 
   const ForcastHourView({super.key, required this.previsions});
 
-  List<Widget> buildItems() {
+  List<Widget> _buildItems() {
     List<Widget> forcastItems = <Widget>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
       forcastItems.add(
@@ -24,7 +24,7 @@ class ForcastHourView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TemplateCardRow(
-      widgets: buildItems(),
+      widgets: _buildItems(),
       title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
     );

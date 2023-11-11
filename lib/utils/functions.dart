@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/color_stops.dart';
+
 int normalizeTemperature(dynamic temperature) {
   if (temperature.runtimeType.toString() == "double") {
     List<String> temperatureSplit = temperature.toString().split(".");
@@ -7,4 +10,50 @@ int normalizeTemperature(dynamic temperature) {
     return computedTemperature;
   }
   return temperature;
+}
+
+List<double> generateDefaultGradientStops({int size = 12}) {
+  return List<double>.generate(size, (index) {
+    return (index) / size;
+  });
+}
+
+List<Color> generateDefaultGradientColors() {
+  return <Color>[
+    const Color.fromARGB(58, 135, 135, 135),
+    Colors.blueAccent,
+    Colors.blue,
+    Colors.greenAccent,
+    Colors.green,
+    Colors.yellowAccent,
+    Colors.yellow,
+    Colors.orangeAccent,
+    Colors.orange,
+    Colors.redAccent,
+    Colors.red,
+    const Color.fromARGB(58, 135, 135, 135),
+  ];
+}
+
+LinearGradient generateDefaultGradient() {
+  return LinearGradient(
+    stops: generateDefaultGradientStops(),
+    colors: generateDefaultGradientColors(),
+    tileMode: TileMode.mirror,
+  );
+}
+
+List<ColorStops> generateDefaultColorStop() {
+  final defaultColors = generateDefaultGradientColors();
+  final defaultStops = generateDefaultGradientStops(size: defaultColors.length);
+
+  return List<ColorStops>.generate(
+    defaultColors.length,
+    (index) {
+      return ColorStops(
+        color: defaultColors[index],
+        stop: defaultStops[index],
+      );
+    },
+  );
 }

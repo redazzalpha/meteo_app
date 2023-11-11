@@ -5,6 +5,7 @@ import 'package:meteo_app_v2/ui/bar_value.dart';
 class ForcastDayItem extends StatelessWidget {
   final PrevisionDay prevision;
   final bool isDot;
+
   const ForcastDayItem({
     super.key,
     required this.prevision,
@@ -15,9 +16,12 @@ class ForcastDayItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.zero,
+      // main row
       child: Row(
         children: [
+          // day text
           Text(prevision.dayShort),
+          // image icon
           Container(
             padding: const EdgeInsets.only(
               left: 20,
@@ -27,6 +31,7 @@ class ForcastDayItem extends StatelessWidget {
               width: 30,
             ),
           ),
+          // minimal temperature
           Container(
             padding: const EdgeInsets.only(
               left: 15,
@@ -36,6 +41,7 @@ class ForcastDayItem extends StatelessWidget {
               "${prevision.min}°",
             ),
           ),
+          // bar value
           Expanded(
             flex: 1,
             child: SizedBox(
@@ -43,9 +49,11 @@ class ForcastDayItem extends StatelessWidget {
               child: BarValue(
                 value: prevision.temperature,
                 isDot: isDot,
+                gradient: prevision.gradient,
               ),
             ),
           ),
+          // minimal temperature
           Container(
             padding: const EdgeInsets.only(
               left: 10,

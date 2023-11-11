@@ -8,17 +8,17 @@ class AppForcastHour extends StatelessWidget {
 
   const AppForcastHour({super.key, required this.datas});
 
-  String normalizeHour(String currentTime) {
+  String _normalizeHour(String currentTime) {
     if ((currentTime.length == 4 ? "0$currentTime" : currentTime) ==
         datas["current_condition"]["hour"]) return "Maint.";
 
-    final String normalizeHour =
+    final String normalizedHour =
         currentTime.length == 4 ? "0$currentTime" : currentTime;
 
-    return normalizeHour.replaceAll(":00", " h");
+    return normalizedHour.replaceAll(":00", " h");
   }
 
-  void createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
+  void _createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
       List<PrevisionHour> previsions) {
     int i = 0;
 
@@ -27,7 +27,7 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: normalizeHour("${currentHour + i}:00"),
+          hour: _normalizeHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
           temperature: normalizeTemperature(hourly["TMP2m"]),
         ),
@@ -45,7 +45,7 @@ class AppForcastHour extends StatelessWidget {
       final hourly = hourlyData["${currentHour + i}H00"];
       previsions.add(
         PrevisionHour(
-          hour: normalizeHour("${currentHour + i}:00"),
+          hour: _normalizeHour("${currentHour + i}:00"),
           icon: hourly["ICON"],
           temperature: normalizeTemperature(hourly["TMP2m"]),
         ),
@@ -54,13 +54,13 @@ class AppForcastHour extends StatelessWidget {
     }
   }
 
-  List<PrevisionHour> buildPrevisions() {
+  List<PrevisionHour> _buildPrevisions() {
     final List<PrevisionHour> previsions = <PrevisionHour>[];
     final Map<String, dynamic> hourlyData = datas["fcst_day_0"]["hourly_data"];
     final String hour = datas["current_condition"]["hour"].split(":")[0];
     final int currentHour = int.parse(hour);
 
-    createPrevisions(currentHour, hourlyData, previsions);
+    _createPrevisions(currentHour, hourlyData, previsions);
 
     return previsions;
   }
@@ -68,7 +68,7 @@ class AppForcastHour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ForcastHourView(
-      previsions: buildPrevisions(),
+      previsions: _buildPrevisions(),
     );
   }
 }

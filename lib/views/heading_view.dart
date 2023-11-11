@@ -17,23 +17,28 @@ class HeadingView extends StatelessWidget {
     return Container(
       width: 320,
       padding: const EdgeInsets.all(0),
+      // main column
       child: Column(
         children: [
+          // city name
           Text(
             cityName,
             style: textTheme.headlineLarge!.copyWith(
               fontWeight: FontWeight.w300,
             ),
           ),
+          // temperature
           Text(
             "$temperature°",
             style: textTheme.displayLarge!.copyWith(
               fontWeight: FontWeight.w200,
             ),
           ),
+          // condition
           Text(
             condition,
           ),
+          // min max row
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

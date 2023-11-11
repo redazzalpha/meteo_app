@@ -8,8 +8,8 @@ class ForcastDayView extends StatelessWidget {
 
   const ForcastDayView({super.key, required this.previsions});
 
-  List<Widget> buildItems() {
-    List<Widget> forcastItems = <Widget>[];
+  List<Widget> _buildItems() {
+    List<ForcastDayItem> forcastItems = <ForcastDayItem>[];
     for (int i = 0; previsions.isNotEmpty && i < previsions.length; i++) {
       forcastItems.add(
         ForcastDayItem(
@@ -25,7 +25,7 @@ class ForcastDayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TemplateCardColumn(
-      widgets: buildItems(),
+      widgets: _buildItems(),
       height: 150,
       title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,

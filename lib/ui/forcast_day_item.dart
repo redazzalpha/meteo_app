@@ -47,7 +47,7 @@ class ForcastDayItem extends StatelessWidget {
             child: SizedBox(
               width: 300,
               child: BarValue(
-                value: prevision.temperature,
+                value: int.parse(prevision.temperature),
                 isDot: isDot,
                 gradient: prevision.gradient,
               ),

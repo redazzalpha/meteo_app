@@ -14,65 +14,51 @@ class AppForcastDay extends StatelessWidget {
         : dailyDatas["day_short"];
   }
 
+  /// normalizeGradient is a function that updates gradient colors
+  /// according min and max temperatures
   LinearGradient _normalizeGradient(final int min, final int max) {
     final colorStops = generateDefaultColorStop();
     final List<Color> colors = colorStops.map((e) => e.color).toList();
-    final List<double> stops = colorStops.map((e) => e.stop).toList();
-
+    List<double> stops = colorStops.map((e) => e.stop).toList();
+    // step is the representation of the minimal part
+    // of all temperatures based on colors grading
     double step = diffTemp / colorStops.length;
+    // factors is the value that mark the corresponding
+    // color on the gradient based on given value, in this case
+    // min temperature and max temperature.
+    // (min - minTemp) & (max - minTemp) is used to
+    // to rescale given temperature on min max temperatures scale
+    // in this case -20° 50°.
     int minFactor = (((min - minTemp) / step)).floor();
     int maxFactor = (((max - minTemp) / step)).floor();
 
-    if (minFactor < 2) minFactor = 2;
-    if (maxFactor < 3) maxFactor = 3;
+    // minFactor & maxFactor must be at least 1
+    if (minFactor < 1) minFactor = 1;
+    if (maxFactor < 1) maxFactor = 1;
 
-    for (int i = 0; i < minFactor - 2; i++) {
-      if (i != 0 && i != colorStops.length - 1) {
-        stops.remove(colorStops[i].stop);
-        colors.remove(colorStops[i].color);
-      }
+    for (int i = 0; i < minFactor - 1; i++) {
+      colors.remove(colorStops[i].color);
     }
-    for (int i = maxFactor; i < colorStops.length - 1; i++) {
-      if (i != 0 && i != colorStops.length - 1) {
-        stops.remove(colorStops[i].stop);
-        colors.remove(colorStops[i].color);
-      }
+    for (int i = colorStops.length - 1; i > maxFactor - 1; i--) {
+      colors.remove(colorStops[i].color);
     }
 
-    // stops.remove(colorStops[0].stop);
-    // colors.remove(colorStops[0].color);
-    // stops.remove(colorStops[1].stop);
-    // colors.remove(colorStops[1].color);
-    // stops.remove(colorStops[3].stop);
-    // colors.remove(colorStops[3].color);
-    // stops.remove(colorStops[4].stop);
-    // colors.remove(colorStops[4].color);
-    // stops.remove(colorStops[5].stop);
-    // colors.remove(colorStops[5].color);
-    // stops.remove(colorStops[6].stop);
-    // colors.remove(colorStops[6].color);
-    // stops.remove(colorStops[7].stop);
-    // colors.remove(colorStops[7].color);
-    // stops.remove(colorStops[8].stop);
-    // colors.remove(colorStops[8].color);
-    // stops.remove(colorStops[9].stop);
-    // colors.remove(colorStops[9].color);
-    // stops.remove(colorStops[10].stop);
-    // colors.remove(colorStops[10].color);
-    // stops.remove(colorStops[11].stop);
-    // colors.remove(colorStops[11].color);
+    // regenerate stops accoding the new gradient
+    stops = generateDefaultGradientStops(size: colors.length);
 
     return LinearGradient(
       colors: colors,
-      // stops: stops,
-      tileMode: TileMode.clamp,
+      stops: stops,
     );
   }
 
   List<PrevisionDay> _buildPrevisions() {
     final List<PrevisionDay> previsions = <PrevisionDay>[];
+
     for (int i = 0; i < 5; i++) {
       final Map<String, dynamic> dailyDatas = datas["fcst_day_$i"];
+      // const min = -20;
+      // const max = 50;
       final min = dailyDatas["tmin"];
       final max = dailyDatas["tmax"];
 
@@ -82,9 +68,10 @@ class AppForcastDay extends StatelessWidget {
           icon: dailyDatas["icon"],
           min: min,
           max: max,
-          temperature: normalizeTemperature(
-            datas["current_condition"]["tmp"],
-          ),
+          temperature: -20,
+          // temperature: normalizeTemperature(
+          //   datas["current_condition"]["tmp"],
+          // ),
           gradient: _normalizeGradient(
             min,
             max,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/color_stops.dart';
 
+/// normalizeTemperature is a function that convert
+/// the given temperature in double to int
+/// according the decimal value
+
 int normalizeTemperature(dynamic temperature) {
   if (temperature.runtimeType.toString() == "double") {
     List<String> temperatureSplit = temperature.toString().split(".");
@@ -12,15 +16,18 @@ int normalizeTemperature(dynamic temperature) {
   return temperature;
 }
 
-List<double> generateDefaultGradientStops({int size = 12}) {
+List<double> generateDefaultGradientStops({required int size}) {
   return List<double>.generate(size, (index) {
-    return (index) / size;
+    return (index + .5) / size;
   });
 }
 
 List<Color> generateDefaultGradientColors() {
   return <Color>[
-    const Color.fromARGB(58, 135, 135, 135),
+    // const Color.fromARGB(58, 135, 135, 135),
+    const Color.fromARGB(255, 255, 255, 255),
+    Colors.cyanAccent,
+    Colors.cyan,
     Colors.blueAccent,
     Colors.blue,
     Colors.greenAccent,
@@ -31,14 +38,21 @@ List<Color> generateDefaultGradientColors() {
     Colors.orange,
     Colors.redAccent,
     Colors.red,
-    const Color.fromARGB(58, 135, 135, 135),
+    const Color.fromARGB(255, 255, 0, 225),
+    Colors.purpleAccent,
+    Colors.purple,
+    // const Color.fromARGB(58, 135, 135, 135),
   ];
 }
 
 LinearGradient generateDefaultGradient() {
+  final List<Color> defaultColors = generateDefaultGradientColors();
+  final List<double> defaultStops =
+      generateDefaultGradientStops(size: defaultColors.length);
+
   return LinearGradient(
-    stops: generateDefaultGradientStops(),
-    colors: generateDefaultGradientColors(),
+    colors: defaultColors,
+    stops: defaultStops,
     tileMode: TileMode.mirror,
   );
 }

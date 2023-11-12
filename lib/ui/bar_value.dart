@@ -10,7 +10,9 @@ class BarValue extends StatefulWidget {
     super.key,
     this.value = 0,
     this.isDot = false,
-    this.gradient = const LinearGradient(colors: <Color>[]),
+    this.gradient = const LinearGradient(
+      colors: <Color>[],
+    ),
   });
 
   LinearGradient _linearGradient() {

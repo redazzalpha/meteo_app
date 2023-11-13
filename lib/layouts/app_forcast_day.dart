@@ -72,7 +72,6 @@ class AppForcastDay extends StatelessWidget {
           icon: dailyDatas["icon"],
           min: min,
           max: max,
-          // temperature: -20,
           temperature: normalizeTemperature(
             datas["current_condition"]["tmp"],
           ).toString(),

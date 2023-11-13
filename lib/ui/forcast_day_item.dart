@@ -51,6 +51,8 @@ class ForcastDayItem extends MasterForcastItem {
                 value: int.parse(previsionDay.temperature),
                 isDot: isDot,
                 gradient: previsionDay.gradient,
+                min: previsionDay.min,
+                max: previsionDay.max,
               ),
             ),
           ),

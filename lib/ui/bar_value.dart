@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 
+//TODO: THIS CLASS MAY SHOULD BE STATELESS
 class BarValue extends StatefulWidget {
   final int value;
   final bool isDot;
   final LinearGradient gradient;
+  final int min;
+  final int max;
   const BarValue({
     super.key,
     this.value = 0,
     this.isDot = false,
+    this.min = minTemp,
+    this.max = maxTemp,
     this.gradient = const LinearGradient(
       colors: <Color>[],
     ),
@@ -31,8 +36,10 @@ class _BarValueState extends State<BarValue> {
 
   void _computeSliderPos() {
     _currentWidth = _containerKey.currentContext!.size!.width;
-    _step = _currentWidth / diffTemp;
-    _valuePos = (double.parse(widget.value.toString()) - minTemp) * _step;
+    _step = _currentWidth / (widget.max - widget.min);
+    _valuePos = (double.parse(widget.value.toString()) - widget.min) * _step;
+    // need to remove 10 pixels causse button goes out of the bar
+    if (widget.value == widget.max) _valuePos -= 10;
   }
 
   @override

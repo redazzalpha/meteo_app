@@ -33,6 +33,7 @@ class AppForcastHour extends StatelessWidget {
     String text = "";
     bool isSunInfo = false;
 
+    // add hour previsions
     hour = _normalizeHour("$currentHour:00");
     icon = hourly["ICON"];
     temperature = normalizeTemperature(hourly["TMP2m"]).toString();
@@ -44,6 +45,7 @@ class AppForcastHour extends StatelessWidget {
       ),
     );
 
+    // check sun previsions
     if ("${currentHour > 9 ? '' : '0'}$currentHour h" == sunriseHour) {
       hour = sunrise;
       icon = "assets/weather/sunrise.png";
@@ -56,6 +58,7 @@ class AppForcastHour extends StatelessWidget {
       isSunInfo = true;
     }
 
+    // add sun previsions
     if (isSunInfo) {
       previsions.add(
         PrevisionSun(
@@ -70,25 +73,19 @@ class AppForcastHour extends StatelessWidget {
 
   void _createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
       List<MasterPrevison> previsions) {
-    int i = 0;
+    late Map<String, dynamic> hourly;
+    int i = 0, max = 24;
+    bool stop = false;
 
-    // day part
-    while (currentHour + i < 24) {
-      final hourly = hourlyData["${currentHour + i}H00"];
-      _insertPrevision(previsions, hourly, currentHour + i);
-      i++;
-    }
-
-    // set day after
-    final int tempCurrentHour = currentHour;
-    currentHour = 0;
-    i = 0;
-
-    // night part
-    while (currentHour + i < tempCurrentHour) {
-      final hourly = hourlyData["${currentHour + i}H00"];
-      _insertPrevision(previsions, hourly, currentHour + i);
-      i++;
+    while (currentHour + i < max) {
+      hourly = hourlyData["${currentHour + i}H00"];
+      _insertPrevision(previsions, hourly, currentHour + i++);
+      if (currentHour + i == max && !stop) {
+        max = currentHour;
+        currentHour = 0;
+        i = 0;
+        stop = true;
+      }
     }
   }
 

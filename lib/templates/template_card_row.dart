@@ -7,13 +7,14 @@ class TemplateCardRow extends StatelessWidget {
   final double width;
   final double height;
 
-  const TemplateCardRow(
-      {super.key,
-      required this.widgets,
-      required this.title,
-      required this.titleIcon,
-      this.width = 800,
-      this.height = 80});
+  const TemplateCardRow({
+    super.key,
+    required this.widgets,
+    required this.title,
+    required this.titleIcon,
+    this.width = 800,
+    this.height = 80,
+  });
 
   @override
   Widget build(BuildContext context) {

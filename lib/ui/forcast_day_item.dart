@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/ui/bar_value.dart';
 
-class ForcastDayItem extends StatelessWidget {
-  final PrevisionDay prevision;
+class ForcastDayItem extends MasterForcastItem {
   final bool isDot;
 
   const ForcastDayItem({
     super.key,
-    required this.prevision,
+    required super.prevision,
     this.isDot = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final PrevisionDay previsionDay = prevision as PrevisionDay;
     return Container(
       padding: EdgeInsets.zero,
       // main row
       child: Row(
         children: [
           // day text
-          Text(prevision.dayShort),
+          Text(previsionDay.dayShort),
           // image icon
           Container(
             padding: const EdgeInsets.only(
               left: 20,
             ),
             child: Image.network(
-              prevision.icon,
+              previsionDay.icon,
               width: 30,
             ),
           ),
@@ -38,7 +39,7 @@ class ForcastDayItem extends StatelessWidget {
               right: 10,
             ),
             child: Text(
-              "${prevision.min}°",
+              "${previsionDay.min}°",
             ),
           ),
           // bar value
@@ -47,9 +48,9 @@ class ForcastDayItem extends StatelessWidget {
             child: SizedBox(
               width: 300,
               child: BarValue(
-                value: int.parse(prevision.temperature),
+                value: int.parse(previsionDay.temperature),
                 isDot: isDot,
-                gradient: prevision.gradient,
+                gradient: previsionDay.gradient,
               ),
             ),
           ),
@@ -59,7 +60,7 @@ class ForcastDayItem extends StatelessWidget {
               left: 10,
             ),
             child: Text(
-              "${prevision.max}°",
+              "${previsionDay.max}°",
             ),
           ),
         ],

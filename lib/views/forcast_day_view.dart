@@ -6,7 +6,10 @@ import 'package:meteo_app_v2/ui/forcast_day_item.dart';
 class ForcastDayView extends StatelessWidget {
   final List<PrevisionDay> previsions;
 
-  const ForcastDayView({super.key, required this.previsions});
+  const ForcastDayView({
+    super.key,
+    required this.previsions,
+  });
 
   List<Widget> _buildItems() {
     List<ForcastDayItem> forcastItems = <ForcastDayItem>[];

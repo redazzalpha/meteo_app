@@ -8,7 +8,10 @@ import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 class AppForcastHour extends StatelessWidget {
   final Map<String, dynamic> datas;
 
-  const AppForcastHour({super.key, required this.datas});
+  const AppForcastHour({
+    super.key,
+    required this.datas,
+  });
 
   String _normalizeHour(String currentTime) {
     if ((currentTime.length == 4 ? "0$currentTime" : currentTime) ==
@@ -43,12 +46,12 @@ class AppForcastHour extends StatelessWidget {
 
     if ("${currentHour > 9 ? '' : '0'}$currentHour h" == sunriseHour) {
       hour = sunrise;
-      icon = "assets/weather/sunrise1.png";
+      icon = "assets/weather/sunrise.png";
       text = "Lever";
       isSunInfo = true;
     } else if ("${currentHour > 9 ? '' : '0'}$currentHour h" == sunsetHour) {
       hour = sunset;
-      icon = "assets/weather/sunset1.png";
+      icon = "assets/weather/sunset.png";
       text = "Coucher";
       isSunInfo = true;
     }

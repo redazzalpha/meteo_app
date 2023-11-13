@@ -6,7 +6,11 @@ import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends StatelessWidget {
   final Map<String, dynamic> datas;
-  const AppForcastDay({super.key, required this.datas});
+
+  const AppForcastDay({
+    super.key,
+    required this.datas,
+  });
 
   String _normalizeDay(Map<String, dynamic> dailyDatas) {
     return dailyDatas["day_short"] == datas["fcst_day_0"]["day_short"]

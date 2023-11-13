@@ -4,7 +4,6 @@ import 'package:meteo_app_v2/classes/color_stops.dart';
 /// normalizeTemperature is a function that convert
 /// the given temperature in double to int
 /// according the decimal value
-
 int normalizeTemperature(dynamic temperature) {
   if (temperature.runtimeType.toString() == "double") {
     List<String> temperatureSplit = temperature.toString().split(".");

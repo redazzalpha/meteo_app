@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class HeadingView extends StatelessWidget {
   final String cityName, condition;
   final int temperature, min, max;
-  const HeadingView(
-      {super.key,
-      required this.cityName,
-      required this.temperature,
-      required this.condition,
-      required this.min,
-      required this.max});
+  const HeadingView({
+    super.key,
+    required this.cityName,
+    required this.temperature,
+    required this.condition,
+    required this.min,
+    required this.max,
+  });
 
   @override
   Widget build(BuildContext context) {

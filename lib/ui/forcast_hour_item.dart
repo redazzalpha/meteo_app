@@ -3,10 +3,14 @@ import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
 
 class ForcastHourItem extends MasterForcastItem {
-  const ForcastHourItem({super.key, required super.prevision});
+  const ForcastHourItem({
+    super.key,
+    required super.prevision,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final PrevisionHour previsionHour = prevision as PrevisionHour;
     return Container(
       padding: const EdgeInsets.only(
         top: 5,
@@ -17,14 +21,14 @@ class ForcastHourItem extends MasterForcastItem {
       child: Column(
         children: [
           Text(
-            (prevision as PrevisionHour).hour,
+            previsionHour.hour,
           ),
           Image.network(
-            prevision.icon,
+            previsionHour.icon,
             width: 30,
           ),
           Text(
-            "${prevision.temperature}°",
+            "${previsionHour.temperature}°",
           ),
         ],
       ),

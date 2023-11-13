@@ -7,13 +7,14 @@ class TemplateCardColumn extends StatelessWidget {
   final double width;
   final double height;
 
-  const TemplateCardColumn(
-      {super.key,
-      required this.widgets,
-      required this.title,
-      required this.titleIcon,
-      this.width = 800,
-      this.height = 500});
+  const TemplateCardColumn({
+    super.key,
+    required this.widgets,
+    required this.title,
+    required this.titleIcon,
+    this.width = 800,
+    this.height = 500,
+  });
 
   @override
   Widget build(BuildContext context) {

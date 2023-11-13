@@ -7,7 +7,10 @@ import 'package:meteo_app_v2/ui/forcast_sun_item.dart';
 class ForcastHourView extends StatelessWidget {
   final List<MasterPrevison> previsions;
 
-  const ForcastHourView({super.key, required this.previsions});
+  const ForcastHourView({
+    super.key,
+    required this.previsions,
+  });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {
     if (prevision.runtimeType.toString() == "PrevisionHour") {

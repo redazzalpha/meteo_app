@@ -86,26 +86,80 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                _background,
-              ),
-              fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          const SliverAppBar(
+            pinned: true,
+            snap: true,
+            floating: true,
+            expandedHeight: 160.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text('meteo_app_v2'),
+              background: FlutterLogo(),
             ),
           ),
-          child: Container(
-            padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(color: Color.fromARGB(49, 0, 0, 0)),
-            child: ListView(
-              children: [
-                Column(
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    _background,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration:
+                    const BoxDecoration(color: Color.fromARGB(49, 0, 0, 0)),
+                child: Column(
                   children: _buildLayouts(),
                 ),
-              ],
+              ),
             ),
-          )),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    _background,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration:
+                    const BoxDecoration(color: Color.fromARGB(49, 0, 0, 0)),
+                child: Column(
+                  children: _buildLayouts(),
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    _background,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration:
+                    const BoxDecoration(color: Color.fromARGB(49, 0, 0, 0)),
+                child: Column(
+                  children: _buildLayouts(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

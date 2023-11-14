@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Flutter code sample for [SliverAppBar].
-
 void main() => runApp(const AppBarApp());
 
 class AppBarApp extends StatelessWidget {
@@ -67,61 +65,6 @@ class _SliverAppBarExampleState extends State<SliverAppBarExample> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: OverflowBar(
-            overflowAlignment: OverflowBarAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('pinned'),
-                  Switch(
-                    onChanged: (bool val) {
-                      setState(() {
-                        _pinned = val;
-                      });
-                    },
-                    value: _pinned,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('snap'),
-                  Switch(
-                    onChanged: (bool val) {
-                      setState(() {
-                        _snap = val;
-                        // Snapping only applies when the app bar is floating.
-                        _floating = _floating || _snap;
-                      });
-                    },
-                    value: _snap,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('floating'),
-                  Switch(
-                    onChanged: (bool val) {
-                      setState(() {
-                        _floating = val;
-                        _snap = _snap && _floating;
-                      });
-                    },
-                    value: _floating,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

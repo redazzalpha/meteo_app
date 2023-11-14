@@ -40,6 +40,7 @@ class AppForcastDay extends StatelessWidget {
     if (minFactor < 1) minFactor = 1;
     if (maxFactor < 1) maxFactor = 1;
 
+    // remove colors that don't correspond to the scale temperature
     for (int i = 0; i < minFactor - 1; i++) {
       colors.remove(colorStops[i].color);
     }

@@ -10,7 +10,9 @@ import 'package:meteo_app_v2/layouts/app_heading.dart';
 
 class Home extends StatefulWidget {
   // constructor
-  const Home({super.key});
+  const Home({
+    super.key,
+  });
 
   // overrides
   @override

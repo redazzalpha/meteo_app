@@ -1,114 +1,128 @@
 import 'package:flutter/material.dart';
 
-class BarValue extends StatefulWidget {
-  final int value;
-  final bool isDot;
-  final List<Color> gradientColors;
-  final List<double> stops;
-  const BarValue({
-    super.key,
-    this.value = 0,
-    this.isDot = false,
-    this.stops = const <double>[
-      0,
-      .1,
-      .2,
-      .4,
-      .5,
-      .6,
-      .7,
-      .8,
-      .9,
-      1,
-    ],
-    this.gradientColors = const <Color>[
-      Colors.blueAccent,
-      Colors.blue,
-      Colors.greenAccent,
-      Colors.green,
-      Colors.yellowAccent,
-      Colors.yellow,
-      Colors.orangeAccent,
-      Colors.orange,
-      Colors.redAccent,
-      Colors.red,
-    ],
-  });
+/// Flutter code sample for [SliverAppBar].
 
-  @override
-  State<StatefulWidget> createState() => _BarValueState();
-}
+void main() => runApp(const AppBarApp());
 
-class _BarValueState extends State<BarValue> {
-  final GlobalKey _containerKey = GlobalKey();
-  double _currentWidth = 0;
-  double _step = 0;
-  double _valuePos = 0;
-
-  void computeSliderPos() {
-    _currentWidth = _containerKey.currentContext!.size!.width;
-    _step = _currentWidth /
-        70; // divided by 70 cause the 70 values between min (-20°) and max (50°)
-    _valuePos = (double.parse(widget.value.toString()) + 20) * _step;
-  }
+class AppBarApp extends StatelessWidget {
+  const AppBarApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => computeSliderPos());
-        // main stack
-        return Stack(
-          children: [
-            // sized box height padding
-            const SizedBox(
-              height: 10,
+    return const MaterialApp(
+      home: SliverAppBarExample(),
+    );
+  }
+}
+
+class SliverAppBarExample extends StatefulWidget {
+  const SliverAppBarExample({super.key});
+
+  @override
+  State<SliverAppBarExample> createState() => _SliverAppBarExampleState();
+}
+
+class _SliverAppBarExampleState extends State<SliverAppBarExample> {
+  bool _pinned = true;
+  bool _snap = false;
+  bool _floating = false;
+
+// [SliverAppBar]s are typically used in [CustomScrollView.slivers], which in
+// turn can be placed in a [Scaffold.body].
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: _pinned,
+            snap: _snap,
+            floating: _floating,
+            expandedHeight: 160.0,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text('SliverAppBar'),
+              background: FlutterLogo(),
             ),
-            // value bar back
-            Container(
-              height: 7,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade600,
-                borderRadius: const BorderRadius.all(
-                  Radius.elliptical(50, 50),
-                ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 20,
+              child: Center(
+                child: Text('Scroll to see the SliverAppBar in effect.'),
               ),
-              margin: const EdgeInsets.only(top: 1.4),
             ),
-            // value bar front
-            Container(
-              key: _containerKey,
-              height: 7,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.elliptical(50, 50),
-                ),
-                gradient: LinearGradient(
-                  stops: widget.stops,
-                  tileMode: TileMode.mirror,
-                  colors: widget.gradientColors,
-                ),
-              ),
-              margin: const EdgeInsets.only(top: 1.4),
-            ),
-            // button slider
-            if (widget.isDot)
-              Positioned(
-                left: _valuePos,
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.grey.shade800,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  color: index.isOdd ? Colors.white : Colors.black12,
+                  height: 100.0,
+                  child: Center(
+                    child: Text('$index', textScaleFactor: 5),
                   ),
-                ),
+                );
+              },
+              childCount: 20,
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: OverflowBar(
+            overflowAlignment: OverflowBarAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('pinned'),
+                  Switch(
+                    onChanged: (bool val) {
+                      setState(() {
+                        _pinned = val;
+                      });
+                    },
+                    value: _pinned,
+                  ),
+                ],
               ),
-          ],
-        );
-      },
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('snap'),
+                  Switch(
+                    onChanged: (bool val) {
+                      setState(() {
+                        _snap = val;
+                        // Snapping only applies when the app bar is floating.
+                        _floating = _floating || _snap;
+                      });
+                    },
+                    value: _snap,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('floating'),
+                  Switch(
+                    onChanged: (bool val) {
+                      setState(() {
+                        _floating = val;
+                        _snap = _snap && _floating;
+                      });
+                    },
+                    value: _floating,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

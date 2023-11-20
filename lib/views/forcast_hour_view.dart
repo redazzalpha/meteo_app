@@ -6,10 +6,12 @@ import 'package:meteo_app_v2/ui/forcast_sun_item.dart';
 
 class ForcastHourView extends StatelessWidget {
   final List<MasterPrevison> previsions;
+  final double height;
 
   const ForcastHourView({
     super.key,
     required this.previsions,
+    this.height = 80,
   });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {
@@ -35,6 +37,7 @@ class ForcastHourView extends StatelessWidget {
       widgets: _buildItems(),
       title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
+      height: height,
     );
   }
 }

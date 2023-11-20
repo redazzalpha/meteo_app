@@ -5,10 +5,12 @@ import 'package:meteo_app_v2/ui/forcast_day_item.dart';
 
 class ForcastDayView extends StatelessWidget {
   final List<PrevisionDay> previsions;
+  final double height;
 
   const ForcastDayView({
     super.key,
     required this.previsions,
+    this.height = 150,
   });
 
   List<Widget> _buildItems() {
@@ -29,7 +31,7 @@ class ForcastDayView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TemplateCardColumn(
       widgets: _buildItems(),
-      height: 150,
+      height: height,
       title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,
     );

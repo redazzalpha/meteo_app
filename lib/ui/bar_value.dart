@@ -48,6 +48,7 @@ class _BarValueState extends State<BarValue> {
       builder: (context, orientation) {
         WidgetsBinding.instance
             .addPostFrameCallback((_) => _computeSliderPos());
+
         // main stack
         return Stack(
           children: [
@@ -55,6 +56,7 @@ class _BarValueState extends State<BarValue> {
             const SizedBox(
               height: 10,
             ),
+
             // value bar
             Container(
               key: _containerKey,
@@ -68,6 +70,7 @@ class _BarValueState extends State<BarValue> {
               ),
               margin: const EdgeInsets.only(top: 1.4),
             ),
+
             // button slider
             if (widget.isDot)
               Positioned(

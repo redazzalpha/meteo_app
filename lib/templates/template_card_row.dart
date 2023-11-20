@@ -32,6 +32,7 @@ class TemplateCardRow extends StatelessWidget {
         left: 10,
         right: 10,
       ),
+
       // main column
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,6 +52,7 @@ class TemplateCardRow extends StatelessWidget {
               ),
             ],
           ),
+
           // horizontal line
           Container(
             margin: const EdgeInsets.only(
@@ -63,6 +65,7 @@ class TemplateCardRow extends StatelessWidget {
               ),
             ),
           ),
+
           // items list
           SizedBox(
             width: width,

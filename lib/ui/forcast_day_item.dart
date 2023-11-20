@@ -15,6 +15,7 @@ class ForcastDayItem extends MasterForcastItem {
   @override
   Widget build(BuildContext context) {
     final PrevisionDay previsionDay = prevision as PrevisionDay;
+
     return Container(
       padding: EdgeInsets.zero,
       // main row
@@ -22,6 +23,7 @@ class ForcastDayItem extends MasterForcastItem {
         children: [
           // day text
           Text(previsionDay.dayShort),
+
           // image icon
           Container(
             padding: const EdgeInsets.only(
@@ -32,6 +34,7 @@ class ForcastDayItem extends MasterForcastItem {
               width: 30,
             ),
           ),
+
           // minimal temperature
           Container(
             padding: const EdgeInsets.only(
@@ -42,6 +45,7 @@ class ForcastDayItem extends MasterForcastItem {
               "${previsionDay.min}°",
             ),
           ),
+
           // bar value
           Expanded(
             flex: 1,
@@ -56,6 +60,7 @@ class ForcastDayItem extends MasterForcastItem {
               ),
             ),
           ),
+
           // minimal temperature
           Container(
             padding: const EdgeInsets.only(

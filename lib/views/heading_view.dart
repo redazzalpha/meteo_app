@@ -18,6 +18,7 @@ class HeadingView extends StatelessWidget {
     return Container(
       width: 320,
       padding: const EdgeInsets.all(0),
+
       // main column
       child: Column(
         children: [
@@ -28,6 +29,7 @@ class HeadingView extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
           ),
+
           // temperature
           Text(
             "$temperature°",
@@ -35,26 +37,37 @@ class HeadingView extends StatelessWidget {
               fontWeight: FontWeight.w200,
             ),
           ),
+
           // condition
           Text(
             condition,
           ),
+
           // min max row
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // icon arrow up
               const Icon(
                 Icons.arrow_upward,
               ),
+
+              // max temperature
               Text(
                 "$max°",
               ),
+
+              // padding boxed
               const SizedBox(
                 width: 5,
               ),
+
+              // icon arrow down
               const Icon(
                 Icons.arrow_downward,
               ),
+
+              // min temperature
               Text(
                 "$min°",
               ),

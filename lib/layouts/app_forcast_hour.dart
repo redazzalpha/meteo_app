@@ -7,10 +7,12 @@ import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
 class AppForcastHour extends StatelessWidget {
   final Map<String, dynamic> datas;
+  final double height;
 
   const AppForcastHour({
     super.key,
     required this.datas,
+    this.height = 80,
   });
 
   String _normalizeHour(String currentTime) {
@@ -104,6 +106,7 @@ class AppForcastHour extends StatelessWidget {
   Widget build(BuildContext context) {
     return ForcastHourView(
       previsions: _buildPrevisions(),
+      height: height,
     );
   }
 }

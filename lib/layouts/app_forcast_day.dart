@@ -6,10 +6,12 @@ import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends StatelessWidget {
   final Map<String, dynamic> datas;
+  final double height;
 
   const AppForcastDay({
     super.key,
     required this.datas,
+    this.height = 150,
   });
 
   String _normalizeDay(Map<String, dynamic> dailyDatas) {
@@ -90,6 +92,7 @@ class AppForcastDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return ForcastDayView(
       previsions: _buildPrevisions(),
+      height: height,
     );
   }
 }

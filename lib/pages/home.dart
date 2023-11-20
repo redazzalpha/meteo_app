@@ -21,9 +21,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
+  late final ScrollController _controller;
   final String _dataUrl = "https://www.prevision-meteo.ch/services/json";
   Map<String, dynamic> _datas = <String, dynamic>{};
   String _background = "assets/weather/base.gif";
+  final double _scrollOffset = 80;
+  late Widget _appHeadingTitle;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(String localisation) async {
@@ -54,33 +57,207 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void updateAppHeadingTitle({final bool visible = true}) {
+    if (visible) {
+      _appHeadingTitle = Column(
+        children: <Widget>[
+          Text(_datas["city_info"]["name"]),
+          Text(
+            "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
+          ),
+        ],
+      );
+    } else {
+      _appHeadingTitle = const Text("");
+    }
+  }
+
   List<Widget> _buildLayouts() {
     if (_datas.isEmpty) return const <Widget>[];
     return <Widget>[
-      const SizedBox(
-        height: 30,
+      // app heading
+      SliverAppBar(
+        primary: true,
+        toolbarHeight: 100,
+        expandedHeight: 200.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: FlexibleSpaceBar(
+          title: _appHeadingTitle,
+          background: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              AppHeading(
+                datas: _datas,
+              ),
+            ],
+          ),
+          centerTitle: true,
+        ),
       ),
-      AppHeading(
-        datas: _datas,
+
+      // app forcast hour
+      SliverAppBar(
+        toolbarHeight: 40,
+        expandedHeight: 155.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: FlexibleSpaceBarSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 200,
+            toolbarOpacity: 1,
+            child: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  AppForcastHour(
+                    height: 90,
+                    datas: _datas,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      const SizedBox(
-        height: 25,
+
+      // app forcast day
+      SliverAppBar(
+        toolbarHeight: 40,
+        expandedHeight: 220.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: FlexibleSpaceBarSettings(
+            currentExtent: 241,
+            maxExtent: 241,
+            minExtent: 241,
+            toolbarOpacity: 1,
+            child: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  AppForcastDay(
+                    height: 155,
+                    datas: _datas,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      AppForcastHour(
-        datas: _datas,
+      // app forcast day
+      SliverAppBar(
+        toolbarHeight: 40,
+        expandedHeight: 220.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: FlexibleSpaceBarSettings(
+            currentExtent: 241,
+            maxExtent: 241,
+            minExtent: 241,
+            toolbarOpacity: 1,
+            child: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  AppForcastDay(
+                    height: 155,
+                    datas: _datas,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      const SizedBox(
-        height: 25,
+
+      // app forcast day
+      SliverAppBar(
+        toolbarHeight: 40,
+        expandedHeight: 220.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: FlexibleSpaceBarSettings(
+            currentExtent: 241,
+            maxExtent: 241,
+            minExtent: 241,
+            toolbarOpacity: 1,
+            child: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  AppForcastDay(
+                    height: 155,
+                    datas: _datas,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      AppForcastDay(datas: _datas),
+
+      // app forcast day
+      SliverAppBar(
+        toolbarHeight: 40,
+        expandedHeight: 220.0,
+        pinned: true,
+        forceMaterialTransparency: true,
+        flexibleSpace: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: FlexibleSpaceBarSettings(
+            currentExtent: 241,
+            maxExtent: 241,
+            minExtent: 241,
+            toolbarOpacity: 1,
+            child: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  AppForcastDay(
+                    height: 155,
+                    datas: _datas,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      // bottom padding
+      const SliverPadding(
+        padding: EdgeInsets.only(top: 300),
+      ),
     ];
+  }
+
+  // event handlers
+  void _handleScroll() {
+    setState(() {
+      if (_controller.offset >= _scrollOffset) {
+        updateAppHeadingTitle(visible: true);
+      } else {
+        updateAppHeadingTitle(visible: false);
+      }
+    });
   }
 
   // overrides
   @override
   void initState() {
-    super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_handleScroll);
     _refreshDataTimer(milliseconds: 3000);
+    _appHeadingTitle = const Text("");
+    super.initState();
   }
 
   @override
@@ -98,27 +275,11 @@ class _HomeState extends State<Home> {
             fit: BoxFit.cover,
           ),
         ),
+
         // scroll view
         child: CustomScrollView(
-          slivers: <Widget>[
-            // app bar
-            const SliverAppBar(
-              backgroundColor: Colors.transparent,
-              pinned: true,
-              snap: true,
-              floating: true,
-              expandedHeight: 100.0,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text('Meteo app'),
-              ),
-            ),
-            // layouts container
-            SliverToBoxAdapter(
-              child: Column(
-                children: _buildLayouts(),
-              ),
-            ),
-          ],
+          controller: _controller,
+          slivers: _buildLayouts(),
         ),
       ),
     );

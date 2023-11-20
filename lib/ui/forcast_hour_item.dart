@@ -11,6 +11,7 @@ class ForcastHourItem extends MasterForcastItem {
   @override
   Widget build(BuildContext context) {
     final PrevisionHour previsionHour = prevision as PrevisionHour;
+
     return Container(
       padding: const EdgeInsets.only(
         top: 5,
@@ -18,15 +19,22 @@ class ForcastHourItem extends MasterForcastItem {
         left: 15,
         right: 15,
       ),
+
+      // main column
       child: Column(
         children: [
+          // time text
           Text(
             previsionHour.hour,
           ),
+
+          // image icon
           Image.network(
             previsionHour.icon,
             width: 30,
           ),
+
+          // temperature
           Text(
             "${previsionHour.temperature}°",
           ),

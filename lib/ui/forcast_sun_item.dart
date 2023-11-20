@@ -11,6 +11,7 @@ class ForcastSunItem extends MasterForcastItem {
   @override
   Widget build(BuildContext context) {
     final PrevisionSun previsionSun = prevision as PrevisionSun;
+
     return Container(
       padding: const EdgeInsets.only(
         top: 5,
@@ -18,15 +19,22 @@ class ForcastSunItem extends MasterForcastItem {
         left: 15,
         right: 15,
       ),
+
+      // main column
       child: Column(
         children: [
+          // time text
           Text(
             previsionSun.hour,
           ),
+
+          // image icon
           Image.asset(
             previsionSun.icon,
             width: 30,
           ),
+
+          // sun state text
           Text(
             previsionSun.text,
           ),

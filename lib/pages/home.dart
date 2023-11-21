@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class Home extends StatefulWidget {
   // constructor
@@ -22,19 +23,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
-  late final List<Widget> components;
-  final String _dataUrl = "https://www.prevision-meteo.ch/services/json";
-  Map<String, dynamic> _datas = <String, dynamic>{};
-  String _background = "assets/weather/base.gif";
+  Map<String, dynamic> _datas = const <String, dynamic>{};
+  final String _dataUrl = dataUrl;
   final double _scrollOffset = 45;
   final int _sliverMinHeight = 100;
   final int _sliversLength = 6;
   late final ScrollController _controller;
-  late final List<GlobalKey> _keys;
+  late final List<GlobalKey> _sliverKeys;
   late final List<double> _opacities;
   late RenderSliverPinnedPersistentHeader _renderObject;
   late double _sliverHeight;
   late Widget _appHeadingTitle;
+  String _background = defaultBackground;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(String localisation) async {
@@ -80,11 +80,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-  /// updateSilvers function updates slivers opacity
-  /// on scrolling
+  /// updateSilvers function updates
+  /// slivers opacity on scrolling
   void _updateSlivers() {
     for (int i = 0; i < _sliversLength; i++) {
-      _renderObject = _keys[i].currentContext!.findRenderObject()
+      _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
           as RenderSliverPinnedPersistentHeader;
       _sliverHeight = _renderObject.child!.size.height;
 
@@ -104,7 +104,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  List<Widget> _buildLayouts() {
+  List<Widget> _buildSlivers() {
     if (_datas.isEmpty) return const <Widget>[];
     return <Widget>[
       // app heading
@@ -134,10 +134,9 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[0],
         sliver: SliverAppBar(
-          key: _keys[0],
+          key: _sliverKeys[0],
           toolbarHeight: 0,
           expandedHeight: 140,
-          // collapsedHeight: 100,
           pinned: true,
           forceMaterialTransparency: true,
 
@@ -163,7 +162,7 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[1],
         sliver: SliverAppBar(
-          key: _keys[1],
+          key: _sliverKeys[1],
           toolbarHeight: 0,
           expandedHeight: 200,
           pinned: true,
@@ -191,7 +190,7 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[2],
         sliver: SliverAppBar(
-          key: _keys[2],
+          key: _sliverKeys[2],
           toolbarHeight: 0,
           expandedHeight: 200,
           pinned: true,
@@ -219,7 +218,7 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[3],
         sliver: SliverAppBar(
-          key: _keys[3],
+          key: _sliverKeys[3],
           toolbarHeight: 0,
           expandedHeight: 200,
           pinned: true,
@@ -247,7 +246,7 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[4],
         sliver: SliverAppBar(
-          key: _keys[4],
+          key: _sliverKeys[4],
           toolbarHeight: 0,
           expandedHeight: 200,
           pinned: true,
@@ -275,7 +274,7 @@ class _HomeState extends State<Home> {
       SliverOpacity(
         opacity: _opacities[5],
         sliver: SliverAppBar(
-          key: _keys[5],
+          key: _sliverKeys[5],
           toolbarHeight: 0,
           expandedHeight: 200,
           pinned: true,
@@ -315,11 +314,12 @@ class _HomeState extends State<Home> {
   // overrides
   @override
   void initState() {
-    _keys = List<GlobalKey>.generate(_sliversLength, (index) => GlobalKey());
-    _opacities = List<double>.generate(_sliversLength, (index) => 1);
+    _refreshDataTimer(milliseconds: 3000);
     _controller = ScrollController();
     _controller.addListener(_handleScroll);
-    _refreshDataTimer(milliseconds: 3000);
+    _sliverKeys =
+        List<GlobalKey>.generate(_sliversLength, (index) => GlobalKey());
+    _opacities = List<double>.generate(_sliversLength, (index) => 1);
     _appHeadingTitle = const Text("");
     super.initState();
   }
@@ -343,7 +343,7 @@ class _HomeState extends State<Home> {
         // scroll view
         child: CustomScrollView(
           controller: _controller,
-          slivers: _buildLayouts(),
+          slivers: _buildSlivers(),
         ),
       ),
     );

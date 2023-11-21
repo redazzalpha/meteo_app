@@ -49,6 +49,10 @@ class TemplateCardColumn extends StatelessWidget {
               ),
               Text(
                 title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(fontSize: 15),
               ),
             ],
           ),

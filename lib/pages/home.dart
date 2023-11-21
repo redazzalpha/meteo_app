@@ -22,6 +22,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
+  late final List<Widget> components;
   final String _dataUrl = "https://www.prevision-meteo.ch/services/json";
   Map<String, dynamic> _datas = <String, dynamic>{};
   String _background = "assets/weather/base.gif";
@@ -79,6 +80,8 @@ class _HomeState extends State<Home> {
     }
   }
 
+  /// updateSilvers function updates slivers opacity
+  /// on scrolling
   void _updateSlivers() {
     for (int i = 0; i < _sliversLength; i++) {
       _renderObject = _keys[i].currentContext!.findRenderObject()
@@ -86,7 +89,7 @@ class _HomeState extends State<Home> {
       _sliverHeight = _renderObject.child!.size.height;
 
       if (_sliverHeight <= _sliverMinHeight) {
-        _opacities[i] = 0;
+        _opacities[i] = _sliverHeight / 100;
       } else {
         _opacities[i] = 1;
       }
@@ -128,9 +131,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app forcast hour
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[0],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[0],
           toolbarHeight: 0,
@@ -158,9 +160,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app forcast day
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[1],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[1],
           toolbarHeight: 0,
@@ -187,9 +188,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app test 1
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[2],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[2],
           toolbarHeight: 0,
@@ -216,9 +216,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app test 2
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[3],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[3],
           toolbarHeight: 0,
@@ -245,9 +244,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app test 3
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[4],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[4],
           toolbarHeight: 0,
@@ -274,9 +272,8 @@ class _HomeState extends State<Home> {
       ),
 
       // app test 4
-      SliverAnimatedOpacity(
+      SliverOpacity(
         opacity: _opacities[5],
-        duration: const Duration(milliseconds: 500),
         sliver: SliverAppBar(
           key: _keys[5],
           toolbarHeight: 0,

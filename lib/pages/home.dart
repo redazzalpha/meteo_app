@@ -105,27 +105,24 @@ class _HomeState extends State<Home> {
     if (_datas.isEmpty) return const <Widget>[];
     return <Widget>[
       // app heading
-      SliverPadding(
-        padding: const EdgeInsets.only(top: 0),
-        sliver: SliverAppBar(
-          title: _appHeadingTitle,
-          centerTitle: true,
-          toolbarHeight: 150,
-          expandedHeight: 200,
-          pinned: true,
-          // snap: true,
-          // floating: true,
-          forceMaterialTransparency: true,
+      SliverAppBar(
+        title: _appHeadingTitle,
+        centerTitle: true,
+        toolbarHeight: 150,
+        expandedHeight: 200,
+        pinned: true,
+        // snap: true,
+        // floating: true,
+        forceMaterialTransparency: true,
 
-          // flexible space bar
-          flexibleSpace: FlexibleSpaceBar(
-            background: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppHeading(datas: _datas),
-              ],
-            ),
+        // flexible space bar
+        flexibleSpace: FlexibleSpaceBar(
+          background: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppHeading(datas: _datas),
+            ],
           ),
         ),
       ),
@@ -134,29 +131,26 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[0],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[0],
-            toolbarHeight: 0,
-            expandedHeight: 140,
-            // collapsedHeight: 100,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[0],
+          toolbarHeight: 0,
+          expandedHeight: 140,
+          // collapsedHeight: 100,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 140,
-              maxExtent: 140,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastHour(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 140,
+            maxExtent: 140,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastHour(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -167,28 +161,25 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[1],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[1],
-            toolbarHeight: 0,
-            expandedHeight: 200,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[1],
+          toolbarHeight: 0,
+          expandedHeight: 200,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 200,
-              maxExtent: 200,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastDay(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastDay(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -199,28 +190,25 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[2],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[2],
-            toolbarHeight: 0,
-            expandedHeight: 200,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[2],
+          toolbarHeight: 0,
+          expandedHeight: 200,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 200,
-              maxExtent: 200,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastDay(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastDay(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -231,28 +219,25 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[3],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[3],
-            toolbarHeight: 0,
-            expandedHeight: 200,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[3],
+          toolbarHeight: 0,
+          expandedHeight: 200,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 200,
-              maxExtent: 200,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastDay(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastDay(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -263,28 +248,25 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[4],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[4],
-            toolbarHeight: 0,
-            expandedHeight: 200,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[4],
+          toolbarHeight: 0,
+          expandedHeight: 200,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 200,
-              maxExtent: 200,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastDay(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastDay(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -295,28 +277,25 @@ class _HomeState extends State<Home> {
       SliverAnimatedOpacity(
         opacity: _opacities[5],
         duration: const Duration(milliseconds: 500),
-        sliver: SliverPadding(
-          padding: const EdgeInsets.only(top: 0),
-          sliver: SliverAppBar(
-            key: _keys[5],
-            toolbarHeight: 0,
-            expandedHeight: 200,
-            pinned: true,
-            forceMaterialTransparency: true,
+        sliver: SliverAppBar(
+          key: _keys[5],
+          toolbarHeight: 0,
+          expandedHeight: 200,
+          pinned: true,
+          forceMaterialTransparency: true,
 
-            // flexible space bar
-            flexibleSpace: FlexibleSpaceBar.createSettings(
-              currentExtent: 200,
-              maxExtent: 200,
-              minExtent: 0,
-              child: FlexibleSpaceBar(
-                background: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppForcastDay(datas: _datas),
-                  ],
-                ),
+          // flexible space bar
+          flexibleSpace: FlexibleSpaceBar.createSettings(
+            currentExtent: 200,
+            maxExtent: 200,
+            minExtent: 0,
+            child: FlexibleSpaceBar(
+              background: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppForcastDay(datas: _datas),
+                ],
               ),
             ),
           ),
@@ -324,15 +303,13 @@ class _HomeState extends State<Home> {
       ),
 
       // bottom padding
-      const SliverPadding(padding: EdgeInsets.only(top: 200))
+      const SliverPadding(padding: EdgeInsets.only(top: 300))
     ];
   }
 
   // event handlers
   void _handleScroll() {
     _updateSlivers();
-
-    log(_sliverHeight.toString());
     setState(() {
       _updateHeading();
     });
@@ -367,12 +344,9 @@ class _HomeState extends State<Home> {
         ),
 
         // scroll view
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [],
-          body: CustomScrollView(
-            controller: _controller,
-            slivers: _buildLayouts(),
-          ),
+        child: CustomScrollView(
+          controller: _controller,
+          slivers: _buildLayouts(),
         ),
       ),
     );

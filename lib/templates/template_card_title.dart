@@ -13,20 +13,19 @@ class TemplateCardTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.center,
-      // mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
           decoration: const BoxDecoration(
-            color: Color.fromARGB(91, 0, 0, 0),
+            // color: Color.fromARGB(91, 0, 0, 0),
             borderRadius: BorderRadius.all(
               Radius.circular(15),
             ),
           ),
           padding: const EdgeInsets.only(
-            top: 6,
+            top: 5,
             bottom: 5,
             left: 9,
-            right: 5,
           ),
           child: Row(
             children: [

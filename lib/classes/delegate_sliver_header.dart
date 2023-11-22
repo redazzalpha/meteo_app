@@ -6,31 +6,29 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final IconData titleIcon;
   final double min;
   final double max;
-  final double _maxOffset = 40;
+  final double opacity;
 
   const SilverHeaderDelegate({
     required this.title,
     required this.titleIcon,
     required this.min,
     required this.max,
+    this.opacity = 1,
   });
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return TemplateCardTitle(
-      title: title,
-      titleIcon: titleIcon,
+    return Opacity(
+      opacity: opacity,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 80),
+        child: TemplateCardTitle(
+          title: title,
+          titleIcon: titleIcon,
+        ),
+      ),
     );
-    // log(shrinkOffset.toString());
-    // if (shrinkOffset >= _maxOffset) {
-    //   return TemplateCardTitle(
-    //     title: title,
-    //     titleIcon: titleIcon,
-    //   );
-    // } else {
-    //   return Container();
-    // }
   }
 
   @override

@@ -38,6 +38,7 @@ class ForcastHourView extends StatelessWidget {
       title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
       height: height,
+      hasBackground: false,
     );
   }
 }

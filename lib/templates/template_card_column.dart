@@ -6,6 +6,8 @@ class TemplateCardColumn extends StatelessWidget {
   final IconData titleIcon;
   final double width;
   final double height;
+  final bool hasHeader;
+  final bool hasBackground;
 
   const TemplateCardColumn({
     super.key,
@@ -14,15 +16,19 @@ class TemplateCardColumn extends StatelessWidget {
     required this.titleIcon,
     this.width = 800,
     this.height = 500,
+    this.hasHeader = true,
+    this.hasBackground = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(91, 0, 0, 0),
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: hasBackground
+            ? const Color.fromARGB(91, 0, 0, 0)
+            : Colors.transparent,
+        borderRadius: const BorderRadius.all(
           Radius.circular(15),
         ),
       ),
@@ -37,25 +43,26 @@ class TemplateCardColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // title row
-          Row(
-            children: [
-              Icon(
-                titleIcon,
-                size: 15,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontSize: 15),
-              ),
-            ],
-          ),
+          // title
+          if (hasHeader)
+            Row(
+              children: [
+                Icon(
+                  titleIcon,
+                  size: 15,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 15),
+                ),
+              ],
+            ),
 
           // horizontal line
           Container(

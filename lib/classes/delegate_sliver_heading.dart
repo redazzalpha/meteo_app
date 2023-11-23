@@ -7,10 +7,10 @@ class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
   final double min;
   final double max;
   const SliverHeadingDelegate({
-    required this.min,
-    required this.max,
     required this.widget,
     required this.datas,
+    this.min = 200,
+    this.max = 200,
   });
 
   @override
@@ -18,7 +18,16 @@ class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Column(
       children: <Widget>[
-        widget,
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+          child: widget,
+        ),
       ],
     );
   }

@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/classes/delegate_sliver_header.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_heading.dart';
+import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
@@ -74,13 +75,23 @@ class _HomeState extends State<Home> {
 
   void _buildAppHeading() {
     if (_controller.offset >= _scrollOffset) {
-      _appHeading = Column(
-        children: <Widget>[
-          Text(_datas["city_info"]["name"]),
-          Text(
-            "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
-          ),
-        ],
+      final TextTheme textTheme = Theme.of(context).textTheme;
+      _appHeading = SizedBox(
+        height: 150,
+        child: Column(
+          children: <Widget>[
+            Text(
+              _datas["city_info"]["name"],
+              style: textTheme.displaySmall!
+                  .copyWith(fontWeight: FontWeight.w300, fontSize: 32),
+            ),
+            Text(
+              "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
+              style: textTheme.labelSmall!
+                  .copyWith(fontWeight: FontWeight.w300, fontSize: 20),
+            ),
+          ],
+        ),
       );
     } else {
       _appHeading = AppHeading(datas: _datas);
@@ -118,12 +129,13 @@ class _HomeState extends State<Home> {
     final GlobalKey key,
     final Widget widget,
     final String title,
-    final IconData titleIcon,
-    final double min,
-    final double max,
-    final double opacity,
-    final double visibility,
-  ) {
+    final IconData titleIcon, {
+    final double opacity = 1,
+    final double visibility = 1,
+    final double padding = 80,
+    final double min = 0,
+    final double max = 150,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 15),
 
@@ -174,9 +186,10 @@ class _HomeState extends State<Home> {
                 delegate: SilverHeaderDelegate(
                   title: title,
                   titleIcon: titleIcon,
-                  min: 35,
-                  max: 150,
+                  min: min,
+                  max: max,
                   opacity: opacity,
+                  padding: padding,
                 ),
               ),
             )
@@ -208,102 +221,87 @@ class _HomeState extends State<Home> {
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          50,
-          _sliverOpacities[0],
-          _sliverVisibilities[0],
+          opacity: _sliverOpacities[0],
+          visibility: _sliverVisibilities[0],
+        ),
+
+        // app forcast day
+        _sliverWrap(
+          _sliverKeys[1],
+          AppForcastDay(
+            datas: _datas,
+          ),
+          "Prévisions pour 5 jours",
+          Icons.calendar_month,
+          opacity: _sliverOpacities[1],
+          visibility: _sliverVisibilities[1],
+          max: 215,
         ),
 
         // app tests
-        _sliverWrap(
-          _sliverKeys[1],
-          AppForcastHour(datas: _datas),
-          "Prévisions heure par heure",
-          Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[1],
-          _sliverVisibilities[1],
-        ),
         _sliverWrap(
           _sliverKeys[2],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[2],
-          _sliverVisibilities[2],
+          opacity: _sliverOpacities[2],
+          visibility: _sliverVisibilities[2],
         ),
         _sliverWrap(
           _sliverKeys[3],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[3],
-          _sliverVisibilities[3],
+          opacity: _sliverOpacities[3],
+          visibility: _sliverVisibilities[3],
         ),
         _sliverWrap(
           _sliverKeys[4],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[4],
-          _sliverVisibilities[4],
+          opacity: _sliverOpacities[4],
+          visibility: _sliverVisibilities[4],
         ),
         _sliverWrap(
           _sliverKeys[5],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[5],
-          _sliverVisibilities[5],
+          opacity: _sliverOpacities[5],
+          visibility: _sliverVisibilities[5],
         ),
         _sliverWrap(
           _sliverKeys[6],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[6],
-          _sliverVisibilities[6],
+          opacity: _sliverOpacities[6],
+          visibility: _sliverVisibilities[6],
         ),
         _sliverWrap(
           _sliverKeys[7],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[7],
-          _sliverVisibilities[7],
+          opacity: _sliverOpacities[7],
+          visibility: _sliverVisibilities[7],
         ),
         _sliverWrap(
           _sliverKeys[8],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[8],
-          _sliverVisibilities[8],
+          opacity: _sliverOpacities[8],
+          visibility: _sliverVisibilities[8],
         ),
         _sliverWrap(
           _sliverKeys[9],
           AppForcastHour(datas: _datas),
           "Prévisions heure par heure",
           Icons.access_time,
-          50,
-          100,
-          _sliverOpacities[9],
-          _sliverVisibilities[9],
+          opacity: _sliverOpacities[9],
+          visibility: _sliverVisibilities[9],
         ),
       ],
     );
@@ -311,6 +309,8 @@ class _HomeState extends State<Home> {
 
   // event handlers
   void _handleScroll() {
+    // TOFIX: SLIVERS UPDATES BEHAVE BADLY ON SCROLL UP DOWN  FAST FIRST TO LAST\
+    // (FIRST DOES NOT APPEARS CORRECTLY CAUSE OF SCROLL BIG SCROLL STEPS)
     _updateSlivers();
     setState(() {
       _buildAppHeading();

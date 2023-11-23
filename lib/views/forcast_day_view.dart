@@ -34,7 +34,6 @@ class ForcastDayView extends StatelessWidget {
       title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,
       height: height,
-      hasHeader: false,
       hasBackground: false,
     );
   }

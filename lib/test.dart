@@ -1,98 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverTestDelegate extends SliverPersistentHeaderDelegate {
-  final String text;
-  const SliverTestDelegate({
-    required this.text,
-  });
+/// Flutter code sample for [AnimatedSwitcher].
+
+class AnimatedSwitcherExample extends StatefulWidget {
+  const AnimatedSwitcherExample({super.key});
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(child: Column(children: [Text(text)]));
-  }
-
-  @override
-  double get maxExtent => 500;
-
-  @override
-  double get minExtent => 70;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
+  State<AnimatedSwitcherExample> createState() =>
+      _AnimatedSwitcherExampleState();
 }
 
-class Test extends StatelessWidget {
-  const Test({super.key});
+class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
+  int _count = 0;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        MultiSliver(
-          pushPinnedChildren: true,
-          children: <Widget>[
-            SliverStack(
-              children: [
-                SliverPositioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: const <BoxShadow>[
-                        BoxShadow(
-                          offset: Offset(0, 4),
-                          blurRadius: 8,
-                          color: Colors.black26,
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                SliverClip(
-                  clipOverlap: true,
-                  child: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      childCount: 6,
-                      (context, index) => const Text("bbbbb"),
-                    ),
-                  ),
-                ),
-                const SliverPersistentHeader(
-                  delegate: SliverTestDelegate(text: "sliverstack app bar"),
-                  pinned: false,
-                ),
-              ],
+    return ColoredBox(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: Text(
+              '$_count',
+              // This key causes the AnimatedSwitcher to interpret this as a "new"
+              // child each time the count changes, so that it will begin its animation
+              // when the count changes.
+              key: ValueKey<int>(_count),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SliverPersistentHeader(
-              delegate: SliverTestDelegate(text: "first app bar"),
-              pinned: true,
-            ),
-            SliverClip(
-              clipOverlap: true,
-              child: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: 15,
-                  (context, index) => const Text("bbbbb"),
-                ),
-              ),
-            ),
-            const SliverPersistentHeader(
-              delegate: SliverTestDelegate(text: "second app bar"),
-              pinned: true,
-            ),
-            SliverClip(
-              clipOverlap: true,
-              child: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      childCount: 15, (context, index) => const Text("cccc"))),
-            ),
-          ],
-        )
-      ],
+          ),
+          ElevatedButton(
+            child: const Text('Increment'),
+            onPressed: () {
+              setState(() {
+                _count += 1;
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 }

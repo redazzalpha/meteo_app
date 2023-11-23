@@ -7,13 +7,15 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double min;
   final double max;
   final double opacity;
+  final double padding;
 
   const SilverHeaderDelegate({
     required this.title,
     required this.titleIcon,
-    required this.min,
-    required this.max,
     this.opacity = 1,
+    this.padding = 80,
+    this.min = 0,
+    this.max = 150,
   });
 
   @override
@@ -22,7 +24,7 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Opacity(
       opacity: opacity,
       child: Padding(
-        padding: const EdgeInsets.only(top: 80),
+        padding: EdgeInsets.only(top: padding),
         child: TemplateCardTitle(
           title: title,
           titleIcon: titleIcon,

@@ -73,31 +73,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _buildAppHeading() {
-    if (_controller.offset >= _scrollOffset) {
-      final TextTheme textTheme = Theme.of(context).textTheme;
-      _appHeading = SizedBox(
-        height: 150,
-        child: Column(
-          children: <Widget>[
-            Text(
-              _datas["city_info"]["name"],
-              style: textTheme.displaySmall!
-                  .copyWith(fontWeight: FontWeight.w300, fontSize: 32),
-            ),
-            Text(
-              "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
-              style: textTheme.labelSmall!
-                  .copyWith(fontWeight: FontWeight.w300, fontSize: 20),
-            ),
-          ],
-        ),
-      );
-    } else {
-      _appHeading = AppHeading(datas: _datas);
-    }
-  }
-
   /// updateSilvers function updates
   /// slivers opacity on scrolling
   void _updateSlivers() {
@@ -105,8 +80,6 @@ class _HomeState extends State<Home> {
       _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
           as RenderSliverHelpers;
       _sliverOverlap = _renderObject.constraints.overlap;
-
-      // log("index: $i - overlap: $_sliverOverlap");
 
       if (_sliverOverlap >= _sliverLimitVisibility) {
         _sliverVisibilities[i] = 0;
@@ -122,7 +95,6 @@ class _HomeState extends State<Home> {
         }
       }
     }
-    // log("============================================");
   }
 
   Widget _sliverWrap(
@@ -133,8 +105,8 @@ class _HomeState extends State<Home> {
     final double opacity = 1,
     final double visibility = 1,
     final double padding = 80,
-    final double min = 0,
-    final double max = 150,
+    final double min = 15,
+    final double max = 165,
   }) {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 15),
@@ -305,6 +277,31 @@ class _HomeState extends State<Home> {
         ),
       ],
     );
+  }
+
+  void _buildAppHeading() {
+    if (_controller.offset >= _scrollOffset) {
+      final TextTheme textTheme = Theme.of(context).textTheme;
+      _appHeading = SizedBox(
+        height: 150,
+        child: Column(
+          children: <Widget>[
+            Text(
+              _datas["city_info"]["name"],
+              style: textTheme.displaySmall!
+                  .copyWith(fontWeight: FontWeight.w300, fontSize: 32),
+            ),
+            Text(
+              "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
+              style: textTheme.labelSmall!
+                  .copyWith(fontWeight: FontWeight.w300, fontSize: 20),
+            ),
+          ],
+        ),
+      );
+    } else {
+      _appHeading = AppHeading(datas: _datas);
+    }
   }
 
   // event handlers

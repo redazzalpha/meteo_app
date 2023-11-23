@@ -12,7 +12,7 @@ class AppForcastHour extends StatelessWidget {
   const AppForcastHour({
     super.key,
     required this.datas,
-    this.height = 80,
+    this.height = 105,
   });
 
   String _normalizeHour(String currentTime) {
@@ -25,13 +25,17 @@ class AppForcastHour extends StatelessWidget {
     return normalizedHour.replaceAll(":00", " h");
   }
 
-  void _insertPrevision(final List<MasterPrevison> previsions,
-      final Map<String, dynamic> hourly, final int currentHour) {
+  void _insertPrevision(
+    final List<MasterPrevison> previsions,
+    final Map<String, dynamic> hourly,
+    final int currentHour,
+  ) {
     final String sunrise = datas["city_info"]["sunrise"];
     final String sunset = datas["city_info"]["sunset"];
     final String sunriseHour = "${sunrise.split(':')[0]} h";
     final String sunsetHour = "${sunset.split(':')[0]} h";
     late String hour, icon, temperature;
+    late int humidity;
     String text = "";
     bool isSunInfo = false;
 
@@ -39,15 +43,18 @@ class AppForcastHour extends StatelessWidget {
     hour = _normalizeHour("$currentHour:00");
     icon = hourly["ICON"];
     temperature = normalizeTemperature(hourly["TMP2m"]).toString();
+    humidity = hourly["RH2m"];
+
     previsions.add(
       PrevisionHour(
         hour: hour,
         icon: icon,
         temperature: temperature,
+        humidity: humidity,
       ),
     );
 
-    // check sun previsions
+    // check if sun previsions
     if ("${currentHour > 9 ? '' : '0'}$currentHour h" == sunriseHour) {
       hour = sunrise;
       icon = "assets/weather/sunrise.png";
@@ -79,9 +86,10 @@ class AppForcastHour extends StatelessWidget {
     int i = 0, max = 24;
     bool stop = false;
 
+    // create previsons for 24 hours
     while (currentHour + i < max) {
       hourly = hourlyData["${currentHour + i}H00"];
-      _insertPrevision(previsions, hourly, currentHour + i++);
+      _insertPrevision(previsions, hourly, (currentHour + i++));
       if (currentHour + i == max && !stop) {
         max = currentHour;
         currentHour = 0;

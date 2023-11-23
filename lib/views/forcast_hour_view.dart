@@ -11,7 +11,7 @@ class ForcastHourView extends StatelessWidget {
   const ForcastHourView({
     super.key,
     required this.previsions,
-    this.height = 80,
+    this.height = 105,
   });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {

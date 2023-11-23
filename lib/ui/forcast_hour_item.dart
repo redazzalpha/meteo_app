@@ -15,11 +15,9 @@ class ForcastHourItem extends MasterForcastItem {
     return Container(
       padding: const EdgeInsets.only(
         top: 5,
-        bottom: 5,
         left: 15,
         right: 15,
       ),
-
       // main column
       child: Column(
         children: [
@@ -38,6 +36,17 @@ class ForcastHourItem extends MasterForcastItem {
           Text(
             "${previsionHour.temperature}°",
           ),
+
+          Row(
+            children: [
+              Image.asset(
+                "assets/weather/humidity.png",
+                width: 18,
+              ),
+              Text("${previsionHour.humidity}%"),
+            ],
+          ),
+          // humidity
         ],
       ),
     );

@@ -11,6 +11,7 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -332,25 +333,42 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return PageView(
       children: [
-        Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(49, 0, 0, 0),
-            image: DecorationImage(
-              image: AssetImage(
-                _background,
+        // first page
+        Stack(
+          children: [
+            // main content
+            Container(
+              padding: const EdgeInsets.all(basePadding),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(49, 0, 0, 0),
+                image: DecorationImage(
+                  image: AssetImage(
+                    _background,
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
-              fit: BoxFit.cover,
-            ),
-          ),
 
-          // scroll view
-          child: CustomScrollView(controller: _controller, slivers: [
-            _buildSlivers(),
-          ]
-              // slivers: _buildSlivers(),
+              // scroll view
+              child: CustomScrollView(
+                controller: _controller,
+                slivers: [
+                  _buildSlivers(),
+                  // padding for stacked bottom bar
+                  const SliverPadding(
+                    padding: EdgeInsets.only(bottom: 80),
+                  ),
+                ],
               ),
+            ),
+
+            // bottom bar
+            const BarBottom(),
+          ],
         ),
+
+        // other pages here
+        // ...
       ],
     );
   }

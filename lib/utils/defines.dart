@@ -6,3 +6,5 @@ const int minTemp = -20;
 const int diffTemp = maxTemp - minTemp;
 
 const int defalutTimeoutTimer = 1000;
+
+const double basePadding = 15;

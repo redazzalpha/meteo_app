@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 
 class TemplateCardTitle extends StatelessWidget {
   final String title;
@@ -11,6 +12,8 @@ class TemplateCardTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fontHelper = FontHelper(context: context);
+
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -33,10 +36,7 @@ class TemplateCardTitle extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontSize: 15),
+                style: fontHelper.label(),
               ),
             ],
           ),

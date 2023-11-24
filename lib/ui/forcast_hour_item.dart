@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
 
@@ -10,6 +11,7 @@ class ForcastHourItem extends MasterForcastItem {
 
   @override
   Widget build(BuildContext context) {
+    final FontHelper fontHelper = FontHelper(context: context);
     final PrevisionHour previsionHour = prevision as PrevisionHour;
 
     return Container(
@@ -24,6 +26,7 @@ class ForcastHourItem extends MasterForcastItem {
           // time text
           Text(
             previsionHour.hour,
+            style: fontHelper.label(),
           ),
 
           // image icon
@@ -35,6 +38,7 @@ class ForcastHourItem extends MasterForcastItem {
           // temperature
           Text(
             "${previsionHour.temperature}°",
+            style: fontHelper.label(),
           ),
 
           Row(
@@ -43,7 +47,10 @@ class ForcastHourItem extends MasterForcastItem {
                 "assets/weather/humidity.png",
                 width: 18,
               ),
-              Text("${previsionHour.humidity}%"),
+              Text(
+                "${previsionHour.humidity}%",
+                style: fontHelper.label(),
+              ),
             ],
           ),
           // humidity

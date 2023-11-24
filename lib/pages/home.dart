@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/classes/delegate_sliver_header.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_heading.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
@@ -281,20 +282,18 @@ class _HomeState extends State<Home> {
 
   void _buildAppHeading() {
     if (_controller.offset >= _scrollOffset) {
-      final TextTheme textTheme = Theme.of(context).textTheme;
+      final FontHelper fontHelper = FontHelper(context: context);
       _appHeading = SizedBox(
         height: 150,
         child: Column(
           children: <Widget>[
             Text(
               _datas["city_info"]["name"],
-              style: textTheme.displaySmall!
-                  .copyWith(fontWeight: FontWeight.w300, fontSize: 32),
+              style: fontHelper.headline(),
             ),
             Text(
               "${_datas['current_condition']['tmp']}° | ${_datas['current_condition']['condition']}",
-              style: textTheme.labelSmall!
-                  .copyWith(fontWeight: FontWeight.w300, fontSize: 20),
+              style: fontHelper.label(),
             ),
           ],
         ),
@@ -309,6 +308,7 @@ class _HomeState extends State<Home> {
     // TOFIX: SLIVERS UPDATES BEHAVE BADLY ON SCROLL UP DOWN  FAST FIRST TO LAST\
     // (FIRST DOES NOT APPEARS CORRECTLY CAUSE OF SCROLL BIG SCROLL STEPS)
     _updateSlivers();
+
     setState(() {
       _buildAppHeading();
     });
@@ -330,26 +330,28 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // main container
-      body: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(49, 0, 0, 0),
-          image: DecorationImage(
-            image: AssetImage(
-              _background,
+    return PageView(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(49, 0, 0, 0),
+            image: DecorationImage(
+              image: AssetImage(
+                _background,
+              ),
+              fit: BoxFit.cover,
             ),
-            fit: BoxFit.cover,
           ),
-        ),
 
-        // scroll view
-        child:
-            CustomScrollView(controller: _controller, slivers: [_buildSlivers()]
-                // slivers: _buildSlivers(),
-                ),
-      ),
+          // scroll view
+          child: CustomScrollView(controller: _controller, slivers: [
+            _buildSlivers(),
+          ]
+              // slivers: _buildSlivers(),
+              ),
+        ),
+      ],
     );
   }
 }

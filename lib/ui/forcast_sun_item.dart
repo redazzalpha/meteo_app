@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_sun.dart';
 
@@ -10,6 +11,8 @@ class ForcastSunItem extends MasterForcastItem {
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fontHelper = FontHelper(context: context);
+
     final PrevisionSun previsionSun = prevision as PrevisionSun;
 
     return Container(
@@ -22,10 +25,12 @@ class ForcastSunItem extends MasterForcastItem {
 
       // main column
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // time text
           Text(
             previsionSun.hour,
+            style: fontHelper.label(),
           ),
 
           // image icon
@@ -37,6 +42,7 @@ class ForcastSunItem extends MasterForcastItem {
           // sun state text
           Text(
             previsionSun.text,
+            style: fontHelper.label(),
           ),
         ],
       ),

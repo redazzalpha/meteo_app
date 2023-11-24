@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/ui/bar_value.dart';
@@ -14,6 +15,7 @@ class ForcastDayItem extends MasterForcastItem {
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fontHelper = FontHelper(context: context);
     final PrevisionDay previsionDay = prevision as PrevisionDay;
 
     return Container(
@@ -22,7 +24,10 @@ class ForcastDayItem extends MasterForcastItem {
       child: Row(
         children: [
           // day text
-          Text(previsionDay.dayShort),
+          Text(
+            previsionDay.dayShort,
+            style: fontHelper.label(),
+          ),
 
           // image icon
           Container(
@@ -43,6 +48,7 @@ class ForcastDayItem extends MasterForcastItem {
             ),
             child: Text(
               "${previsionDay.min}°",
+              style: fontHelper.label(),
             ),
           ),
 
@@ -68,6 +74,7 @@ class ForcastDayItem extends MasterForcastItem {
             ),
             child: Text(
               "${previsionDay.max}°",
+              style: fontHelper.label(),
             ),
           ),
         ],

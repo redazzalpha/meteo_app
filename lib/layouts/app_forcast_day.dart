@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
-class AppForcastDay extends StatelessWidget {
-  final Map<String, dynamic> datas;
-  final double height;
-
+class AppForcastDay extends MasterApp {
   const AppForcastDay({
     super.key,
-    required this.datas,
-    this.height = 150,
+    required super.datas,
+    super.label = "Prévisions pour 5 jours",
+    super.labelIcon = Icons.calendar_month,
+    super.minExt = 0,
+    super.maxExt = 150,
   });
 
   String _normalizeDay(Map<String, dynamic> dailyDatas) {
@@ -90,9 +91,10 @@ class AppForcastDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (datas.isEmpty) return const Text("");
     return ForcastDayView(
       previsions: _buildPrevisions(),
-      height: height,
+      height: maxExt,
     );
   }
 }

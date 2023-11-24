@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
   final Widget widget;
 
-  final double min;
-  final double max;
+  final double minExt;
+  final double maxExt;
   final int animationDuration;
   const SliverHeadingDelegate({
     required this.widget,
-    this.min = 200,
-    this.max = 200,
+    this.minExt = 200,
+    this.maxExt = 200,
     this.animationDuration = 300,
   });
 
@@ -33,10 +33,10 @@ class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => max;
+  double get minExtent => minExt;
 
   @override
-  double get minExtent => min;
+  double get maxExtent => maxExt;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

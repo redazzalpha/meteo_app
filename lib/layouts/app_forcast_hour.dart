@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/classes/master_prevision.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
 import 'package:meteo_app_v2/classes/prevision_sun.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
-class AppForcastHour extends StatelessWidget {
-  final Map<String, dynamic> datas;
-  final double height;
-
+class AppForcastHour extends MasterApp {
   const AppForcastHour({
     super.key,
-    required this.datas,
-    this.height = 105,
+    required super.datas,
+    super.label = "Prévisions heure par heure",
+    super.labelIcon = Icons.access_time,
+    super.minExt = 0,
+    super.maxExt = 150,
   });
 
   String _normalizeHour(String currentTime) {
@@ -112,9 +113,10 @@ class AppForcastHour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (datas.isEmpty) return const Text("");
     return ForcastHourView(
       previsions: _buildPrevisions(),
-      height: height,
+      height: maxExt,
     );
   }
 }

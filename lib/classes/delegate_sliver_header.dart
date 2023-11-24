@@ -4,8 +4,8 @@ import 'package:meteo_app_v2/templates/template_card_title.dart';
 class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String title;
   final IconData titleIcon;
-  final double min;
-  final double max;
+  final double minExt;
+  final double maxExt;
   final double opacity;
   final double padding;
 
@@ -14,8 +14,8 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
     required this.titleIcon,
     this.opacity = 1,
     this.padding = 80,
-    this.min = 0,
-    this.max = 150,
+    this.minExt = 0,
+    this.maxExt = 150,
   });
 
   @override
@@ -34,10 +34,10 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => max;
+  double get minExtent => minExt;
 
   @override
-  double get minExtent => min;
+  double get maxExtent => maxExt;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

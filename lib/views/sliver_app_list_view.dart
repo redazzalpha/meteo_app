@@ -3,40 +3,54 @@ import 'package:flutter/rendering.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_header.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_heading.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
+import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverManager {
-  // variables
+class SliverAppListView extends StatefulWidget {
+  final Map<String, dynamic> datas;
+  final ScrollController controller;
+  final double scrollOffset;
+
   final List<Widget> slivers;
   final bool hasHeader;
-  late RenderSliverHelpers _renderObject;
+
+  const SliverAppListView({
+    super.key,
+    required this.slivers,
+    required this.datas,
+    required this.controller,
+    required this.scrollOffset,
+    this.hasHeader = true,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _SliverListViewState();
+}
+
+class _SliverListViewState extends State<SliverAppListView> {
+  // variables
   final double _sliverMaxOverlap = 200;
   final double _sliverLimitOverlap = 50;
   final double _sliverLimitVisibility = 90;
   late final List<GlobalKey> _sliverKeys;
   late final List<double> _sliverOpacities;
   late final List<double> _sliverVisibilities;
+  late RenderSliverHelpers _renderObject;
   double _sliverOverlap = 0;
 
-  //constructor
-  SliverManager({
-    required this.slivers,
-    this.hasHeader = true,
-  }) {
-    _sliverInitKeys();
-  }
-
-  // getters
-  List<Widget> getSlivers() => slivers;
+  // Enum _scrollDir = ScrollDir.down;
+  // double _currentScroll = 0;
 
   // methods
   void _sliverInitKeys() {
-    _sliverKeys = List<GlobalKey>.generate(slivers.length, (_) => GlobalKey());
-    _sliverOpacities = List<double>.generate(slivers.length, (_) => 0);
-    _sliverVisibilities = List<double>.generate(slivers.length, (_) => 1);
+    _sliverKeys =
+        List<GlobalKey>.generate(widget.slivers.length, (_) => GlobalKey());
+    _sliverOpacities = List<double>.generate(widget.slivers.length, (_) => 0);
+    _sliverVisibilities =
+        List<double>.generate(widget.slivers.length, (_) => 1);
   }
 
-  Widget _sliverHeaderWrap({
+  Widget _sliverWrapHeader({
     required final Widget widget,
     final double minExt = 200,
     final double maxExt = 200,
@@ -51,7 +65,7 @@ class SliverManager {
     );
   }
 
-  Widget _sliverWrap(
+  Widget _sliverWrapItem(
     final GlobalKey key,
     final Widget widget,
     final String title,
@@ -123,41 +137,47 @@ class SliverManager {
     );
   }
 
-  void sliverUpdate() {
-    for (int i = hasHeader ? 1 : 0; i < slivers.length; i++) {
-      _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
-          as RenderSliverHelpers;
-      _sliverOverlap = _renderObject.constraints.overlap;
-      // if (_sliverVisibilities[i] == 0) continue;
+  /// updateSilvers function updates
+  /// slivers opacity on scrolling
+  void _sliverUpdate() {
+    // TOFIX: SLIVERS UPDATES BEHAVE BADLY ON SCROLL UP DOWN  FAST FIRST TO LAST\
+    // (FIRST DOES NOT APPEARS CORRECTLY CAUSE OF SCROLL BIG SCROLL STEPS)
 
-      // sliver visibility
-      if (_sliverOverlap >= _sliverLimitVisibility) {
-        // if (_sliverVisibilities[i] != 0) {
-        //   _scrollPhysic = const NeverScrollableScrollPhysics();
-        //   Timer(
-        //     const Duration(milliseconds: 30),
-        //     () => _scrollPhysic = const AlwaysScrollableScrollPhysics(),
-        //   );
-        // }
+    setState(() {
+      for (int i = widget.hasHeader ? 1 : 0; i < widget.slivers.length; i++) {
+        _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
+            as RenderSliverHelpers;
+        _sliverOverlap = _renderObject.constraints.overlap;
+        // if (_sliverVisibilities[i] == 0) continue;
 
-        _sliverVisibilities[i] = 0;
-      } else {
-        _sliverVisibilities[i] = 1;
+        // sliver visibility
+        if (_sliverOverlap >= _sliverLimitVisibility) {
+          // if (_sliverVisibilities[i] != 0) {
+          //   _scrollPhysic = const NeverScrollableScrollPhysics();
+          //   Timer(
+          //     const Duration(milliseconds: 30),
+          //     () => _scrollPhysic = const AlwaysScrollableScrollPhysics(),
+          //   );
+          // }
 
-        // bottom header opacity
-        if (_sliverOverlap >= _sliverLimitOverlap) {
-          double factor = _sliverMaxOverlap - _sliverLimitOverlap;
-          _sliverOpacities[i] =
-              (_sliverMaxOverlap / factor) - (_sliverOverlap / factor);
+          _sliverVisibilities[i] = 0;
         } else {
-          _sliverOpacities[i] = 0;
+          _sliverVisibilities[i] = 1;
+
+          // bottom header opacity
+          if (_sliverOverlap >= _sliverLimitOverlap) {
+            double factor = _sliverMaxOverlap - _sliverLimitOverlap;
+            _sliverOpacities[i] =
+                (_sliverMaxOverlap / factor) - (_sliverOverlap / factor);
+          } else {
+            _sliverOpacities[i] = 0;
+          }
         }
       }
-    }
+    });
   }
 
   Widget _sliverBuildHearder(
-    final BuildContext context,
     final Map<String, dynamic> datas,
     final ScrollController controller,
     final double scrollOffset,
@@ -180,39 +200,39 @@ class SliverManager {
         ),
       );
     } else {
-      return slivers[0];
+      return widget.slivers[0];
     }
   }
 
-  MultiSliver sliverBuild(
-    final BuildContext context,
-    final Map<String, dynamic> datas,
-    final ScrollController controller,
-    final double scrollOffset,
-  ) {
-    if (datas.isEmpty) return MultiSliver(children: const []);
+  MultiSliver _sliverBuildAppList() {
+    if (widget.datas.isEmpty) return MultiSliver(children: const []);
 
     List<Widget> children = <Widget>[];
 
-    for (int i = 0; i < slivers.length; i++) {
-      if (i == 0 && hasHeader) {
+    // build sliver header
+    for (int i = 0; i < widget.slivers.length; i++) {
+      if (i == 0 && widget.hasHeader) {
         children.add(
-          _sliverHeaderWrap(
-            widget:
-                _sliverBuildHearder(context, datas, controller, scrollOffset),
+          _sliverWrapHeader(
+            widget: _sliverBuildHearder(
+              widget.datas,
+              widget.controller,
+              widget.scrollOffset,
+            ),
           ),
         );
         continue;
       }
 
       children.add(
-        _sliverWrap(
+        _sliverWrapItem(
           _sliverKeys[i],
-          slivers[i],
-          "unknown title",
-          Icons.device_unknown,
+          widget.slivers[i],
+          (widget.slivers[i] as MasterApp).label,
+          (widget.slivers[i] as MasterApp).labelIcon,
           opacity: _sliverOpacities[i],
           visibility: _sliverVisibilities[i],
+          maxExt: (widget.slivers[i] as MasterApp).maxExt,
         ),
       );
     }
@@ -220,5 +240,18 @@ class SliverManager {
       pushPinnedChildren: true,
       children: children,
     );
+  }
+
+  // overrides
+  @override
+  void initState() {
+    _sliverInitKeys();
+    widget.controller.addListener(() => _sliverUpdate());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _sliverBuildAppList();
   }
 }

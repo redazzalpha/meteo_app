@@ -13,6 +13,7 @@ import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
+import 'package:meteo_app_v2/utils/enums.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
@@ -44,6 +45,15 @@ class _HomeState extends State<Home> {
   final double _sliverLimitVisibility = 90;
   double _sliverOverlap = 0;
   String _background = defaultBackground;
+  Enum _scrollDir = ScrollDir.down;
+  double _currentScroll = 0;
+
+  // final List<ScrollPhysics> _scrollPhysics = const <ScrollPhysics>[
+  //   NeverScrollableScrollPhysics(),
+  //   AlwaysScrollableScrollPhysics(),
+  // ];
+
+  late ScrollPhysics _scrollPhysic;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(String localisation) async {
@@ -82,12 +92,23 @@ class _HomeState extends State<Home> {
       _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
           as RenderSliverHelpers;
       _sliverOverlap = _renderObject.constraints.overlap;
+      // if (_sliverVisibilities[i] == 0) continue;
 
+      // sliver visibility
       if (_sliverOverlap >= _sliverLimitVisibility) {
+        // if (_sliverVisibilities[i] != 0) {
+        //   _scrollPhysic = const NeverScrollableScrollPhysics();
+        //   Timer(
+        //     const Duration(milliseconds: 30),
+        //     () => _scrollPhysic = const AlwaysScrollableScrollPhysics(),
+        //   );
+        // }
+
         _sliverVisibilities[i] = 0;
       } else {
         _sliverVisibilities[i] = 1;
 
+        // bottom header opacity
         if (_sliverOverlap >= _sliverLimitOverlap) {
           double factor = _sliverMaxOverlap - _sliverLimitOverlap;
           _sliverOpacities[i] =
@@ -152,11 +173,9 @@ class _HomeState extends State<Home> {
               ),
             ),
 
-            // header
+            // bottom header
             SliverClip(
               child: SliverPersistentHeader(
-                // pinned: false,
-                // floating: true,
                 delegate: SilverHeaderDelegate(
                   title: title,
                   titleIcon: titleIcon,
@@ -182,7 +201,6 @@ class _HomeState extends State<Home> {
         SliverPersistentHeader(
           pinned: true,
           delegate: SliverHeadingDelegate(
-            datas: _datas,
             widget: _appHeading,
             min: 200,
             max: 200,
@@ -319,6 +337,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     _refreshDataTimer(milliseconds: _timeoutTimer);
+    _scrollPhysic = const AlwaysScrollableScrollPhysics();
     _controller = ScrollController();
     _controller.addListener(_handleScroll);
     _sliverKeys =
@@ -351,6 +370,7 @@ class _HomeState extends State<Home> {
 
               // scroll view
               child: CustomScrollView(
+                physics: _scrollPhysic,
                 controller: _controller,
                 slivers: [
                   _buildSlivers(),

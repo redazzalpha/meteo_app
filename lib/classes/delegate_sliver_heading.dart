@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
   final Widget widget;
-  final Map<String, dynamic> datas;
 
   final double min;
   final double max;
+  final int animationDuration;
   const SliverHeadingDelegate({
     required this.widget,
-    required this.datas,
     this.min = 200,
     this.max = 200,
+    this.animationDuration = 300,
   });
 
   @override
@@ -19,7 +19,7 @@ class SliverHeadingDelegate extends SliverPersistentHeaderDelegate {
     return Column(
       children: <Widget>[
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
+          duration: Duration(milliseconds: animationDuration),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(
               scale: animation,

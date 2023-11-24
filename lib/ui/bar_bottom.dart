@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class BarBottom extends StatelessWidget {
@@ -6,7 +8,7 @@ class BarBottom extends StatelessWidget {
   const BarBottom({
     super.key,
     this.height = 50,
-    this.backgroundColor = Colors.red,
+    this.backgroundColor = const Color.fromARGB(173, 0, 0, 0),
   });
 
   @override
@@ -25,11 +27,17 @@ class BarBottom extends StatelessWidget {
         ),
 
         // main content
-        child: const Row(
+        child: Row(
           children: [
-            Text("bottom bar"),
-            Spacer(),
-            Text("Test"),
+            IconButton(
+              onPressed: () => log("salut"),
+              icon: const Icon(Icons.map_outlined),
+            ),
+            const Spacer(),
+            IconButton(
+              onPressed: () => log("salut"),
+              icon: const Icon(Icons.list),
+            ),
           ],
         ),
       ),

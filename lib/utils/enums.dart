@@ -1,0 +1,1 @@
+enum ScrollDir { up, down }

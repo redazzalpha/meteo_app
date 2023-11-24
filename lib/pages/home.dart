@@ -97,6 +97,7 @@ class _HomeState extends State<Home> {
       controller: _controller,
       scrollOffset: _scrollOffset,
     );
+
     return PageView(
       children: [
         // first page
@@ -121,7 +122,7 @@ class _HomeState extends State<Home> {
                 controller: _controller,
                 slivers: [
                   _sliverAppListView,
-                  // _sliverBuild(),
+
                   // padding for stacked bottom bar
                   const SliverPadding(
                     padding: EdgeInsets.only(bottom: 80),

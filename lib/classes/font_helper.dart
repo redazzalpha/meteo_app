@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// this class simply stores TextStyles
+/// to retrieve easily used text styles
+/// accross the application
 class FontHelper {
   final BuildContext context;
   const FontHelper({required this.context});

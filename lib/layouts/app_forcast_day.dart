@@ -11,8 +11,10 @@ class AppForcastDay extends MasterApp {
     required super.datas,
     super.label = "Prévisions pour 5 jours",
     super.labelIcon = Icons.calendar_month,
+    super.width = 800,
+    super.height = 170,
     super.minExt = 0,
-    super.maxExt = 150,
+    super.maxExt = 220,
   });
 
   String _normalizeDay(Map<String, dynamic> dailyDatas) {
@@ -91,10 +93,10 @@ class AppForcastDay extends MasterApp {
 
   @override
   Widget build(BuildContext context) {
-    if (datas.isEmpty) return const Text("");
+    if (!isReady()) return const Text("");
     return ForcastDayView(
       previsions: _buildPrevisions(),
-      height: maxExt,
+      height: height,
     );
   }
 }

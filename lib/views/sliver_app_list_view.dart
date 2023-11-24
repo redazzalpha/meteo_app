@@ -124,10 +124,10 @@ class _SliverListViewState extends State<SliverAppListView> {
                 delegate: SilverHeaderDelegate(
                   title: title,
                   titleIcon: titleIcon,
-                  minExt: minExt,
-                  maxExt: maxExt,
                   opacity: opacity,
                   padding: padding,
+                  minExt: minExt,
+                  maxExt: maxExt,
                 ),
               ),
             )
@@ -177,29 +177,33 @@ class _SliverListViewState extends State<SliverAppListView> {
     });
   }
 
-  Widget _sliverBuildHearder(
-    final Map<String, dynamic> datas,
-    final ScrollController controller,
-    final double scrollOffset,
-  ) {
-    if (controller.positions.isNotEmpty && controller.offset >= scrollOffset) {
+  Widget _sliverBuildHearder() {
+    // shortcut writing
+    if (widget.controller.positions.isNotEmpty &&
+        widget.controller.offset >= widget.scrollOffset) {
       final FontHelper fontHelper = FontHelper(context: context);
       return SizedBox(
         height: 150,
         child: Column(
           children: <Widget>[
+            // city name
             Text(
-              datas["city_info"]["name"],
+              widget.datas["city_info"]["name"],
               style: fontHelper.headline(),
             ),
+
+            // temperature | conditions
             Text(
-              "${datas['current_condition']['tmp']}° | ${datas['current_condition']['condition']}",
+              "${widget.datas['current_condition']['tmp']}° | ${widget.datas['current_condition']['condition']}",
               style: fontHelper.label(),
             ),
           ],
         ),
       );
-    } else {
+    }
+
+    // heading writing
+    else {
       return widget.slivers[0];
     }
   }
@@ -209,21 +213,18 @@ class _SliverListViewState extends State<SliverAppListView> {
 
     List<Widget> children = <Widget>[];
 
-    // build sliver header
     for (int i = 0; i < widget.slivers.length; i++) {
       if (i == 0 && widget.hasHeader) {
+        // build sliver header
         children.add(
           _sliverWrapHeader(
-            widget: _sliverBuildHearder(
-              widget.datas,
-              widget.controller,
-              widget.scrollOffset,
-            ),
+            widget: _sliverBuildHearder(),
           ),
         );
         continue;
       }
 
+      // build sliver header
       children.add(
         _sliverWrapItem(
           _sliverKeys[i],

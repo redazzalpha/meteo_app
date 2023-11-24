@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
+import 'package:meteo_app_v2/classes/master_view.dart';
 
-class HeadingView extends StatelessWidget {
+class HeadingView extends MasterView {
   final String cityName, condition;
-  final int temperature, min, max;
+  final int temperature, minTemperature, maxTemperature;
+
   const HeadingView({
     super.key,
     required this.cityName,
     required this.temperature,
     required this.condition,
-    required this.min,
-    required this.max,
+    required this.minTemperature,
+    required this.maxTemperature,
+    super.width = 320,
+    super.height = 300,
   });
 
   @override
@@ -18,7 +22,7 @@ class HeadingView extends StatelessWidget {
     final FontHelper fontHelper = FontHelper(context: context);
 
     return Container(
-      width: 320,
+      width: width,
       padding: const EdgeInsets.all(0),
 
       // main column
@@ -53,7 +57,7 @@ class HeadingView extends StatelessWidget {
 
               // max temperature
               Text(
-                "$max°",
+                "$maxTemperature°",
                 style: fontHelper.label(),
               ),
 
@@ -69,7 +73,7 @@ class HeadingView extends StatelessWidget {
 
               // min temperature
               Text(
-                "$min°",
+                "$minTemperature°",
                 style: fontHelper.label(),
               ),
             ],

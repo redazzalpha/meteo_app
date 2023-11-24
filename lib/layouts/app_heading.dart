@@ -8,13 +8,15 @@ class AppHeading extends MasterApp {
     required super.datas,
     super.label = "App heading",
     super.labelIcon = Icons.device_unknown,
+    super.width = 320,
+    super.height = 300,
     super.minExt = 0,
     super.maxExt = 200,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (datas.isEmpty) return const Text("");
+    if (!isReady()) return const Text("");
 
     return Column(
       children: [
@@ -22,8 +24,8 @@ class AppHeading extends MasterApp {
           cityName: datas["city_info"]["name"],
           condition: datas["current_condition"]["condition"],
           temperature: datas["current_condition"]["tmp"],
-          min: datas["fcst_day_0"]["tmin"],
-          max: datas["fcst_day_0"]["tmax"],
+          minTemperature: datas["fcst_day_0"]["tmin"],
+          maxTemperature: datas["fcst_day_0"]["tmax"],
         ),
       ],
     );

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/master_prevision.dart';
+import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/templates/template_card_row.dart';
 import 'package:meteo_app_v2/ui/forcast_hour_item.dart';
 import 'package:meteo_app_v2/ui/forcast_sun_item.dart';
 
-class ForcastHourView extends StatelessWidget {
+class ForcastHourView extends MasterView {
   final List<MasterPrevison> previsions;
-  final double height;
 
   const ForcastHourView({
     super.key,
     required this.previsions,
-    this.height = 105,
+    super.width = 800,
+    super.height = 120,
   });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {

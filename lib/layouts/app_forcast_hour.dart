@@ -12,8 +12,10 @@ class AppForcastHour extends MasterApp {
     required super.datas,
     super.label = "Prévisions heure par heure",
     super.labelIcon = Icons.access_time,
+    super.width = 800,
+    super.height = 120,
     super.minExt = 0,
-    super.maxExt = 150,
+    super.maxExt = 170,
   });
 
   String _normalizeHour(String currentTime) {
@@ -113,10 +115,10 @@ class AppForcastHour extends MasterApp {
 
   @override
   Widget build(BuildContext context) {
-    if (datas.isEmpty) return const Text("");
+    if (!isReady()) return const Text("");
     return ForcastHourView(
       previsions: _buildPrevisions(),
-      height: maxExt,
+      height: height,
     );
   }
 }

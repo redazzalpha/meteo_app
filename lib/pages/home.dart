@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
@@ -62,10 +63,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<Widget> _widgetList() {
-    return <Widget>[
+  List<MasterApp> _masterAppsList() {
+    return <MasterApp>[
       AppHeading(datas: _datas),
-      AppForcastHour(datas: _datas),
+      AppForcastHour(
+        datas: _datas,
+      ),
       AppForcastDay(datas: _datas),
       // app forcast tests
       AppForcastDay(datas: _datas),
@@ -96,8 +99,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     _sliverAppList = SliverAppList(
-      slivers: _widgetList(),
-      datas: _datas,
+      masterApps: _masterAppsList(),
+      // datas: _datas,
       controller: _controller,
       scrollOffset: _scrollOffset,
       onScrollPhysic: updateScrollPhysic,

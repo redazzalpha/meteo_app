@@ -8,18 +8,17 @@ import 'package:meteo_app_v2/utils/enums.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class SliverAppList extends StatefulWidget {
-  final Map<String, dynamic> datas;
+  final List<MasterApp> masterApps;
+  // final Map<String, dynamic> datas;
   final ScrollController controller;
   final double scrollOffset;
   final void Function(ScrollPhysics) onScrollPhysic;
-
-  final List<Widget> slivers;
   final bool hasHeader;
 
   const SliverAppList({
     super.key,
-    required this.slivers,
-    required this.datas,
+    required this.masterApps,
+    // required this.datas,
     required this.controller,
     required this.scrollOffset,
     required this.onScrollPhysic,
@@ -44,6 +43,15 @@ class _SliverListViewState extends State<SliverAppList> {
   double _currentScroll = 0;
 
   // methods
+  void _sliverInitKeys() {
+    _sliverKeys =
+        List<GlobalKey>.generate(widget.masterApps.length, (_) => GlobalKey());
+    _sliverOpacities =
+        List<double>.generate(widget.masterApps.length, (_) => 0);
+    _sliverVisibilities =
+        List<double>.generate(widget.masterApps.length, (_) => 1);
+  }
+
   void _updateScrollDirection() {
     if (widget.controller.offset > _currentScroll) {
       _scrollDir = ScrollDir.down;
@@ -61,7 +69,9 @@ class _SliverListViewState extends State<SliverAppList> {
 
   void _sliverUpdateScrollDown() {
     if (_scrollDir == ScrollDir.down) {
-      for (int i = widget.hasHeader ? 1 : 0; i < widget.slivers.length; i++) {
+      for (int i = widget.hasHeader ? 1 : 0;
+          i < widget.masterApps.length;
+          i++) {
         _sliverUpdateSliverOverlap(_sliverKeys[i]);
 
         if (_sliverVisibilities[i] == 1) {
@@ -76,6 +86,7 @@ class _SliverListViewState extends State<SliverAppList> {
             _sliverOpacities[i] =
                 (_sliverMaxOverlap / factor) - (_sliverOverlap / factor);
           }
+
           break;
         }
       }
@@ -84,7 +95,7 @@ class _SliverListViewState extends State<SliverAppList> {
 
   void _sliverUpdateScrollUp() {
     if (_scrollDir == ScrollDir.up) {
-      for (int i = widget.slivers.length - 1;
+      for (int i = widget.masterApps.length - 1;
           i > (widget.hasHeader ? 0 : -1);
           i--) {
         _sliverUpdateSliverOverlap(_sliverKeys[i]);
@@ -106,16 +117,23 @@ class _SliverListViewState extends State<SliverAppList> {
     }
   }
 
-  void _sliverInitKeys() {
-    _sliverKeys =
-        List<GlobalKey>.generate(widget.slivers.length, (_) => GlobalKey());
-    _sliverOpacities = List<double>.generate(widget.slivers.length, (_) => 0);
-    _sliverVisibilities =
-        List<double>.generate(widget.slivers.length, (_) => 1);
+  /// updateSilvers function updates
+  /// slivers opacity on scrolling
+  void _sliverUpdate() async {
+    _updateScrollDirection();
+    setState(() {
+      _sliverUpdateScrollDown();
+      _sliverUpdateScrollUp();
+    });
   }
 
   Widget _sliverWrapHeader({
     required final Widget widget,
+    // minExt and maxExt must set from
+    // function arguments and not
+    // from MasterApp properties cause
+    // widget is not necessarily a
+    // MasterApp object
     final double minExt = 200,
     final double maxExt = 200,
   }) {
@@ -130,15 +148,11 @@ class _SliverListViewState extends State<SliverAppList> {
   }
 
   Widget _sliverWrapItem(
-    final GlobalKey key,
-    final Widget widget,
-    final String title,
-    final IconData titleIcon, {
+    final MasterApp masterApp,
+    final GlobalKey key, {
     final double opacity = 1,
     final double visibility = 1,
     final double padding = 80,
-    final double minExt = 15,
-    final double maxExt = 165,
   }) {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 15),
@@ -176,7 +190,7 @@ class _SliverListViewState extends State<SliverAppList> {
               child: SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    widget,
+                    masterApp,
                   ],
                 ),
               ),
@@ -186,12 +200,12 @@ class _SliverListViewState extends State<SliverAppList> {
             SliverClip(
               child: SliverPersistentHeader(
                 delegate: SilverHeaderDelegate(
-                  title: title,
-                  titleIcon: titleIcon,
+                  title: masterApp.label,
+                  titleIcon: masterApp.labelIcon,
                   opacity: opacity,
                   padding: padding,
-                  minExt: minExt,
-                  maxExt: maxExt,
+                  minExt: masterApp.minExt,
+                  maxExt: masterApp.maxExt,
                 ),
               ),
             )
@@ -201,36 +215,26 @@ class _SliverListViewState extends State<SliverAppList> {
     );
   }
 
-  /// updateSilvers function updates
-  /// slivers opacity on scrolling
-  void _sliverUpdate() {
-    // TOFIX: SLIVERS UPDATES BEHAVE BADLY ON SCROLL UP DOWN  FAST FIRST TO LAST\
-    // (FIRST DOES NOT APPEARS CORRECTLY CAUSE OF SCROLL BIG SCROLL STEPS)
-    _updateScrollDirection();
-    setState(() {
-      _sliverUpdateScrollDown();
-      _sliverUpdateScrollUp();
-    });
-  }
-
-  Widget _sliverBuildHearder() {
+  Widget _sliverBuildHearder({
+    final double height = 150,
+  }) {
     // shortcut writing
     if (widget.controller.positions.isNotEmpty &&
         widget.controller.offset >= widget.scrollOffset) {
       final FontHelper fontHelper = FontHelper(context: context);
       return SizedBox(
-        height: 150,
+        height: height,
         child: Column(
           children: <Widget>[
             // city name
             Text(
-              widget.datas["city_info"]["name"],
+              widget.masterApps[0].datas["city_info"]["name"],
               style: fontHelper.headline(),
             ),
 
             // temperature | conditions
             Text(
-              "${widget.datas['current_condition']['tmp']}° | ${widget.datas['current_condition']['condition']}",
+              "${widget.masterApps[0].datas['current_condition']['tmp']}° | ${widget.masterApps[0].datas['current_condition']['condition']}",
               style: fontHelper.label(),
             ),
           ],
@@ -240,16 +244,18 @@ class _SliverListViewState extends State<SliverAppList> {
 
     // heading writing
     else {
-      return widget.slivers[0];
+      return widget.masterApps[0];
     }
   }
 
   MultiSliver _sliverBuildAppList() {
-    if (widget.datas.isEmpty) return MultiSliver(children: const []);
+    if (widget.masterApps[0].datas.isEmpty) {
+      return MultiSliver(children: const []);
+    }
 
     List<Widget> children = <Widget>[];
 
-    for (int i = 0; i < widget.slivers.length; i++) {
+    for (int i = 0; i < widget.masterApps.length; i++) {
       if (i == 0 && widget.hasHeader) {
         // build sliver header
         children.add(
@@ -260,16 +266,13 @@ class _SliverListViewState extends State<SliverAppList> {
         continue;
       }
 
-      // build sliver header
+      // build sliver item
       children.add(
         _sliverWrapItem(
+          widget.masterApps[i],
           _sliverKeys[i],
-          widget.slivers[i],
-          (widget.slivers[i] as MasterApp).label,
-          (widget.slivers[i] as MasterApp).labelIcon,
           opacity: _sliverOpacities[i],
           visibility: _sliverVisibilities[i],
-          maxExt: (widget.slivers[i] as MasterApp).maxExt,
         ),
       );
     }

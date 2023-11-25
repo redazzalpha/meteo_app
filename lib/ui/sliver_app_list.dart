@@ -4,12 +4,14 @@ import 'package:meteo_app_v2/classes/delegate_sliver_header.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_heading.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
+import 'package:meteo_app_v2/utils/enums.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class SliverAppList extends StatefulWidget {
   final Map<String, dynamic> datas;
   final ScrollController controller;
   final double scrollOffset;
+  final void Function(ScrollPhysics) onScrollPhysic;
 
   final List<Widget> slivers;
   final bool hasHeader;
@@ -20,6 +22,7 @@ class SliverAppList extends StatefulWidget {
     required this.datas,
     required this.controller,
     required this.scrollOffset,
+    required this.onScrollPhysic,
     this.hasHeader = true,
   });
 
@@ -37,11 +40,72 @@ class _SliverListViewState extends State<SliverAppList> {
   late final List<double> _sliverVisibilities;
   late RenderSliverHelpers _renderObject;
   double _sliverOverlap = 0;
-
-  // Enum _scrollDir = ScrollDir.down;
-  // double _currentScroll = 0;
+  Enum _scrollDir = ScrollDir.down;
+  double _currentScroll = 0;
 
   // methods
+  void _updateScrollDirection() {
+    if (widget.controller.offset > _currentScroll) {
+      _scrollDir = ScrollDir.down;
+    } else {
+      _scrollDir = ScrollDir.up;
+    }
+    _currentScroll = widget.controller.offset;
+  }
+
+  void _sliverUpdateSliverOverlap(final GlobalKey sliverKey) {
+    _renderObject =
+        sliverKey.currentContext!.findRenderObject() as RenderSliverHelpers;
+    _sliverOverlap = _renderObject.constraints.overlap;
+  }
+
+  void _sliverUpdateScrollDown() {
+    if (_scrollDir == ScrollDir.down) {
+      for (int i = widget.hasHeader ? 1 : 0; i < widget.slivers.length; i++) {
+        _sliverUpdateSliverOverlap(_sliverKeys[i]);
+
+        if (_sliverVisibilities[i] == 1) {
+          // hide sliver visibility
+          if (_sliverOverlap >= _sliverLimitVisibility) {
+            _sliverVisibilities[i] = 0;
+          }
+
+          // show sliver header bottom bar visibility
+          else if (_sliverOverlap >= _sliverLimitOverlap) {
+            double factor = _sliverMaxOverlap - _sliverLimitOverlap;
+            _sliverOpacities[i] =
+                (_sliverMaxOverlap / factor) - (_sliverOverlap / factor);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  void _sliverUpdateScrollUp() {
+    if (_scrollDir == ScrollDir.up) {
+      for (int i = widget.slivers.length - 1;
+          i > (widget.hasHeader ? 0 : -1);
+          i--) {
+        _sliverUpdateSliverOverlap(_sliverKeys[i]);
+
+        if (_sliverVisibilities[i] == 0) {
+          // show sliver visibility
+          if (_sliverOverlap < _sliverLimitVisibility) {
+            _sliverVisibilities[i] = 1;
+          }
+        }
+
+        // hide sliver header bottom bar visibility
+        else if (_sliverOverlap < _sliverLimitOverlap &&
+            _sliverOpacities[i] > 0) {
+          _sliverOpacities[i] = 0;
+          break;
+        }
+      }
+    }
+  }
+
   void _sliverInitKeys() {
     _sliverKeys =
         List<GlobalKey>.generate(widget.slivers.length, (_) => GlobalKey());
@@ -142,38 +206,10 @@ class _SliverListViewState extends State<SliverAppList> {
   void _sliverUpdate() {
     // TOFIX: SLIVERS UPDATES BEHAVE BADLY ON SCROLL UP DOWN  FAST FIRST TO LAST\
     // (FIRST DOES NOT APPEARS CORRECTLY CAUSE OF SCROLL BIG SCROLL STEPS)
-
+    _updateScrollDirection();
     setState(() {
-      for (int i = widget.hasHeader ? 1 : 0; i < widget.slivers.length; i++) {
-        _renderObject = _sliverKeys[i].currentContext!.findRenderObject()
-            as RenderSliverHelpers;
-        _sliverOverlap = _renderObject.constraints.overlap;
-        // if (_sliverVisibilities[i] == 0) continue;
-
-        // sliver visibility
-        if (_sliverOverlap >= _sliverLimitVisibility) {
-          // if (_sliverVisibilities[i] != 0) {
-          //   _scrollPhysic = const NeverScrollableScrollPhysics();
-          //   Timer(
-          //     const Duration(milliseconds: 30),
-          //     () => _scrollPhysic = const AlwaysScrollableScrollPhysics(),
-          //   );
-          // }
-
-          _sliverVisibilities[i] = 0;
-        } else {
-          _sliverVisibilities[i] = 1;
-
-          // bottom header opacity
-          if (_sliverOverlap >= _sliverLimitOverlap) {
-            double factor = _sliverMaxOverlap - _sliverLimitOverlap;
-            _sliverOpacities[i] =
-                (_sliverMaxOverlap / factor) - (_sliverOverlap / factor);
-          } else {
-            _sliverOpacities[i] = 0;
-          }
-        }
-      }
+      _sliverUpdateScrollDown();
+      _sliverUpdateScrollUp();
     });
   }
 

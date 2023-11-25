@@ -27,12 +27,11 @@ class _HomeState extends State<Home> {
   Map<String, dynamic> _datas = const <String, dynamic>{};
   late final ScrollController _controller;
   final String _dataUrl = dataUrl;
-  final double _scrollOffset = 45;
   final int _timeoutTimer = 3000;
-  String _background = defaultBackground;
-
+  final double _scrollOffset = 45;
   late ScrollPhysics _scrollPhysic;
   late SliverAppList _sliverAppList;
+  String _background = defaultBackground;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(String localisation) async {
@@ -80,6 +79,11 @@ class _HomeState extends State<Home> {
     ];
   }
 
+  // event handlers
+  void updateScrollPhysic(ScrollPhysics scrollPhysic) {
+    _scrollPhysic = scrollPhysic;
+  }
+
   // overrides
   @override
   void initState() {
@@ -96,6 +100,7 @@ class _HomeState extends State<Home> {
       datas: _datas,
       controller: _controller,
       scrollOffset: _scrollOffset,
+      onScrollPhysic: updateScrollPhysic,
     );
 
     return PageView(

@@ -8,8 +8,8 @@ import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
+import 'package:meteo_app_v2/ui/sliver_app_list.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
-import 'package:meteo_app_v2/views/sliver_app_list_view.dart';
 
 class Home extends StatefulWidget {
   // constructor
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   String _background = defaultBackground;
 
   late ScrollPhysics _scrollPhysic;
-  late SliverAppListView _sliverAppListView;
+  late SliverAppList _sliverAppList;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(String localisation) async {
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _sliverAppListView = SliverAppListView(
+    _sliverAppList = SliverAppList(
       slivers: _widgetList(),
       datas: _datas,
       controller: _controller,
@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
                 physics: _scrollPhysic,
                 controller: _controller,
                 slivers: [
-                  _sliverAppListView,
+                  _sliverAppList,
 
                   // padding for stacked bottom bar
                   const SliverPadding(

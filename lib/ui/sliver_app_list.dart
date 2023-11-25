@@ -6,7 +6,7 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverAppListView extends StatefulWidget {
+class SliverAppList extends StatefulWidget {
   final Map<String, dynamic> datas;
   final ScrollController controller;
   final double scrollOffset;
@@ -14,7 +14,7 @@ class SliverAppListView extends StatefulWidget {
   final List<Widget> slivers;
   final bool hasHeader;
 
-  const SliverAppListView({
+  const SliverAppList({
     super.key,
     required this.slivers,
     required this.datas,
@@ -27,7 +27,7 @@ class SliverAppListView extends StatefulWidget {
   State<StatefulWidget> createState() => _SliverListViewState();
 }
 
-class _SliverListViewState extends State<SliverAppListView> {
+class _SliverListViewState extends State<SliverAppList> {
   // variables
   final double _sliverMaxOverlap = 200;
   final double _sliverLimitOverlap = 50;

@@ -100,7 +100,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _sliverAppList = SliverAppList(
       masterApps: _masterAppsList(),
-      // datas: _datas,
       controller: _controller,
       scrollOffset: _scrollOffset,
       onScrollPhysic: updateScrollPhysic,

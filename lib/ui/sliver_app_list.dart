@@ -249,7 +249,7 @@ class _SliverListViewState extends State<SliverAppList> {
   }
 
   MultiSliver _sliverBuildAppList() {
-    if (widget.masterApps[0].datas.isEmpty) {
+    if (!widget.masterApps[0].isReady()) {
       return MultiSliver(children: const []);
     }
 

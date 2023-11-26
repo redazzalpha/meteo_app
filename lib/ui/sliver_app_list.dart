@@ -9,7 +9,6 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 class SliverAppList extends StatefulWidget {
   final List<MasterApp> masterApps;
-  // final Map<String, dynamic> datas;
   final ScrollController controller;
   final double scrollOffset;
   final void Function(ScrollPhysics) onScrollPhysic;

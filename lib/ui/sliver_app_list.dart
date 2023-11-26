@@ -146,13 +146,11 @@ class _SliverListViewState extends State<SliverAppList> {
     );
   }
 
-  Widget _sliverWrapItem(
-    final MasterApp masterApp,
-    final GlobalKey key, {
-    final double opacity = 1,
-    final double visibility = 1,
-    final double padding = 80,
-  }) {
+  Widget _sliverWrapItem(final MasterApp masterApp, final GlobalKey key,
+      {final double opacity = 1,
+      final double visibility = 1,
+      final double padding = 80,
+      final hasBackground = true}) {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 15),
 
@@ -165,23 +163,24 @@ class _SliverListViewState extends State<SliverAppList> {
           insetOnOverlap: true,
           children: [
             // background
-            SliverPositioned.fill(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(91, 0, 0, 0),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 8,
-                      color: Colors.black26,
-                    )
-                  ],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
+            if (hasBackground)
+              SliverPositioned.fill(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(91, 0, 0, 0),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        offset: Offset(0, 4),
+                        blurRadius: 8,
+                        color: Colors.black26,
+                      )
+                    ],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
 
             // app widget
             SliverClip(
@@ -203,8 +202,8 @@ class _SliverListViewState extends State<SliverAppList> {
                   titleIcon: masterApp.labelIcon,
                   opacity: opacity,
                   padding: padding,
-                  minExt: masterApp.minExt,
-                  maxExt: masterApp.maxExt,
+                  minExt: masterApp.minExt ?? 0,
+                  maxExt: masterApp.maxExt ?? 0,
                 ),
               ),
             )
@@ -267,12 +266,10 @@ class _SliverListViewState extends State<SliverAppList> {
 
       // build sliver item
       children.add(
-        _sliverWrapItem(
-          widget.masterApps[i],
-          _sliverKeys[i],
-          opacity: _sliverOpacities[i],
-          visibility: _sliverVisibilities[i],
-        ),
+        _sliverWrapItem(widget.masterApps[i], _sliverKeys[i],
+            opacity: _sliverOpacities[i],
+            visibility: _sliverVisibilities[i],
+            hasBackground: true),
       );
     }
     return MultiSliver(

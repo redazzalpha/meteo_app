@@ -8,6 +8,7 @@ import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/layouts/app_wind_direction.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_app_list.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
@@ -70,7 +71,22 @@ class _HomeState extends State<Home> {
         datas: _datas,
       ),
       AppForcastDay(datas: _datas),
-      // app forcast tests
+      AppWindDirection(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
+      AppForcastDay(datas: _datas),
       AppForcastDay(datas: _datas),
       AppForcastDay(datas: _datas),
       AppForcastDay(datas: _datas),

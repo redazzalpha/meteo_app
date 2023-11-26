@@ -6,8 +6,6 @@ class AppHeading extends MasterApp {
   const AppHeading({
     super.key,
     required super.datas,
-    super.label = "App heading",
-    super.labelIcon = Icons.device_unknown,
     super.width = 320,
     super.height = 300,
     super.minExt = 0,

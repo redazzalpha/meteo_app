@@ -35,9 +35,9 @@ class _HomeState extends State<Home> {
   String _background = defaultBackground;
 
   // methods
-  Future<Map<String, dynamic>?> _fetchData(String localisation) async {
+  Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
     try {
-      var response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+      final response = await http.get(Uri.parse("$_dataUrl/$localisation"));
       return jsonDecode(response.body) as Map<String, dynamic>;
     } catch (e) {
       log("-- error fetch data: $e");
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void _refreshDataTimer({int milliseconds = defalutTimeoutTimer}) async {
+  void _refreshDataTimer({final int milliseconds = defalutTimeoutTimer}) async {
     Timer.periodic(
       Duration(milliseconds: milliseconds),
       (_) {

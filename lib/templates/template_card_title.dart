@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
+import 'package:meteo_app_v2/classes/master_template.dart';
 
-class TemplateCardTitle extends StatelessWidget {
-  final String title;
-  final IconData titleIcon;
+class TemplateCardTitle extends MasterTemplate {
   const TemplateCardTitle({
     super.key,
-    required this.title,
-    required this.titleIcon,
+    super.title,
+    super.titleIcon,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
   });
 
   @override
@@ -19,9 +20,9 @@ class TemplateCardTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          decoration: const BoxDecoration(
-            // color: Color.fromARGB(91, 0, 0, 0),
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            color: hasBackground ? backgroundColor : Colors.transparent,
+            borderRadius: const BorderRadius.all(
               Radius.circular(15),
             ),
           ),
@@ -35,7 +36,7 @@ class TemplateCardTitle extends StatelessWidget {
               Icon(titleIcon, size: 16),
               const SizedBox(width: 5),
               Text(
-                title,
+                title == null ? "" : title as String,
                 style: fontHelper.label(),
               ),
             ],
@@ -45,3 +46,6 @@ class TemplateCardTitle extends StatelessWidget {
     );
   }
 }
+
+
+// const Color.fromARGB(91, 0, 255, 229)

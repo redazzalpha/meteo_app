@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/master_template.dart';
 
-class TemplateCardColumn extends StatelessWidget {
+class TemplateCardColumn extends MasterTemplate {
   final List<Widget> widgets;
-  final String title;
-  final IconData titleIcon;
   final double width;
   final double height;
   final bool hasHeader;
-  final bool hasBackground;
 
   const TemplateCardColumn({
     super.key,
     required this.widgets,
-    required this.title,
-    required this.titleIcon,
+    super.title,
+    super.titleIcon,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
     this.width = 800,
     this.height = 500,
     this.hasHeader = true,
-    this.hasBackground = true,
   });
 
   @override
@@ -25,9 +24,7 @@ class TemplateCardColumn extends StatelessWidget {
     return Container(
       width: width,
       decoration: BoxDecoration(
-        color: hasBackground
-            ? const Color.fromARGB(91, 0, 0, 0)
-            : Colors.transparent,
+        color: hasBackground ? backgroundColor : Colors.transparent,
         borderRadius: const BorderRadius.all(
           Radius.circular(15),
         ),
@@ -55,7 +52,7 @@ class TemplateCardColumn extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  title,
+                  title == null ? "" : title as String,
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall!
@@ -91,3 +88,5 @@ class TemplateCardColumn extends StatelessWidget {
     );
   }
 }
+
+// const Color.fromARGB(91, 0, 0, 0)

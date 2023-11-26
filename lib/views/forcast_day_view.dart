@@ -20,7 +20,7 @@ class ForcastDayView extends MasterView {
       forcastItems.add(
         ForcastDayItem(
           prevision: previsions[i],
-          isDot: i == 0 ? true : false,
+          hasDot: i == 0 ? true : false,
         ),
       );
     }

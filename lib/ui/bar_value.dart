@@ -5,14 +5,14 @@ import 'package:meteo_app_v2/utils/functions.dart';
 //TODO: THIS CLASS MAY SHOULD BE STATELESS
 class BarValue extends StatefulWidget {
   final int value;
-  final bool isDot;
+  final bool hasDot;
   final LinearGradient gradient;
   final int min;
   final int max;
   const BarValue({
     super.key,
     this.value = 0,
-    this.isDot = false,
+    this.hasDot = false,
     this.min = minTemp,
     this.max = maxTemp,
     this.gradient = const LinearGradient(
@@ -72,7 +72,7 @@ class _BarValueState extends State<BarValue> {
             ),
 
             // button slider
-            if (widget.isDot)
+            if (widget.hasDot)
               Positioned(
                 left: _valuePos,
                 child: Container(

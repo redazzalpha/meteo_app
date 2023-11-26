@@ -5,12 +5,12 @@ import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/ui/bar_value.dart';
 
 class ForcastDayItem extends MasterForcastItem {
-  final bool isDot;
+  final bool hasDot;
 
   const ForcastDayItem({
     super.key,
     required super.prevision,
-    this.isDot = false,
+    this.hasDot = false,
   });
 
   @override
@@ -59,7 +59,7 @@ class ForcastDayItem extends MasterForcastItem {
               width: 300,
               child: BarValue(
                 value: int.parse(previsionDay.temperature),
-                isDot: isDot,
+                hasDot: hasDot,
                 gradient: previsionDay.gradient,
                 min: previsionDay.min,
                 max: previsionDay.max,

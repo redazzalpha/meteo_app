@@ -17,7 +17,7 @@ class AppForcastDay extends MasterApp {
     super.maxExt = 220,
   });
 
-  String _normalizeDay(Map<String, dynamic> dailyDatas) {
+  String _normalizeDay(final Map<String, dynamic> dailyDatas) {
     return dailyDatas["day_short"] == datas["fcst_day_0"]["day_short"]
         ? "Auj."
         : dailyDatas["day_short"];

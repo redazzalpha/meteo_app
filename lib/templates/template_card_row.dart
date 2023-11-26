@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
+import 'package:meteo_app_v2/classes/master_template.dart';
 
-class TemplateCardRow extends StatelessWidget {
+class TemplateCardRow extends MasterTemplate {
   final List<Widget> widgets;
-  final String title;
-  final IconData titleIcon;
   final double width;
   final double height;
   final bool hasHeader;
-  final bool hasBackground;
 
   const TemplateCardRow({
     super.key,
     required this.widgets,
-    required this.title,
-    required this.titleIcon,
+    super.title,
+    super.titleIcon,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
     this.width = 800,
     this.height = 80,
     this.hasHeader = true,
-    this.hasBackground = true,
   });
 
   @override
@@ -28,9 +27,7 @@ class TemplateCardRow extends StatelessWidget {
     return Container(
       width: width,
       decoration: BoxDecoration(
-        color: hasBackground
-            ? const Color.fromARGB(91, 0, 0, 0)
-            : Colors.transparent,
+        color: hasBackground ? backgroundColor : Colors.transparent,
         borderRadius: const BorderRadius.all(
           Radius.circular(15),
         ),
@@ -58,7 +55,7 @@ class TemplateCardRow extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  title,
+                  title == null ? "" : title as String,
                   style: fontHelper.label(),
                 ),
               ],

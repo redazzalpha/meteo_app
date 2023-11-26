@@ -18,7 +18,7 @@ class AppForcastHour extends MasterApp {
     super.maxExt = 170,
   });
 
-  String _normalizeHour(String currentTime) {
+  String _normalizeHour(final String currentTime) {
     if ((currentTime.length == 4 ? "0$currentTime" : currentTime) ==
         datas["current_condition"]["hour"]) return "Maint.";
 
@@ -83,8 +83,8 @@ class AppForcastHour extends MasterApp {
     }
   }
 
-  void _createPrevisions(int currentHour, Map<String, dynamic> hourlyData,
-      List<MasterPrevison> previsions) {
+  void _createPrevisions(int currentHour, final Map<String, dynamic> hourlyData,
+      final List<MasterPrevison> previsions) {
     late Map<String, dynamic> hourly;
     int i = 0, max = 24;
     bool stop = false;

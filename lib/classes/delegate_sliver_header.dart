@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/templates/template_card_title.dart';
 
 class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final String title;
-  final IconData titleIcon;
+  final String? title;
+  final IconData? titleIcon;
   final double minExt;
   final double maxExt;
   final double opacity;
@@ -28,6 +28,7 @@ class SilverHeaderDelegate extends SliverPersistentHeaderDelegate {
         child: TemplateCardTitle(
           title: title,
           titleIcon: titleIcon,
+          backgroundColor: const Color.fromARGB(91, 0, 255, 229),
         ),
       ),
     );

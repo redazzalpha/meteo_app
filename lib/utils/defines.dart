@@ -8,3 +8,5 @@ const int diffTemp = maxTemp - minTemp;
 const int defalutTimeoutTimer = 1000;
 
 const double basePadding = 15;
+const double defaultAppWidth = 800;
+const double defaultAppHeight = 100;

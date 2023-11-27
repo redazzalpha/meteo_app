@@ -4,6 +4,11 @@ import 'package:meteo_app_v2/classes/delegate_sliver_header.dart';
 import 'package:meteo_app_v2/classes/delegate_sliver_heading.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
+import 'package:meteo_app_v2/layouts/app_air.dart';
+import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
+import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
+import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/layouts/app_wind.dart';
 import 'package:meteo_app_v2/utils/enums.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -42,6 +47,40 @@ class _SliverListViewState extends State<SliverAppList> {
   double _currentScroll = 0;
 
   // methods
+  String masterAppLabel(final MasterApp masterApp) {
+    switch (masterApp.runtimeType) {
+      case AppHeading:
+        return AppHeading.label;
+      case AppForcastHour:
+        return AppForcastHour.label;
+      case AppForcastDay:
+        return AppForcastDay.label;
+      case AppWind:
+        return AppWind.label;
+      case AppAir:
+        return AppAir.label;
+      default:
+        return "Unknown";
+    }
+  }
+
+  IconData masterAppLabelIcon(final MasterApp masterApp) {
+    switch (masterApp.runtimeType) {
+      case AppHeading:
+        return AppHeading.labelIcon;
+      case AppForcastHour:
+        return AppForcastHour.labelIcon;
+      case AppForcastDay:
+        return AppForcastDay.labelIcon;
+      case AppWind:
+        return AppWind.labelIcon;
+      case AppAir:
+        return AppAir.labelIcon;
+      default:
+        return Icons.device_unknown;
+    }
+  }
+
   void _sliverInitKeys() {
     _sliverKeys =
         List<GlobalKey>.generate(widget.masterApps.length, (_) => GlobalKey());
@@ -146,11 +185,14 @@ class _SliverListViewState extends State<SliverAppList> {
     );
   }
 
-  Widget _sliverWrapItem(final MasterApp masterApp, final GlobalKey key,
-      {final double opacity = 1,
-      final double visibility = 1,
-      final double padding = 80,
-      final hasBackground = true}) {
+  Widget _sliverWrapItem(
+    final MasterApp masterApp,
+    final GlobalKey key, {
+    final double opacity = 1,
+    final double visibility = 1,
+    final double padding = 80,
+    final hasBackground = true,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 15),
 
@@ -198,8 +240,8 @@ class _SliverListViewState extends State<SliverAppList> {
             SliverClip(
               child: SliverPersistentHeader(
                 delegate: SilverHeaderDelegate(
-                  title: masterApp.label,
-                  titleIcon: masterApp.labelIcon,
+                  title: masterAppLabel(masterApp),
+                  titleIcon: masterAppLabelIcon(masterApp),
                   opacity: opacity,
                   padding: padding,
                   minExt: masterApp.minExt ?? 0,

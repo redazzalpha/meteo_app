@@ -3,16 +3,18 @@ import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/classes/master_prevision.dart';
 import 'package:meteo_app_v2/classes/prevision_hour.dart';
 import 'package:meteo_app_v2/classes/prevision_sun.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
 class AppForcastHour extends MasterApp {
+  static String label = "Prévisions heure par heure";
+  static IconData labelIcon = Icons.access_time;
+
   const AppForcastHour({
     super.key,
     required super.datas,
-    super.label = "Prévisions heure par heure",
-    super.labelIcon = Icons.access_time,
-    super.width = 800,
+    super.width = defaultAppWidth,
     super.height = 120,
     super.minExt = 0,
     super.maxExt = 170,
@@ -118,6 +120,7 @@ class AppForcastHour extends MasterApp {
     if (!isReady()) return const Text("");
     return ForcastHourView(
       previsions: _buildPrevisions(),
+      width: width,
       height: height,
     );
   }

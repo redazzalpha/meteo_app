@@ -4,6 +4,7 @@ import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/templates/template_card_row.dart';
 import 'package:meteo_app_v2/ui/forcast_hour_item.dart';
 import 'package:meteo_app_v2/ui/forcast_sun_item.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class ForcastHourView extends MasterView {
   final List<MasterPrevison> previsions;
@@ -11,8 +12,8 @@ class ForcastHourView extends MasterView {
   const ForcastHourView({
     super.key,
     required this.previsions,
-    super.width = 800,
-    super.height = 120,
+    super.width = defaultAppWidth,
+    super.height = defaultAppHeight,
   });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {
@@ -38,8 +39,9 @@ class ForcastHourView extends MasterView {
       widgets: _buildItems(),
       title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
-      height: height,
       hasBackground: false,
+      width: width,
+      height: height,
     );
   }
 }

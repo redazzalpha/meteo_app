@@ -4,8 +4,6 @@ abstract class MasterApp extends StatelessWidget {
   final Map<String, dynamic> datas;
   final double width;
   final double height;
-  final String? label;
-  final IconData? labelIcon;
 
   /// minExt should be used when wrap
   /// in SilverAppListView
@@ -24,8 +22,6 @@ abstract class MasterApp extends StatelessWidget {
     required this.datas,
     required this.width,
     required this.height,
-    this.label,
-    this.labelIcon,
     this.minExt,
     this.maxExt,
   });

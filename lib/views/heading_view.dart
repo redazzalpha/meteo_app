@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class HeadingView extends MasterView {
   final String cityName, condition;
@@ -13,8 +14,8 @@ class HeadingView extends MasterView {
     required this.condition,
     required this.minTemperature,
     required this.maxTemperature,
-    super.width = 320,
-    super.height = 300,
+    super.width = defaultAppWidth,
+    super.height = defaultAppHeight,
   });
 
   @override
@@ -23,6 +24,7 @@ class HeadingView extends MasterView {
 
     return Container(
       width: width,
+      height: height,
       padding: const EdgeInsets.all(0),
 
       // main column

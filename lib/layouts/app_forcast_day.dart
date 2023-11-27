@@ -6,12 +6,13 @@ import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends MasterApp {
+  static String label = "Prévisions pour 5 jours";
+  static IconData labelIcon = Icons.calendar_month;
+
   const AppForcastDay({
     super.key,
     required super.datas,
-    super.label = "Prévisions pour 5 jours",
-    super.labelIcon = Icons.calendar_month,
-    super.width = 800,
+    super.width = defaultAppWidth,
     super.height = 170,
     super.minExt = 0,
     super.maxExt = 220,
@@ -96,6 +97,7 @@ class AppForcastDay extends MasterApp {
     if (!isReady()) return const Text("");
     return ForcastDayView(
       previsions: _buildPrevisions(),
+      width: width,
       height: height,
     );
   }

@@ -20,6 +20,8 @@ class AppRain extends MasterApp {
   @override
   Widget build(BuildContext context) {
     return RainView(
+      rain: datas["current_condition"]["hour"],
+      dewPoint: datas["current_condition"]["hour"],
       width: width,
       height: height,
       fontHelper: fontHelper,

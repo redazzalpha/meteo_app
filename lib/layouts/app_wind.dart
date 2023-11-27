@@ -25,12 +25,12 @@ class AppWind extends MasterApp {
         datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
 
     return WindView(
-      windDirection: datas["current_condition"]["wnd_dir"],
-      windSpeed: datas["current_condition"]["wnd_spd"],
-      windDirectionStr: hourly["WNDDIRCARD10"],
-      windDirectionDegrees: hourly["WNDDIR10m"],
-      windSpeed10m: hourly["WNDSPD10m"],
-      windSpeedRafal: hourly["WNDGUST10m"],
+      direction: datas["current_condition"]["wnd_dir"],
+      speed: datas["current_condition"]["wnd_spd"],
+      directionStr: hourly["WNDDIRCARD10"],
+      directionDegrees: hourly["WNDDIR10m"],
+      speed10m: hourly["WNDSPD10m"],
+      speedRafal: hourly["WNDGUST10m"],
       windChill: hourly["WNDCHILL2m"],
       width: width,
       height: height,

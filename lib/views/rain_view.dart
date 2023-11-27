@@ -5,8 +5,8 @@ import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/templates/template_card_column.dart';
 
 class RainView extends MasterView {
-  final String rain;
-  final String dewPoint;
+  final double rain;
+  final double dewPoint;
 
   const RainView({
     super.key,
@@ -29,11 +29,11 @@ class RainView extends MasterView {
       fontHelper: fh,
       widgets: [
         Text(
-          "Précipitations : ",
+          "Précipitations : $rain mm",
           style: fh.label(),
         ),
         Text(
-          "Point de rosée : ",
+          "Point de rosée : $dewPoint°",
           style: fh.label(),
         ),
       ],

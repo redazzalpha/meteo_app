@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
@@ -6,57 +8,37 @@ import 'package:meteo_app_v2/templates/template_card_column.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 
 class WindView extends MasterView {
-  final String windDirection;
-  final String windDirectionStr;
-  final int windDirectionDegrees;
-  final int windSpeed;
-  final int windSpeed10m;
-  final int windSpeedRafal;
+  final String direction;
+  final String directionStr;
+  final int directionDegrees;
+  final int speed;
+  final int speed10m;
+  final int speedRafal;
   final double windChill;
-  final double _degreeFactor = 0.79;
+  final double _angleFactor = 0.017346;
 
   const WindView({
     super.key,
-    required this.windDirection,
-    required this.windDirectionStr,
-    required this.windDirectionDegrees,
-    required this.windSpeed,
-    required this.windSpeed10m,
-    required this.windSpeedRafal,
+    required this.direction,
+    required this.directionStr,
+    required this.directionDegrees,
+    required this.speed,
+    required this.speed10m,
+    required this.speedRafal,
     required this.windChill,
     super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
   });
 
-  double windDirectionToAngle() {
-    double angle = 0;
-    switch (windDirection) {
-      case "N":
-        break;
-      case "NE":
-        angle += _degreeFactor * 1;
-      case "NO":
-        angle += _degreeFactor * 2;
-      case "S":
-        angle += _degreeFactor * 3;
-      case "SE":
-        angle += _degreeFactor * 4;
-      case "SO":
-        angle += _degreeFactor * 5;
-      case "E":
-        angle += _degreeFactor * 6;
-      case "O":
-        angle += _degreeFactor * 7;
-      default:
-        return 0;
-    }
-    return angle;
+  double directionToAngle() {
+    return _angleFactor * directionDegrees;
   }
 
   @override
   Widget build(BuildContext context) {
     FontHelper fh = fontHelper ?? FontHelper(context: context);
+    log(directionDegrees.toString());
 
     return TemplateCardColumn(
       title: AppWind.label,
@@ -75,13 +57,13 @@ class WindView extends MasterView {
 
             // arrow
             Positioned(
-              top: 30,
-              left: 115,
+              top: 50,
+              left: 122,
               child: Transform.rotate(
-                origin: const Offset(0, 35),
-                angle: windDirectionToAngle(),
+                origin: const Offset(0, 0),
+                angle: directionToAngle(),
                 child: Image.asset(
-                  width: 70,
+                  width: 55,
                   "assets/weather/arrow.png",
                   fit: BoxFit.cover,
                 ),
@@ -90,15 +72,15 @@ class WindView extends MasterView {
           ],
         ),
         Text(
-          "Direction : $windDirection",
+          "Direction : $direction ($directionDegrees°)",
           style: fh.label(),
         ),
         Text(
-          "Vitesse à 10m : $windSpeed km/h",
+          "Vitesse à 10m : $speed km/h",
           style: fh.label(),
         ),
         Text(
-          "Rafales à 10m : $windSpeedRafal km/h",
+          "Rafales à 10m : $speedRafal km/h",
           style: fh.label(),
         ),
         Text(

@@ -20,11 +20,13 @@ class AppAir extends MasterApp {
 
   @override
   Widget build(BuildContext context) {
+    final String currentTime = datas["current_condition"]["hour"];
+    final Map<String, dynamic> hourly =
+        datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
+
     return AirView(
-      atmosphericPressure: datas["fcst_day_0"]["hourly_data"]
-          [normalizeTime(datas["current_condition"]["hour"])]["PRMSL"],
-      relativeHumidity: datas["fcst_day_0"]["hourly_data"]
-          [normalizeTime(datas["current_condition"]["hour"])]["RH2m"],
+      atmosphericPressure: hourly["PRMSL"],
+      relativeHumidity: hourly["RH2m"],
       width: width,
       height: height,
       fontHelper: fontHelper,

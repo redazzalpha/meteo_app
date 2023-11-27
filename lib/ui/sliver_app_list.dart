@@ -8,6 +8,7 @@ import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
 import 'package:meteo_app_v2/utils/enums.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -61,6 +62,8 @@ class _SliverListViewState extends State<SliverAppList> {
         return AppWind.label;
       case AppAir:
         return AppAir.label;
+      case AppRain:
+        return AppRain.label;
       default:
         return "Unknown";
     }
@@ -78,6 +81,8 @@ class _SliverListViewState extends State<SliverAppList> {
         return AppWind.labelIcon;
       case AppAir:
         return AppAir.labelIcon;
+      case AppRain:
+        return AppRain.labelIcon;
       default:
         return Icons.device_unknown;
     }

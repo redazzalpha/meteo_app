@@ -6,20 +6,21 @@ import 'package:meteo_app_v2/templates/template_card_column.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 
 class AirView extends MasterView {
-  final double pression;
-  final int humidity;
+  final double atmosphericPressure;
+  final int relativeHumidity;
 
   const AirView({
     super.key,
-    required this.pression,
-    required this.humidity,
+    required this.atmosphericPressure,
+    required this.relativeHumidity,
+    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
   });
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return TemplateCardColumn(
       title: AppAir.label,
@@ -27,8 +28,14 @@ class AirView extends MasterView {
       width: width,
       height: height,
       widgets: [
-        Text("Pression de l'air: $pression", style: fontHelper.label()),
-        Text("Humidité: $humidity%", style: fontHelper.label()),
+        Text(
+          "Pression atmosphérique : $atmosphericPressure",
+          style: fh.label(),
+        ),
+        Text(
+          "Humidité relative : $relativeHumidity%",
+          style: fh.label(),
+        ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 
 abstract class MasterApp extends StatelessWidget {
   final Map<String, dynamic> datas;
@@ -17,6 +18,8 @@ abstract class MasterApp extends StatelessWidget {
   /// when totaly expanded
   final double? maxExt;
 
+  final FontHelper? fontHelper;
+
   const MasterApp({
     super.key,
     required this.datas,
@@ -24,6 +27,7 @@ abstract class MasterApp extends StatelessWidget {
     required this.height,
     this.minExt,
     this.maxExt,
+    this.fontHelper,
   });
   bool isReady() => datas.isNotEmpty;
 }

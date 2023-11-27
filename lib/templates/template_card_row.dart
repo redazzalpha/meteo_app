@@ -15,6 +15,7 @@ class TemplateCardRow extends MasterTemplate {
     super.titleIcon,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
+    super.fontHelper,
     this.width = 800,
     this.height = 80,
     this.hasHeader = true,
@@ -22,7 +23,7 @@ class TemplateCardRow extends MasterTemplate {
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return Container(
       width: width,
@@ -55,8 +56,8 @@ class TemplateCardRow extends MasterTemplate {
                   width: 5,
                 ),
                 Text(
-                  title == null ? "" : title as String,
-                  style: fontHelper.label(),
+                  title ?? "",
+                  style: fh.label(),
                 ),
               ],
             ),

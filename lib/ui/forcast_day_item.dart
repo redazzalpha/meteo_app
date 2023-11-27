@@ -6,16 +6,18 @@ import 'package:meteo_app_v2/ui/bar_value.dart';
 
 class ForcastDayItem extends MasterForcastItem {
   final bool hasDot;
+  final FontHelper? fontHelper;
 
   const ForcastDayItem({
     super.key,
     required super.prevision,
+    this.fontHelper,
     this.hasDot = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
     final PrevisionDay previsionDay = prevision as PrevisionDay;
 
     return Container(
@@ -26,7 +28,7 @@ class ForcastDayItem extends MasterForcastItem {
           // day text
           Text(
             previsionDay.dayShort,
-            style: fontHelper.label(),
+            style: fh.label(),
           ),
 
           // image icon
@@ -48,7 +50,7 @@ class ForcastDayItem extends MasterForcastItem {
             ),
             child: Text(
               "${previsionDay.min}°",
-              style: fontHelper.label(),
+              style: fh.label(),
             ),
           ),
 
@@ -74,7 +76,7 @@ class ForcastDayItem extends MasterForcastItem {
             ),
             child: Text(
               "${previsionDay.max}°",
-              style: fontHelper.label(),
+              style: fh.label(),
             ),
           ),
         ],

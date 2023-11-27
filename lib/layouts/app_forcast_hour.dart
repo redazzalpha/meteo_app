@@ -14,6 +14,7 @@ class AppForcastHour extends MasterApp {
   const AppForcastHour({
     super.key,
     required super.datas,
+    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = 120,
     super.minExt = 0,
@@ -122,6 +123,7 @@ class AppForcastHour extends MasterApp {
       previsions: _buildPrevisions(),
       width: width,
       height: height,
+      fontHelper: fontHelper,
     );
   }
 }

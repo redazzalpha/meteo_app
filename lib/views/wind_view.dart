@@ -7,15 +7,24 @@ import 'package:meteo_app_v2/utils/defines.dart';
 
 class WindView extends MasterView {
   final String windDirection;
+  final String windDirectionStr;
+  final int windDirectionDegrees;
   final int windSpeed;
+  final int windSpeed10m;
   final int windSpeedRafal;
+  final double windChill;
   final double _degreeFactor = 0.79;
 
   const WindView({
     super.key,
     required this.windDirection,
+    required this.windDirectionStr,
+    required this.windDirectionDegrees,
     required this.windSpeed,
+    required this.windSpeed10m,
     required this.windSpeedRafal,
+    required this.windChill,
+    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
   });
@@ -47,13 +56,14 @@ class WindView extends MasterView {
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return TemplateCardColumn(
-      title: "${AppWind.label} : $windDirection",
+      title: AppWind.label,
       titleIcon: AppWind.labelIcon,
       width: width,
       height: height,
+      fontHelper: fh,
       widgets: [
         Stack(
           children: [
@@ -80,12 +90,20 @@ class WindView extends MasterView {
           ],
         ),
         Text(
-          "Vitesse du vent: $windSpeed",
-          style: fontHelper.label(),
+          "Direction : $windDirection",
+          style: fh.label(),
         ),
         Text(
-          "Vitesse du vent en rafale: $windSpeedRafal",
-          style: fontHelper.label(),
+          "Vitesse à 10m : $windSpeed km/h",
+          style: fh.label(),
+        ),
+        Text(
+          "Rafales à 10m : $windSpeedRafal km/h",
+          style: fh.label(),
+        ),
+        Text(
+          "Refroidissement éolien : $windChill",
+          style: fh.label(),
         ),
       ],
     );

@@ -14,6 +14,7 @@ class ForcastHourView extends MasterView {
     required this.previsions,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.fontHelper,
   });
 
   void _insertItem(final List<Widget> items, MasterPrevison prevision) {
@@ -42,6 +43,7 @@ class ForcastHourView extends MasterView {
       hasBackground: false,
       width: width,
       height: height,
+      fontHelper: fontHelper,
     );
   }
 }

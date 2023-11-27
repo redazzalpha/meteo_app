@@ -4,11 +4,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
+import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_app_list.dart';
@@ -66,37 +68,14 @@ class _HomeState extends State<Home> {
   }
 
   List<MasterApp> _masterAppsList() {
+    FontHelper fontHelper = FontHelper(context: context);
     return <MasterApp>[
-      AppHeading(datas: _datas),
-      AppForcastHour(
-        datas: _datas,
-      ),
-      AppForcastDay(datas: _datas),
-      AppWind(datas: _datas),
-      AppAir(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
-      AppForcastDay(datas: _datas),
+      AppHeading(datas: _datas, fontHelper: fontHelper),
+      AppForcastHour(datas: _datas, fontHelper: fontHelper),
+      AppForcastDay(datas: _datas, fontHelper: fontHelper),
+      AppWind(datas: _datas, fontHelper: fontHelper),
+      AppAir(datas: _datas, fontHelper: fontHelper),
+      AppRain(datas: _datas, fontHelper: fontHelper),
     ];
   }
 

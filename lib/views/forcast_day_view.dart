@@ -13,6 +13,7 @@ class ForcastDayView extends MasterView {
     required this.previsions,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.fontHelper,
   });
 
   List<Widget> _buildItems() {
@@ -38,6 +39,7 @@ class ForcastDayView extends MasterView {
       hasBackground: false,
       width: width,
       height: height,
+      fontHelper: fontHelper,
     );
   }
 }

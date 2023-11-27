@@ -3,17 +3,20 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_template.dart';
 
 class TemplateCardTitle extends MasterTemplate {
+  final FontHelper? fontHelper;
+
   const TemplateCardTitle({
     super.key,
     super.title,
     super.titleIcon,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
+    this.fontHelper,
   });
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +40,7 @@ class TemplateCardTitle extends MasterTemplate {
               const SizedBox(width: 5),
               Text(
                 title == null ? "" : title as String,
-                style: fontHelper.label(),
+                style: fh.label(),
               ),
             ],
           ),

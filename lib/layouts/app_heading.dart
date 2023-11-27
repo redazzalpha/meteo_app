@@ -9,6 +9,7 @@ class AppHeading extends MasterApp {
   const AppHeading({
     super.key,
     required super.datas,
+    super.fontHelper,
     super.width = 320,
     super.height = 200,
     super.minExt = 0,
@@ -24,6 +25,7 @@ class AppHeading extends MasterApp {
         HeadingView(
           width: width,
           height: height,
+          fontHelper: fontHelper,
           cityName: datas["city_info"]["name"],
           condition: datas["current_condition"]["condition"],
           temperature: datas["current_condition"]["tmp"],

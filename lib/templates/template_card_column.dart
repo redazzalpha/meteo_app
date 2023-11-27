@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_template.dart';
 
 class TemplateCardColumn extends MasterTemplate {
@@ -14,6 +15,7 @@ class TemplateCardColumn extends MasterTemplate {
     super.titleIcon,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
+    super.fontHelper,
     this.width = 800,
     this.height = 500,
     this.hasHeader = true,
@@ -21,6 +23,8 @@ class TemplateCardColumn extends MasterTemplate {
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
+
     return Container(
       width: width,
       decoration: BoxDecoration(
@@ -52,11 +56,8 @@ class TemplateCardColumn extends MasterTemplate {
                   width: 5,
                 ),
                 Text(
-                  title == null ? "" : title as String,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall!
-                      .copyWith(fontSize: 15),
+                  title ?? "",
+                  style: fh.label(),
                 ),
               ],
             ),

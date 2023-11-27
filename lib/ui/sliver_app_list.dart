@@ -18,6 +18,7 @@ class SliverAppList extends StatefulWidget {
   final double scrollOffset;
   final void Function(ScrollPhysics) onScrollPhysic;
   final bool hasHeader;
+  final FontHelper? fontHelper;
 
   const SliverAppList({
     super.key,
@@ -26,6 +27,7 @@ class SliverAppList extends StatefulWidget {
     required this.controller,
     required this.scrollOffset,
     required this.onScrollPhysic,
+    this.fontHelper,
     this.hasHeader = true,
   });
 
@@ -261,7 +263,7 @@ class _SliverListViewState extends State<SliverAppList> {
     // shortcut writing
     if (widget.controller.positions.isNotEmpty &&
         widget.controller.offset >= widget.scrollOffset) {
-      final FontHelper fontHelper = FontHelper(context: context);
+      final FontHelper fh = widget.fontHelper ?? FontHelper(context: context);
       return SizedBox(
         height: height,
         child: Column(
@@ -269,13 +271,13 @@ class _SliverListViewState extends State<SliverAppList> {
             // city name
             Text(
               widget.masterApps[0].datas["city_info"]["name"],
-              style: fontHelper.headline(),
+              style: fh.headline(),
             ),
 
             // temperature | conditions
             Text(
               "${widget.masterApps[0].datas['current_condition']['tmp']}° | ${widget.masterApps[0].datas['current_condition']['condition']}",
-              style: fontHelper.label(),
+              style: fh.label(),
             ),
           ],
         ),

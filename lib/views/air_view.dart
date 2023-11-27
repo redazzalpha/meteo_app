@@ -3,6 +3,7 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/templates/template_card_column.dart';
+import 'package:meteo_app_v2/ui/circle_value.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 
 class AirView extends MasterView {
@@ -28,12 +29,16 @@ class AirView extends MasterView {
       width: width,
       height: height,
       widgets: [
+        // humidity circle value
+        CircleValue(
+          holeLabel: "Humidité relative $relativeHumidity%",
+          value: double.parse(
+            "$relativeHumidity",
+          ),
+        ),
+
         Text(
           "Pression atmosphérique : $atmosphericPressure",
-          style: fh.label(),
-        ),
-        Text(
-          "Humidité relative : $relativeHumidity%",
           style: fh.label(),
         ),
       ],

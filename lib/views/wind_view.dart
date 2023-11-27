@@ -14,7 +14,7 @@ class WindView extends MasterView {
   final int speed;
   final int speed10m;
   final int speedRafal;
-  final double windChill;
+  final int windChill;
   final double _angleFactor = 0.017346;
 
   const WindView({
@@ -39,7 +39,6 @@ class WindView extends MasterView {
   Widget build(BuildContext context) {
     FontHelper fh = fontHelper ?? FontHelper(context: context);
     log(directionDegrees.toString());
-
     return TemplateCardColumn(
       title: AppWind.label,
       titleIcon: AppWind.labelIcon,
@@ -47,6 +46,7 @@ class WindView extends MasterView {
       height: height,
       fontHelper: fh,
       widgets: [
+        // compass stack container
         Stack(
           children: [
             // compass
@@ -57,13 +57,14 @@ class WindView extends MasterView {
 
             // arrow
             Positioned(
-              top: 50,
-              left: 122,
+              top: 51,
+              left: 115,
+              width: 55,
+              height: 190,
               child: Transform.rotate(
                 origin: const Offset(0, 0),
                 angle: directionToAngle(),
                 child: Image.asset(
-                  width: 55,
                   "assets/weather/arrow.png",
                   fit: BoxFit.cover,
                 ),
@@ -71,20 +72,28 @@ class WindView extends MasterView {
             ),
           ],
         ),
+
+        // wind direction
         Text(
           "Direction : $direction ($directionDegrees°)",
           style: fh.label(),
         ),
+
+        // wind speed
         Text(
           "Vitesse à 10m : $speed km/h",
           style: fh.label(),
         ),
+
+        // wind rafal speed
         Text(
-          "Rafales à 10m : $speedRafal km/h",
+          "Rafales à 10m : ${speedRafal == 0 ? 'aucune' : '$speedRafal km/h'}",
           style: fh.label(),
         ),
+
+        // wind chill
         Text(
-          "Refroidissement éolien : $windChill",
+          "Refroidissement éolien : $windChill°",
           style: fh.label(),
         ),
       ],

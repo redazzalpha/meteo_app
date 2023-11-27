@@ -31,7 +31,7 @@ class AppWind extends MasterApp {
       directionDegrees: hourly["WNDDIR10m"],
       speed10m: hourly["WNDSPD10m"],
       speedRafal: hourly["WNDGUST10m"],
-      windChill: hourly["WNDCHILL2m"],
+      windChill: int.parse("${hourly['WNDCHILL2m']}".split(".")[0]),
       width: width,
       height: height,
       fontHelper: fontHelper,

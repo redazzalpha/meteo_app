@@ -13,9 +13,9 @@ class AppAir extends MasterApp {
     required super.datas,
     super.fontHelper,
     super.width = defaultAppWidth,
-    super.height = 100,
+    super.height = 355,
     super.minExt = 0,
-    super.maxExt = 141,
+    super.maxExt = 396,
   });
 
   @override

@@ -19,6 +19,8 @@ class AppWindDirection extends MasterApp {
     if (!isReady()) return const Text("");
     return WindDirectionView(
       windDirection: datas["current_condition"]["wnd_dir"],
+      windSpeed: datas["current_condition"]["wnd_spd"],
+      windSpeedRafal: datas["current_condition"]["wnd_gust"],
       width: width,
       height: height,
     );

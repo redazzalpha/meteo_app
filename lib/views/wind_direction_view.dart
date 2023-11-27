@@ -1,16 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/templates/template_card_column.dart';
 
 class WindDirectionView extends MasterView {
   final String windDirection;
+  final int windSpeed;
+  final int windSpeedRafal;
   final double _degreeFactor = 0.79;
 
   const WindDirectionView({
     super.key,
     required this.windDirection,
+    required this.windSpeed,
+    required this.windSpeedRafal,
     super.width = 320,
     super.height = 300,
   });
@@ -42,9 +47,11 @@ class WindDirectionView extends MasterView {
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fontHelper = FontHelper(context: context);
+
     log("wind direction: $windDirection");
     return TemplateCardColumn(
-      title: "Direction du vent",
+      title: "Direction du vent : $windDirection",
       titleIcon: Icons.air,
       width: 320,
       height: 300,
@@ -72,6 +79,10 @@ class WindDirectionView extends MasterView {
               ),
             ),
           ],
+        ),
+        Text(
+          "Vitesse du vent: $windSpeed\nVitesse du vent en rafale: $windSpeedRafal",
+          style: fontHelper.label(),
         ),
       ],
     );

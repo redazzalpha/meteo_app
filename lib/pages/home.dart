@@ -16,6 +16,7 @@ import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_heading.dart';
 import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
   // constructor
@@ -68,72 +69,70 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<Widget> _masterSliverList() {
+  MultiSliver _masterSlivers() {
     FontHelper fontHelper = FontHelper(context: context);
-    if (_datas.isEmpty) return const <MasterSliver>[];
-    return <Widget>[
-      // if has heading
-      //heading must be first
+    if (_datas.isEmpty) return MultiSliver(children: const <MasterSliver>[]);
 
-      // app heading
-      SliverHeading(
-        masterApp: AppHeading(
-          datas: _datas,
-          isShort: _headingShort,
-          fontHelper: _fontHelper,
+    return MultiSliver(
+      children: <MasterSliver>[
+        // if has heading
+        //heading must be first
+
+        // app heading
+        SliverHeading(
+          masterApp: AppHeading(
+            datas: _datas,
+            isShort: _headingShort,
+            fontHelper: _fontHelper,
+          ),
         ),
-      ),
 
-      // app forcast hour
-      SliverItemShaped(
-        masterApp: AppForcastHour(
-          datas: _datas,
-          fontHelper: fontHelper,
+        // app forcast hour
+        SliverItemShaped(
+          masterApp: AppForcastHour(
+            datas: _datas,
+            fontHelper: fontHelper,
+          ),
+          backgroundColor: defaultAppBackgroundColor,
         ),
-        backgroundColor: defaultAppBackgroundColor,
-      ),
 
-      // app forcast day
-      SliverItemShaped(
-        masterApp: AppForcastDay(
-          datas: _datas,
-          fontHelper: fontHelper,
+        // app forcast day
+        SliverItemShaped(
+          masterApp: AppForcastDay(
+            datas: _datas,
+            fontHelper: fontHelper,
+          ),
+          backgroundColor: defaultAppBackgroundColor,
         ),
-        backgroundColor: defaultAppBackgroundColor,
-      ),
 
-      // app wind
-      SliverItemShaped(
-        masterApp: AppWind(
-          datas: _datas,
-          fontHelper: fontHelper,
+        // app wind
+        SliverItemShaped(
+          masterApp: AppWind(
+            datas: _datas,
+            fontHelper: fontHelper,
+          ),
+          backgroundColor: defaultAppBackgroundColor,
         ),
-        backgroundColor: defaultAppBackgroundColor,
-      ),
 
-      // app air
-      SliverItemShaped(
-        masterApp: AppAir(
-          datas: _datas,
-          fontHelper: fontHelper,
+        // app air
+        SliverItemShaped(
+          masterApp: AppAir(
+            datas: _datas,
+            fontHelper: fontHelper,
+          ),
+          backgroundColor: defaultAppBackgroundColor,
         ),
-        backgroundColor: defaultAppBackgroundColor,
-      ),
 
-      // app rain
-      SliverItemShaped(
-        masterApp: AppRain(
-          datas: _datas,
-          fontHelper: fontHelper,
+        // app rain
+        SliverItemShaped(
+          masterApp: AppRain(
+            datas: _datas,
+            fontHelper: fontHelper,
+          ),
+          backgroundColor: defaultAppBackgroundColor,
         ),
-        backgroundColor: defaultAppBackgroundColor,
-      ),
-
-      // padding for bottom app bar
-      const SliverPadding(
-        padding: EdgeInsets.only(bottom: 80),
-      ),
-    ];
+      ],
+    );
   }
 
   // event handlers
@@ -182,7 +181,15 @@ class _HomeState extends State<Home> {
               // scroll view
               child: CustomScrollView(
                 controller: _controller,
-                slivers: _masterSliverList(),
+                slivers: [
+                  // master sliver items
+                  _masterSlivers(),
+
+                  // padding for stacked bottom app bar
+                  const SliverPadding(
+                    padding: EdgeInsets.only(bottom: 80),
+                  ),
+                ],
               ),
             ),
 

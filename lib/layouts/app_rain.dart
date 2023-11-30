@@ -6,7 +6,7 @@ import 'package:meteo_app_v2/views/rain_view.dart';
 
 class AppRain extends MasterApp {
   static String label = "Précipitations";
-  static IconData labelIcon = Icons.cloudy_snowing;
+  static IconData icon = Icons.cloudy_snowing;
 
   const AppRain({
     super.key,

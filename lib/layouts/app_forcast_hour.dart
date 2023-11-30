@@ -9,7 +9,7 @@ import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
 class AppForcastHour extends MasterApp {
   static String label = "Prévisions heure par heure";
-  static IconData labelIcon = Icons.access_time;
+  static IconData icon = Icons.access_time;
 
   const AppForcastHour({
     super.key,

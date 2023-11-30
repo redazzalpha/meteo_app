@@ -27,7 +27,7 @@ class RainView extends MasterView {
 
     return TemplateCardColumn(
       title: AppRain.label,
-      titleIcon: AppRain.labelIcon,
+      titleIcon: AppRain.icon,
       width: width,
       height: height,
       hasHeader: hasHeader,

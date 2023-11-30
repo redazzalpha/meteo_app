@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/classes/font_helper.dart';
-import 'package:meteo_app_v2/classes/master_app.dart';
+import 'package:meteo_app_v2/classes/master_sliver.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
@@ -13,7 +13,8 @@ import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
-import 'package:meteo_app_v2/ui/sliver_app_list.dart';
+import 'package:meteo_app_v2/ui/sliver_heading.dart';
+import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 
 class Home extends StatefulWidget {
@@ -34,9 +35,9 @@ class _HomeState extends State<Home> {
   final String _dataUrl = dataUrl;
   final int _timeoutTimer = 3000;
   final double _scrollOffset = 45;
-  late ScrollPhysics _scrollPhysic;
-  late SliverAppList _sliverAppList;
+  late final FontHelper _fontHelper;
   String _background = defaultBackground;
+  bool _headingShort = false;
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
@@ -67,41 +68,97 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<MasterApp> _masterAppsList() {
+  List<Widget> _masterSliverList() {
     FontHelper fontHelper = FontHelper(context: context);
-    return <MasterApp>[
-      AppHeading(datas: _datas, fontHelper: fontHelper),
-      AppForcastHour(datas: _datas, fontHelper: fontHelper),
-      AppForcastDay(datas: _datas, fontHelper: fontHelper),
-      AppWind(datas: _datas, fontHelper: fontHelper),
-      AppAir(datas: _datas, fontHelper: fontHelper),
-      AppRain(datas: _datas, fontHelper: fontHelper),
+    if (_datas.isEmpty) return const <MasterSliver>[];
+    return <Widget>[
+      // if has heading
+      //heading must be first
+
+      // app heading
+      SliverHeading(
+        masterApp: AppHeading(
+          datas: _datas,
+          isShort: _headingShort,
+          fontHelper: _fontHelper,
+        ),
+      ),
+
+      // app forcast hour
+      SliverItemShaped(
+        masterApp: AppForcastHour(
+          datas: _datas,
+          fontHelper: fontHelper,
+        ),
+        backgroundColor: defaultAppBackgroundColor,
+      ),
+
+      // app forcast day
+      SliverItemShaped(
+        masterApp: AppForcastDay(
+          datas: _datas,
+          fontHelper: fontHelper,
+        ),
+        backgroundColor: defaultAppBackgroundColor,
+      ),
+
+      // app wind
+      SliverItemShaped(
+        masterApp: AppWind(
+          datas: _datas,
+          fontHelper: fontHelper,
+        ),
+        backgroundColor: defaultAppBackgroundColor,
+      ),
+
+      // app air
+      SliverItemShaped(
+        masterApp: AppAir(
+          datas: _datas,
+          fontHelper: fontHelper,
+        ),
+        backgroundColor: defaultAppBackgroundColor,
+      ),
+
+      // app rain
+      SliverItemShaped(
+        masterApp: AppRain(
+          datas: _datas,
+          fontHelper: fontHelper,
+        ),
+        backgroundColor: defaultAppBackgroundColor,
+      ),
+
+      // padding for bottom app bar
+      const SliverPadding(
+        padding: EdgeInsets.only(bottom: 80),
+      ),
     ];
   }
 
   // event handlers
-  void updateScrollPhysic(ScrollPhysics scrollPhysic) {
-    _scrollPhysic = scrollPhysic;
+  void _onScroll() {
+    setState(() {
+      if (_controller.offset >= _scrollOffset) {
+        _headingShort = true;
+      } else {
+        _headingShort = false;
+      }
+    });
   }
 
   // overrides
   @override
   void initState() {
-    _scrollPhysic = const AlwaysScrollableScrollPhysics();
+    _fontHelper = FontHelper(context: context);
     _controller = ScrollController();
+    _controller.addListener(() => _onScroll());
     super.initState();
     _refreshDataTimer(milliseconds: _timeoutTimer);
   }
 
   @override
   Widget build(BuildContext context) {
-    _sliverAppList = SliverAppList(
-      masterApps: _masterAppsList(),
-      controller: _controller,
-      scrollOffset: _scrollOffset,
-      onScrollPhysic: updateScrollPhysic,
-    );
-
     return PageView(
       children: [
         // first page
@@ -110,6 +167,8 @@ class _HomeState extends State<Home> {
             // main content
             Container(
               padding: const EdgeInsets.all(basePadding),
+
+              // shaped background
               decoration: BoxDecoration(
                 color: const Color.fromARGB(49, 0, 0, 0),
                 image: DecorationImage(
@@ -122,16 +181,8 @@ class _HomeState extends State<Home> {
 
               // scroll view
               child: CustomScrollView(
-                physics: _scrollPhysic,
                 controller: _controller,
-                slivers: [
-                  _sliverAppList,
-
-                  // padding for stacked bottom bar
-                  const SliverPadding(
-                    padding: EdgeInsets.only(bottom: 80),
-                  ),
-                ],
+                slivers: _masterSliverList(),
               ),
             ),
 

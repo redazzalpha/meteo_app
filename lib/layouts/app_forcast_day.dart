@@ -7,7 +7,7 @@ import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends MasterApp {
   static String label = "Prévisions pour 5 jours";
-  static IconData labelIcon = Icons.calendar_month;
+  static IconData icon = Icons.calendar_month;
 
   const AppForcastDay({
     super.key,

@@ -6,7 +6,7 @@ import 'package:meteo_app_v2/views/air_view.dart';
 
 class AppAir extends MasterApp {
   static String label = "Conditions de l'air";
-  static IconData labelIcon = Icons.air;
+  static IconData icon = Icons.air;
 
   const AppAir({
     super.key,

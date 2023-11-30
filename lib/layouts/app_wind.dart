@@ -6,7 +6,7 @@ import 'package:meteo_app_v2/views/wind_view.dart';
 
 class AppWind extends MasterApp {
   static String label = "Conditions du vent";
-  static IconData labelIcon = Icons.waves;
+  static IconData icon = Icons.waves;
 
   const AppWind({
     super.key,

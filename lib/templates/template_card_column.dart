@@ -41,7 +41,7 @@ class TemplateCardColumn extends MasterTemplate {
 
       // main column
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // title
           if (hasHeader)

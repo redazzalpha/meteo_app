@@ -16,8 +16,8 @@ class HeadingView extends MasterView {
     required this.maxTemperature,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
-    super.hasHeader = true,
-    super.hasBackground = true,
+    super.hasHeader = false,
+    super.hasBackground = false,
     super.backgroundColor = Colors.transparent,
     super.fontHelper,
   });

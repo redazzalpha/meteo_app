@@ -41,7 +41,7 @@ class WindView extends MasterView {
     FontHelper fh = fontHelper ?? FontHelper(context: context);
     return TemplateCardColumn(
       title: AppWind.label,
-      titleIcon: AppWind.labelIcon,
+      titleIcon: AppWind.icon,
       width: width,
       height: height,
       hasHeader: hasHeader,

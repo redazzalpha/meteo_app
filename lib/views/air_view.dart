@@ -28,7 +28,7 @@ class AirView extends MasterView {
 
     return TemplateCardColumn(
       title: AppAir.label,
-      titleIcon: AppAir.labelIcon,
+      titleIcon: AppAir.icon,
       width: width,
       height: height,
       hasHeader: hasHeader,

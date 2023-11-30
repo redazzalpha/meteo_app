@@ -13,6 +13,9 @@ class ForcastDayView extends MasterView {
     required this.previsions,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
     super.fontHelper,
   });
 
@@ -36,9 +39,11 @@ class ForcastDayView extends MasterView {
       widgets: _buildItems(),
       title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,
-      hasBackground: false,
       width: width,
       height: height,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
       fontHelper: fontHelper,
     );
   }

@@ -9,6 +9,7 @@ class TemplateCardTitle extends MasterTemplate {
     super.key,
     super.title,
     super.titleIcon,
+    super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
     this.fontHelper,
@@ -39,7 +40,7 @@ class TemplateCardTitle extends MasterTemplate {
               Icon(titleIcon, size: 16),
               const SizedBox(width: 5),
               Text(
-                title == null ? "" : title as String,
+                title ?? "",
                 style: fh.label(),
               ),
             ],

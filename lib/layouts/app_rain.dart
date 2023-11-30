@@ -14,8 +14,9 @@ class AppRain extends MasterApp {
     super.fontHelper,
     super.width = defaultAppWidth,
     super.height = 100,
-    super.minExt = 0,
-    super.maxExt = 141,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   @override
@@ -23,11 +24,13 @@ class AppRain extends MasterApp {
     final String currentTime = datas["current_condition"]["hour"];
     final Map<String, dynamic> hourly =
         datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
+
     return RainView(
-      rain: hourly["APCPsfc"],
+      rain: fixDouble(hourly["APCPsfc"]),
       dewPoint: hourly["DPT2m"],
       width: width,
       height: height,
+      hasHeader: hasHeader,
       fontHelper: fontHelper,
     );
   }

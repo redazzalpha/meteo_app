@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
@@ -14,9 +14,12 @@ class AirView extends MasterView {
     super.key,
     required this.atmosphericPressure,
     required this.relativeHumidity,
-    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
+    super.fontHelper,
   });
 
   @override
@@ -28,6 +31,9 @@ class AirView extends MasterView {
       titleIcon: AppAir.labelIcon,
       width: width,
       height: height,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
       widgets: [
         // humidity circle value
         CircleValue(

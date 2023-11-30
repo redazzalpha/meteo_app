@@ -17,8 +17,9 @@ class AppForcastHour extends MasterApp {
     super.fontHelper,
     super.width = defaultAppWidth,
     super.height = 120,
-    super.minExt = 0,
-    super.maxExt = 170,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   String _formatTime(final int hourInt) {
@@ -120,6 +121,7 @@ class AppForcastHour extends MasterApp {
       previsions: _buildPrevisions(),
       width: width,
       height: height,
+      hasHeader: hasHeader,
       fontHelper: fontHelper,
     );
   }

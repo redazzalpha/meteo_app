@@ -86,3 +86,23 @@ String normalizeTime(final String time) {
     return time.replaceAll(":", "H");
   }
 }
+
+double fixDouble(final dynamic value) {
+  int? valInt = int.tryParse("$value");
+  double? valDouble = double.tryParse("$value");
+
+  if (valInt != null) return double.parse("$valInt.00");
+  if (valDouble != null) return value as double;
+
+  return 0.0;
+}
+
+int fixInt(final dynamic value) {
+  int? valInt = int.tryParse("$value");
+  double? valDouble = double.tryParse("$value");
+
+  if (valInt != null) return value as int;
+  if (valDouble != null) return int.parse("$value".split('.')[0]);
+
+  return 0;
+}

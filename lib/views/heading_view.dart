@@ -14,9 +14,12 @@ class HeadingView extends MasterView {
     required this.condition,
     required this.minTemperature,
     required this.maxTemperature,
-    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
+    super.fontHelper,
   });
 
   @override
@@ -27,6 +30,9 @@ class HeadingView extends MasterView {
       width: width,
       height: height,
       padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: hasBackground ? backgroundColor : Colors.transparent,
+      ),
 
       // main column
       child: Column(

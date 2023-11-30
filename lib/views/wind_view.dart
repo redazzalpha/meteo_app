@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
@@ -26,9 +24,12 @@ class WindView extends MasterView {
     required this.speed10m,
     required this.speedRafal,
     required this.windChill,
-    super.fontHelper,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
+    super.fontHelper,
   });
 
   double directionToAngle() {
@@ -38,12 +39,14 @@ class WindView extends MasterView {
   @override
   Widget build(BuildContext context) {
     FontHelper fh = fontHelper ?? FontHelper(context: context);
-    log(directionDegrees.toString());
     return TemplateCardColumn(
       title: AppWind.label,
       titleIcon: AppWind.labelIcon,
       width: width,
       height: height,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
       fontHelper: fh,
       widgets: [
         // compass stack container

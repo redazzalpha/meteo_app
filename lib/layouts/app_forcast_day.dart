@@ -15,8 +15,9 @@ class AppForcastDay extends MasterApp {
     super.fontHelper,
     super.width = defaultAppWidth,
     super.height = 170,
-    super.minExt = 0,
-    super.maxExt = 220,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   String _normalizeDay(final Map<String, dynamic> dailyDatas) {
@@ -100,6 +101,7 @@ class AppForcastDay extends MasterApp {
       previsions: _buildPrevisions(),
       width: width,
       height: height,
+      hasHeader: hasHeader,
       fontHelper: fontHelper,
     );
   }

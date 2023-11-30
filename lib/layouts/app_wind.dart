@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/views/wind_view.dart';
 
 class AppWind extends MasterApp {
   static String label = "Conditions du vent";
-  static IconData labelIcon = Icons.air;
+  static IconData labelIcon = Icons.waves;
 
   const AppWind({
     super.key,
     required super.datas,
     super.fontHelper,
     super.width = 320,
-    super.height = 300,
-    super.minExt = 0,
-    super.maxExt = 375,
+    super.height = 415,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   @override
@@ -31,9 +33,10 @@ class AppWind extends MasterApp {
       directionDegrees: hourly["WNDDIR10m"],
       speed10m: hourly["WNDSPD10m"],
       speedRafal: hourly["WNDGUST10m"],
-      windChill: int.parse("${hourly['WNDCHILL2m']}".split(".")[0]),
+      windChill: fixInt(hourly["WNDCHILL2m"]),
       width: width,
       height: height,
+      hasHeader: hasHeader,
       fontHelper: fontHelper,
     );
   }

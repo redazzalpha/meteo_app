@@ -14,6 +14,9 @@ class ForcastHourView extends MasterView {
     required this.previsions,
     super.width = defaultAppWidth,
     super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
     super.fontHelper,
   });
 
@@ -40,9 +43,11 @@ class ForcastHourView extends MasterView {
       widgets: _buildItems(),
       title: "Prévisions heure par heure",
       titleIcon: Icons.access_time,
-      hasBackground: false,
       width: width,
       height: height,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
       fontHelper: fontHelper,
     );
   }

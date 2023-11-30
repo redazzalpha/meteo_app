@@ -3,6 +3,7 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/templates/template_card_column.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class RainView extends MasterView {
   final double rain;
@@ -12,8 +13,11 @@ class RainView extends MasterView {
     super.key,
     required this.rain,
     required this.dewPoint,
-    required super.width,
-    required super.height,
+    super.width = defaultAppWidth,
+    super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
     super.fontHelper,
   });
 
@@ -26,6 +30,9 @@ class RainView extends MasterView {
       titleIcon: AppRain.labelIcon,
       width: width,
       height: height,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
       fontHelper: fh,
       widgets: [
         Text(

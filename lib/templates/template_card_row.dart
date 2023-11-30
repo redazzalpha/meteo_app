@@ -6,19 +6,18 @@ class TemplateCardRow extends MasterTemplate {
   final List<Widget> widgets;
   final double width;
   final double height;
-  final bool hasHeader;
 
   const TemplateCardRow({
     super.key,
     required this.widgets,
     super.title,
     super.titleIcon,
+    super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
     super.fontHelper,
     this.width = 800,
     this.height = 80,
-    this.hasHeader = true,
   });
 
   @override

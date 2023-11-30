@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/views/heading_view.dart';
 
 class AppHeading extends MasterApp {
@@ -12,8 +13,9 @@ class AppHeading extends MasterApp {
     super.fontHelper,
     super.width = 320,
     super.height = 200,
-    super.minExt = 0,
-    super.maxExt = 200,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   @override

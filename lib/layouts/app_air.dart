@@ -14,8 +14,9 @@ class AppAir extends MasterApp {
     super.fontHelper,
     super.width = defaultAppWidth,
     super.height = 355,
-    super.minExt = 0,
-    super.maxExt = 396,
+    super.hasHeader = false,
+    super.hasBackground = true,
+    super.backgroundColor = defaultAppBackgroundColor,
   });
 
   @override
@@ -25,10 +26,11 @@ class AppAir extends MasterApp {
         datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
 
     return AirView(
-      atmosphericPressure: hourly["PRMSL"],
+      atmosphericPressure: fixDouble(hourly["PRMSL"]),
       relativeHumidity: hourly["RH2m"],
       width: width,
       height: height,
+      hasHeader: hasHeader,
       fontHelper: fontHelper,
     );
   }

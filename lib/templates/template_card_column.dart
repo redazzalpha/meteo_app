@@ -6,19 +6,18 @@ class TemplateCardColumn extends MasterTemplate {
   final List<Widget> widgets;
   final double width;
   final double height;
-  final bool hasHeader;
 
   const TemplateCardColumn({
     super.key,
     required this.widgets,
     super.title,
     super.titleIcon,
+    super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
     super.fontHelper,
     this.width = 800,
     this.height = 500,
-    this.hasHeader = true,
   });
 
   @override
@@ -63,17 +62,18 @@ class TemplateCardColumn extends MasterTemplate {
             ),
 
           // horizontal line
-          Container(
-            margin: const EdgeInsets.only(
-              top: 5,
-              bottom: 5,
-            ),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.white),
+          if (hasHeader)
+            Container(
+              margin: const EdgeInsets.only(
+                top: 5,
+                bottom: 5,
+              ),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.white),
+                ),
               ),
             ),
-          ),
 
           // items list
           SizedBox(

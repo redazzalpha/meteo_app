@@ -4,14 +4,17 @@ import 'package:meteo_app_v2/classes/master_forcast_item.dart';
 import 'package:meteo_app_v2/classes/prevision_sun.dart';
 
 class ForcastSunItem extends MasterForcastItem {
+  final FontHelper? fontHelper;
+
   const ForcastSunItem({
     super.key,
     required super.prevision,
+    this.fontHelper,
   });
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     final PrevisionSun previsionSun = prevision as PrevisionSun;
 
@@ -30,7 +33,7 @@ class ForcastSunItem extends MasterForcastItem {
           // time text
           Text(
             previsionSun.hour,
-            style: fontHelper.label(),
+            style: fh.label(),
           ),
 
           // image icon
@@ -42,7 +45,7 @@ class ForcastSunItem extends MasterForcastItem {
           // sun state text
           Text(
             previsionSun.text,
-            style: fontHelper.label(),
+            style: fh.label(),
           ),
         ],
       ),

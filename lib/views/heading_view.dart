@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_view.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class HeadingView extends MasterView {
   final String cityName, condition;
@@ -13,17 +14,25 @@ class HeadingView extends MasterView {
     required this.condition,
     required this.minTemperature,
     required this.maxTemperature,
-    super.width = 320,
-    super.height = 300,
+    super.width = defaultAppWidth,
+    super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
+    super.fontHelper,
   });
 
   @override
   Widget build(BuildContext context) {
-    final FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return Container(
       width: width,
+      height: height,
       padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: hasBackground ? backgroundColor : Colors.transparent,
+      ),
 
       // main column
       child: Column(
@@ -31,19 +40,19 @@ class HeadingView extends MasterView {
           // city name
           Text(
             cityName,
-            style: fontHelper.headline(),
+            style: fh.headline(),
           ),
 
           // temperature
           Text(
             "$temperature°",
-            style: fontHelper.display(),
+            style: fh.display(),
           ),
 
           // condition
           Text(
             condition,
-            style: fontHelper.label(),
+            style: fh.label(),
           ),
 
           // min max row
@@ -58,7 +67,7 @@ class HeadingView extends MasterView {
               // max temperature
               Text(
                 "$maxTemperature°",
-                style: fontHelper.label(),
+                style: fh.label(),
               ),
 
               // padding boxed
@@ -74,7 +83,7 @@ class HeadingView extends MasterView {
               // min temperature
               Text(
                 "$minTemperature°",
-                style: fontHelper.label(),
+                style: fh.label(),
               ),
             ],
           ),

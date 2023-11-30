@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_template.dart';
 
 class TemplateCardColumn extends MasterTemplate {
   final List<Widget> widgets;
   final double width;
   final double height;
-  final bool hasHeader;
 
   const TemplateCardColumn({
     super.key,
     required this.widgets,
     super.title,
     super.titleIcon,
+    super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
+    super.fontHelper,
     this.width = 800,
     this.height = 500,
-    this.hasHeader = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
+
     return Container(
       width: width,
       decoration: BoxDecoration(
@@ -52,27 +55,25 @@ class TemplateCardColumn extends MasterTemplate {
                   width: 5,
                 ),
                 Text(
-                  title == null ? "" : title as String,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall!
-                      .copyWith(fontSize: 15),
+                  title ?? "",
+                  style: fh.label(),
                 ),
               ],
             ),
 
           // horizontal line
-          Container(
-            margin: const EdgeInsets.only(
-              top: 5,
-              bottom: 5,
-            ),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.white),
+          if (hasHeader)
+            Container(
+              margin: const EdgeInsets.only(
+                top: 5,
+                bottom: 5,
+              ),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.white),
+                ),
               ),
             ),
-          ),
 
           // items list
           SizedBox(

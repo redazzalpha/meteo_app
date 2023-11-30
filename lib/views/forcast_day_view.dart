@@ -3,6 +3,7 @@ import 'package:meteo_app_v2/classes/master_view.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/templates/template_card_column.dart';
 import 'package:meteo_app_v2/ui/forcast_day_item.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 
 class ForcastDayView extends MasterView {
   final List<PrevisionDay> previsions;
@@ -10,8 +11,12 @@ class ForcastDayView extends MasterView {
   const ForcastDayView({
     super.key,
     required this.previsions,
-    super.width = 800,
-    super.height = 170,
+    super.width = defaultAppWidth,
+    super.height = defaultAppHeight,
+    super.hasHeader = true,
+    super.hasBackground = true,
+    super.backgroundColor = Colors.transparent,
+    super.fontHelper,
   });
 
   List<Widget> _buildItems() {
@@ -34,8 +39,12 @@ class ForcastDayView extends MasterView {
       widgets: _buildItems(),
       title: "Prévisions pour 5 jours",
       titleIcon: Icons.calendar_month,
+      width: width,
       height: height,
-      hasBackground: false,
+      hasHeader: hasHeader,
+      hasBackground: hasBackground,
+      backgroundColor: backgroundColor,
+      fontHelper: fontHelper,
     );
   }
 }

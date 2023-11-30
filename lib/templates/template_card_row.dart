@@ -6,23 +6,23 @@ class TemplateCardRow extends MasterTemplate {
   final List<Widget> widgets;
   final double width;
   final double height;
-  final bool hasHeader;
 
   const TemplateCardRow({
     super.key,
     required this.widgets,
     super.title,
     super.titleIcon,
+    super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
+    super.fontHelper,
     this.width = 800,
     this.height = 80,
-    this.hasHeader = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    FontHelper fontHelper = FontHelper(context: context);
+    FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return Container(
       width: width,
@@ -55,8 +55,8 @@ class TemplateCardRow extends MasterTemplate {
                   width: 5,
                 ),
                 Text(
-                  title == null ? "" : title as String,
-                  style: fontHelper.label(),
+                  title ?? "",
+                  style: fh.label(),
                 ),
               ],
             ),

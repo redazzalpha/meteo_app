@@ -12,6 +12,7 @@ import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
+import 'package:meteo_app_v2/pages/search.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_heading.dart';
 import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
@@ -194,7 +195,14 @@ class _HomeState extends State<Home> {
             ),
 
             // bottom bar
-            const BarBottom(),
+            BarBottom(
+              onPressIconList: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const Search(),
+                ),
+              ),
+            ),
           ],
         ),
 

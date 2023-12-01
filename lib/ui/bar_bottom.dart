@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class BarBottom extends StatelessWidget {
   final double height;
   final Color backgroundColor;
+  final void Function() onPressIconList;
   const BarBottom({
     super.key,
+    required this.onPressIconList,
     this.height = 50,
     this.backgroundColor = const Color.fromARGB(173, 0, 0, 0),
   });
@@ -30,12 +32,12 @@ class BarBottom extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-              onPressed: () => log("salut"),
+              onPressed: () => log("Salut"),
               icon: const Icon(Icons.map_outlined),
             ),
             const Spacer(),
             IconButton(
-              onPressed: () => log("salut"),
+              onPressed: onPressIconList,
               icon: const Icon(Icons.list),
             ),
           ],

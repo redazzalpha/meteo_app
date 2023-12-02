@@ -8,7 +8,7 @@ import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
 import 'package:meteo_app_v2/layouts/app_heading.dart';
 import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
-import 'package:meteo_app_v2/ui/sliver_content.dart';
+import 'package:meteo_app_v2/ui/sliver_body.dart';
 import 'package:meteo_app_v2/ui/sliver_header.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -72,7 +72,7 @@ class SliverItem extends MasterSliver {
         ),
 
         // content
-        SliverContent(
+        SliverBody(
           masterApp: masterApp,
         ),
       ],

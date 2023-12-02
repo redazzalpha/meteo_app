@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
               onPressIconList: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => const Search(),
+                  builder: (BuildContext context) => Search(datas: _datas),
                 ),
               ),
             ),

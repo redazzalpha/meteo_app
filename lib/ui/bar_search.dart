@@ -11,7 +11,7 @@ class _BarSearchState extends State<BarSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(50),
       child: SearchAnchor(
           builder: (BuildContext context, SearchController controller) {
         return SearchBar(

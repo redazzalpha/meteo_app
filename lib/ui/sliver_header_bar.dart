@@ -11,13 +11,14 @@ class SliverHeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      primary: true,
       title: const Text("sliver app bar title"),
       centerTitle: true,
       pinned: true,
       expandedHeight: 200,
       backgroundColor: Colors.blue,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(40.0),
+        preferredSize: const Size.fromHeight(35.0),
         child: bottom ?? const SizedBox(),
       ),
       flexibleSpace: const FlexibleSpaceBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app_v2/ui/bar_search.dart';
 import 'package:meteo_app_v2/ui/sliver_header_bar.dart';
 import 'package:meteo_app_v2/ui/sliver_meteo_card.dart';
 
@@ -22,7 +23,9 @@ class _SearchState extends State<Search> {
       body: CustomScrollView(
         controller: _controller,
         slivers: <Widget>[
-          const SliverHeaderBar(),
+          const SliverHeaderBar(
+            bottom: BarSearch(),
+          ),
           SliverMeteoCard(
             cityName: widget.datas["city_info"]["name"],
             conditions: widget.datas["current_condition"]["condition"],

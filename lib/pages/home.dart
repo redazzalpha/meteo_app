@@ -20,9 +20,12 @@ import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
+  final String? currentCity;
+
   // constructor
   const Home({
     super.key,
+    this.currentCity,
   });
 
   // overrides
@@ -32,6 +35,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
+  late String _city = widget.currentCity ?? "paris";
   Map<String, dynamic> _datas = const <String, dynamic>{};
   late final ScrollController _controller;
   final String _dataUrl = dataUrl;
@@ -43,8 +47,9 @@ class _HomeState extends State<Home> {
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
+    _city = localisation;
     try {
-      final response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+      final response = await http.get(Uri.parse("$_dataUrl/$_city"));
       return jsonDecode(response.body) as Map<String, dynamic>;
     } catch (e) {
       log("-- error fetch data: $e");
@@ -56,7 +61,7 @@ class _HomeState extends State<Home> {
     Timer.periodic(
       Duration(milliseconds: milliseconds),
       (_) {
-        _fetchData("Paris").then((datas) {
+        _fetchData(_city).then((datas) {
           if (datas != null) {
             setState(() {
               _datas = datas;
@@ -147,6 +152,19 @@ class _HomeState extends State<Home> {
     });
   }
 
+  Future<void> onPushReturnData() async {
+    String result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => Search(datas: _datas),
+      ),
+    );
+
+    setState(() {
+      _fetchData(result);
+    });
+  }
+
   // overrides
   @override
   void initState() {
@@ -196,12 +214,7 @@ class _HomeState extends State<Home> {
 
             // bottom bar
             BarBottom(
-              onPressIconList: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Search(datas: _datas),
-                ),
-              ),
+              onPressIconList: () => onPushReturnData(),
             ),
           ],
         ),

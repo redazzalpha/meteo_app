@@ -40,7 +40,7 @@ class SliverHeaderBar extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .background
-                        .withOpacity(0.95),
+                        .withOpacity(0.9),
                   ),
                 ),
               ),

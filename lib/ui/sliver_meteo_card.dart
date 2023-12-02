@@ -26,92 +26,100 @@ class SliverMeteoCard extends StatelessWidget {
     FontHelper fh = fontHelper ?? FontHelper(context: context);
 
     return SliverPadding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 10,
+        left: 15,
+        right: 15,
+      ),
       sliver: SliverToBoxAdapter(
-        child: Container(
-          width: 320,
-          height: 150,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(backgroundImage),
-            ),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-
-          // content
-          child: Column(
-            children: [
-              // top content
-              Row(
-                children: [
-                  // city name
-                  Text(
-                    cityName,
-                    style: fh.title(),
-                  ),
-
-                  const Spacer(),
-
-                  // current temperature
-                  Text(
-                    "$currentTemperature°",
-                    style: fh.display(),
-                  ),
-                ],
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context, "Marseille"),
+          child: Container(
+            width: 320,
+            height: 150,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(backgroundImage),
               ),
-
-              const Spacer(),
-
-              // bottom content
-              Row(
-                children: [
-                  // conditions
-                  Text(
-                    conditions,
-                    style: fh.label(),
-                  ),
-
-                  const Spacer(),
-
-                  // min max temperature
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // icon arrow up
-                      const Icon(
-                        Icons.arrow_upward,
-                      ),
-
-                      // max temperature
-                      Text(
-                        "$maxTemperature°",
-                        style: fh.label(),
-                      ),
-
-                      // padding boxed
-                      const SizedBox(
-                        width: 5,
-                      ),
-
-                      // icon arrow down
-                      const Icon(
-                        Icons.arrow_downward,
-                      ),
-
-                      // min temperature
-                      Text(
-                        "$minTemperature°",
-                        style: fh.label(),
-                      ),
-                    ],
-                  ),
-                ],
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
               ),
-            ],
+            ),
+
+            // content
+            child: Column(
+              children: [
+                // top content
+                Row(
+                  children: [
+                    // city name
+                    Text(
+                      cityName,
+                      style: fh.title(),
+                    ),
+
+                    const Spacer(),
+
+                    // current temperature
+                    Text(
+                      "$currentTemperature°",
+                      style: fh.display(),
+                    ),
+                  ],
+                ),
+
+                const Spacer(),
+
+                // bottom content
+                Row(
+                  children: [
+                    // conditions
+                    Text(
+                      conditions,
+                      style: fh.label(),
+                    ),
+
+                    const Spacer(),
+
+                    // min max temperature
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // icon arrow up
+                        const Icon(
+                          Icons.arrow_upward,
+                        ),
+
+                        // max temperature
+                        Text(
+                          "$maxTemperature°",
+                          style: fh.label(),
+                        ),
+
+                        // padding boxed
+                        const SizedBox(
+                          width: 5,
+                        ),
+
+                        // icon arrow down
+                        const Icon(
+                          Icons.arrow_downward,
+                        ),
+
+                        // min temperature
+                        Text(
+                          "$minTemperature°",
+                          style: fh.label(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

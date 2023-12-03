@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,73 +12,86 @@ class BarSearch extends StatefulWidget {
 }
 
 class _BarSearchState extends State<BarSearch> {
-  List<dynamic> _searchResult = <dynamic>[];
-  final double _width = 800;
+  List<dynamic> _searchResults = <dynamic>[];
   final double _height = 35;
-  late final SearchController _controller;
+  // late String _cityName;
+  // late String _zipCode;
+  // late String _suggestion;
+
+// methods
+  String checkZipCode(final int index) {
+    if (_searchResults[index]['codesPostaux'].isNotEmpty) {
+      return "${_searchResults[index]['codesPostaux'][0]}";
+    } else {
+      return "(code postal indéfini)";
+    }
+  }
 
 // event handlers
-  void onActionController() async {
-    if (_controller.text.isNotEmpty) {
-      final response =
-          await http.get(Uri.parse("$searchUrl/${_controller.text}"));
-
-      setState(() {
-        _searchResult = jsonDecode(response.body) as List<dynamic>;
-      });
+  Future<void> _onSearchAction(final String input) async {
+    if (input.isNotEmpty) {
+      final response = await http.get(Uri.parse("$searchUrl/$input"));
+      _searchResults = jsonDecode(response.body) as List<dynamic>;
     }
   }
 
   @override
   void initState() {
-    _controller = SearchController();
-    _controller.addListener(onActionController);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(50),
+      padding: const EdgeInsets.only(
+        top: 60,
+        bottom: 40,
+        left: 15,
+        right: 15,
+      ),
       child: SearchAnchor(
-        isFullScreen: true,
-        searchController: _controller,
-
         // search bar
         builder: (BuildContext context, SearchController controller) {
-          return SearchBar(
-            onTap: () {
-              controller.openView();
-            },
-            onChanged: (final String input) {
-              log("input: $input");
-              controller.openView();
-            },
-            leading: const Icon(Icons.search),
-            constraints: BoxConstraints(
-              minHeight: _height,
-              maxHeight: _height,
-              minWidth: _width,
-              maxWidth: _width,
+          return Container(
+            width: double.maxFinite,
+            height: _height,
+            padding: const EdgeInsets.only(
+              left: 10,
             ),
-            hintText: "rechercher une ville",
+            decoration: const BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.search),
+                SizedBox(width: 15),
+                Text("rechercher une ville")
+              ],
+            ),
           );
         },
 
-        // list result
+        // result list
         suggestionsBuilder:
-            (BuildContext context, SearchController controller) {
-          return List<ListTile>.generate(_searchResult.length, (int index) {
+            (BuildContext context, SearchController controller) async {
+          await _onSearchAction(controller.text);
+
+          return List<ListTile>.generate(_searchResults.length, (int index) {
+            String cityName = _searchResults[index]['nom'];
+            String zipCode = checkZipCode(index);
+            String suggestion = "$cityName - $zipCode";
+
             return ListTile(
-                title: Text("${_searchResult[index]['nom']}"),
+                title: Text(suggestion),
                 onTap: () {
-                  setState(() {
-                    // if (_searchResult[index]['index'])
-                    controller.closeView(null);
-                    if (_searchResult[index]['nom'].isNotEmpty) {
-                      Navigator.pop(context, _searchResult[index]['nom']);
-                    }
-                  });
+                  // setState(() {});
+                  controller.closeView(suggestion);
+                  Navigator.pop(context, suggestion.split(" - ")[0]);
+                  // if (_cityName.isNotEmpty) {
+                  // }
                 });
           });
         },

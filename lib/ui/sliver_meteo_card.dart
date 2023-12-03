@@ -34,7 +34,7 @@ class SliverMeteoCard extends StatelessWidget {
       ),
       sliver: SliverToBoxAdapter(
         child: GestureDetector(
-          onTap: () => Navigator.pop(context, "Marseille"),
+          onTap: () => Navigator.pop(context, cityName),
           child: Container(
             width: 320,
             height: 150,

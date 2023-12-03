@@ -62,14 +62,14 @@ class _HomeState extends State<Home> {
       Duration(milliseconds: milliseconds),
       (_) {
         _fetchData(_city).then((datas) {
-          if (datas != null) {
+          if (datas != null && datas['current_condition'] != null) {
             setState(() {
               _datas = datas;
               _background =
                   "assets/weather/${_datas['current_condition']['condition_key']}.gif";
               log("-- async data fetched");
             });
-          }
+          } else {}
         });
       },
     );
@@ -160,9 +160,11 @@ class _HomeState extends State<Home> {
       ),
     );
 
-    setState(() {
-      _fetchData(result);
-    });
+    if (result.isNotEmpty) {
+      setState(() {
+        _city = result;
+      });
+    }
   }
 
   // overrides

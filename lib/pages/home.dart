@@ -20,12 +20,12 @@ import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
-  final String? currentCity;
+  final String cityName;
 
   // constructor
   const Home({
     super.key,
-    this.currentCity,
+    required this.cityName,
   });
 
   // overrides
@@ -35,7 +35,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
-  late String _city = widget.currentCity ?? "paris";
+  late String _cityName;
+  late String _cityNameTemp;
   Map<String, dynamic> _datas = const <String, dynamic>{};
   late final ScrollController _controller;
   final String _dataUrl = dataUrl;
@@ -47,9 +48,8 @@ class _HomeState extends State<Home> {
 
   // methods
   Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
-    _city = localisation;
     try {
-      final response = await http.get(Uri.parse("$_dataUrl/$_city"));
+      final response = await http.get(Uri.parse("$_dataUrl/$_cityName"));
       return jsonDecode(response.body) as Map<String, dynamic>;
     } catch (e) {
       log("-- error fetch data: $e");
@@ -61,15 +61,29 @@ class _HomeState extends State<Home> {
     Timer.periodic(
       Duration(milliseconds: milliseconds),
       (_) {
-        _fetchData(_city).then((datas) {
-          if (datas != null && datas['current_condition'] != null) {
+        _fetchData(_cityName).then((datas) {
+          if (datas != null && datas['errors'] == null) {
             setState(() {
               _datas = datas;
               _background =
                   "assets/weather/${_datas['current_condition']['condition_key']}.gif";
+              _cityNameTemp = _cityName;
               log("-- async data fetched");
             });
-          } else {}
+          } else {
+            // possible values for errors
+            // 'code', 'text' or 'description'
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                content: Text(
+                  "$_cityName : ${datas!['errors'][0]['text']} !",
+                  style: _fontHelper.label(),
+                ),
+              ),
+            );
+            _cityName = _cityNameTemp;
+          }
         });
       },
     );
@@ -162,7 +176,7 @@ class _HomeState extends State<Home> {
 
     if (result.isNotEmpty) {
       setState(() {
-        _city = result;
+        _cityName = result;
       });
     }
   }
@@ -170,6 +184,8 @@ class _HomeState extends State<Home> {
   // overrides
   @override
   void initState() {
+    _cityName = widget.cityName;
+    _cityNameTemp = _cityName;
     _fontHelper = FontHelper(context: context);
     _controller = ScrollController();
     _controller.addListener(() => _onScroll());
@@ -179,51 +195,53 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      children: [
-        // first page
-        Stack(
-          children: [
-            // main content
-            Container(
-              padding: const EdgeInsets.all(basePadding),
+    return Scaffold(
+      body: PageView(
+        children: [
+          // first page
+          Stack(
+            children: [
+              // main content
+              Container(
+                padding: const EdgeInsets.all(basePadding),
 
-              // shaped background
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(49, 0, 0, 0),
-                image: DecorationImage(
-                  image: AssetImage(
-                    _background,
+                // shaped background
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(49, 0, 0, 0),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      _background,
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
+                ),
+
+                // scroll view
+                child: CustomScrollView(
+                  controller: _controller,
+                  slivers: [
+                    // master sliver items
+                    _masterSlivers(),
+
+                    // padding for stacked bottom app bar
+                    const SliverPadding(
+                      padding: EdgeInsets.only(bottom: 80),
+                    ),
+                  ],
                 ),
               ),
 
-              // scroll view
-              child: CustomScrollView(
-                controller: _controller,
-                slivers: [
-                  // master sliver items
-                  _masterSlivers(),
-
-                  // padding for stacked bottom app bar
-                  const SliverPadding(
-                    padding: EdgeInsets.only(bottom: 80),
-                  ),
-                ],
+              // bottom bar
+              BarBottom(
+                onPressIconList: () => onPushReturnData(),
               ),
-            ),
+            ],
+          ),
 
-            // bottom bar
-            BarBottom(
-              onPressIconList: () => onPushReturnData(),
-            ),
-          ],
-        ),
-
-        // other pages here
-        // ...
-      ],
+          // other pages here
+          // ...
+        ],
+      ),
     );
   }
 }

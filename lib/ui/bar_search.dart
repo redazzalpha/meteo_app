@@ -14,9 +14,6 @@ class BarSearch extends StatefulWidget {
 class _BarSearchState extends State<BarSearch> {
   List<dynamic> _searchResults = <dynamic>[];
   final double _height = 35;
-  // late String _cityName;
-  // late String _zipCode;
-  // late String _suggestion;
 
 // methods
   String checkZipCode(final int index) {
@@ -89,7 +86,7 @@ class _BarSearchState extends State<BarSearch> {
                 onTap: () {
                   // setState(() {});
                   controller.closeView(suggestion);
-                  Navigator.pop(context, suggestion.split(" - ")[0]);
+                  Navigator.pop(context, cityName);
                   // if (_cityName.isNotEmpty) {
                   // }
                 });

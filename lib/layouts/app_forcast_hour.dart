@@ -5,6 +5,7 @@ import 'package:meteo_app_v2/classes/prevision_hour.dart';
 import 'package:meteo_app_v2/classes/prevision_sun.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 import 'package:meteo_app_v2/views/forcast_hour_view.dart';
 
 class AppForcastHour extends MasterApp {
@@ -31,7 +32,7 @@ class AppForcastHour extends MasterApp {
 
   void _insertPrevision(
     final List<MasterPrevison> previsions,
-    final Map<String, dynamic> hourly,
+    final Data hourly,
     final int hourInt,
   ) {
     final String sunrise = datas["city_info"]["sunrise"];
@@ -84,9 +85,9 @@ class AppForcastHour extends MasterApp {
     }
   }
 
-  void _createPrevisions(int hourInt, final Map<String, dynamic> hourlyData,
+  void _createPrevisions(int hourInt, final Data hourlyData,
       final List<MasterPrevison> previsions) {
-    late Map<String, dynamic> hourly;
+    late Data hourly;
     int i = 0, max = 24;
     bool stop = false;
 
@@ -105,7 +106,7 @@ class AppForcastHour extends MasterApp {
 
   List<MasterPrevison> _buildPrevisions() {
     final List<MasterPrevison> previsions = <MasterPrevison>[];
-    final Map<String, dynamic> hourlyData = datas["fcst_day_0"]["hourly_data"];
+    final Data hourlyData = datas["fcst_day_0"]["hourly_data"];
     final String hourStr = datas["current_condition"]["hour"].split(":")[0];
     final int hourInt = int.parse(hourStr);
 

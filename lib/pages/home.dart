@@ -17,7 +17,8 @@ import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_heading.dart';
 import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meteo_app_v2/utils/functions.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
@@ -32,12 +33,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  List<String> _favCityNames = <String>["Paris"];
-
-  late final GlobalKey _scaffoldMessenger;
-
   // variables
+  final List<FutureDataNullable> _favCityDatas = <FutureDataNullable>[];
   late String _cityName;
   late String _cityNameTemp;
   late final ScrollController _controller;
@@ -45,56 +42,17 @@ class _HomeState extends State<Home> {
   final int _timeoutTimer = 3000;
   final double _scrollOffset = 45;
   late final FontHelper _fontHelper;
-  Map<String, dynamic> _datas = const <String, dynamic>{};
+  Data _datas = Data();
   String _background = defaultBackground;
   bool _headingShort = false;
 
   // methods
-  Future<List<String>> getFavCity() async {
-    final SharedPreferences prefs = await _prefs;
-    List<String> cityNames =
-        prefs.getStringList('favCityNames') ?? <String>["Paris"];
 
-    return cityNames;
-  }
-
-  Future<bool> addFavCity(final String cityName) async {
-    final SharedPreferences prefs = await _prefs;
-    List<String> cityNames = prefs.getStringList('favCityNames') ?? <String>[];
-    cityNames.add(cityName);
-
-    return await prefs.setStringList('favCityNames', cityNames);
-  }
-
-  Future<bool> removeFavCity(final String cityName) async {
-    final SharedPreferences prefs = await _prefs;
-    List<String> cityNames =
-        prefs.getStringList('favCityNames') ?? <String>[cityName];
-
-    bool inserted = cityNames.remove(cityName);
-    bool ready = await prefs.setStringList('favCityNames', cityNames);
-
-    return inserted && ready;
-  }
-
-  Future<bool> clearFavCity(final String cityName) async {
-    final SharedPreferences prefs = await _prefs;
-    List<String> cityNames =
-        prefs.getStringList('favCityNames') ?? <String>[cityName];
-    cityNames.clear();
-
-    return await prefs.setStringList('favCityNames', cityNames);
-  }
-
-  Future<bool> clearPrefs(final String cityName) async {
-    final SharedPreferences prefs = await _prefs;
-    return await prefs.clear();
-  }
-
-  Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
+  Future<DataNullable> _fetchData(final String localisation) async {
     try {
-      final response = await http.get(Uri.parse("$_dataUrl/$_cityName"));
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      _cityName = localisation;
+      final response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+      return jsonDecode(response.body) as Data;
     } catch (e) {
       log("-- error fetch data: $e");
       return null;
@@ -229,11 +187,14 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Future<void> onPushReturnData() async {
+  Future<void> onNavigatorPush() async {
     String result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => Search(datas: _datas),
+        builder: (BuildContext context) => Search(
+          datas: _datas,
+          favCityDatas: _favCityDatas,
+        ),
       ),
     );
 
@@ -248,24 +209,32 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    // clearSharedPrefs();
+    // addFavCity("Paris");
+    // addFavCity("Marseille");
+    // addFavCity("Lyon");
 
-    getFavCity().then((value) {
-      _cityName = value[0];
-      _cityNameTemp = _cityName;
+    getFavCity().then((cities) {
+      late String lastCityName;
+      for (int i = 0; i < cities.length; i++) {
+        _favCityDatas.add(_fetchData(cities[i]));
+        lastCityName = cities[i];
+      }
+      setState(() {
+        _cityName = lastCityName;
+        _cityNameTemp = _cityName;
+      });
     });
 
     _fontHelper = FontHelper(context: context);
-    _scaffoldMessenger = GlobalKey();
     _controller = ScrollController();
     _controller.addListener(() => _onScroll());
     _refreshDataTimer(milliseconds: _timeoutTimer);
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldMessenger,
       body: PageView(
         children: [
           // first page
@@ -303,7 +272,7 @@ class _HomeState extends State<Home> {
 
               // bottom bar
               BarBottom(
-                onPressIconList: () => onPushReturnData(),
+                onPressIconList: () => onNavigatorPush(),
               ),
             ],
           ),

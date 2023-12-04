@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 import 'package:meteo_app_v2/views/air_view.dart';
 
 class AppAir extends MasterApp {
@@ -22,7 +23,7 @@ class AppAir extends MasterApp {
   @override
   Widget build(BuildContext context) {
     final String currentTime = datas["current_condition"]["hour"];
-    final Map<String, dynamic> hourly =
+    final Data hourly =
         datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
 
     return AirView(

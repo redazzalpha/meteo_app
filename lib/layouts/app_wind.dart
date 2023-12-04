@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 import 'package:meteo_app_v2/views/wind_view.dart';
 
 class AppWind extends MasterApp {
@@ -23,7 +24,7 @@ class AppWind extends MasterApp {
   Widget build(BuildContext context) {
     if (!isReady()) return const Text("");
     final String currentTime = datas["current_condition"]["hour"];
-    final Map<String, dynamic> hourly =
+    final Data hourly =
         datas["fcst_day_0"]["hourly_data"][normalizeTime(currentTime)];
 
     return WindView(

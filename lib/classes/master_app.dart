@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 
 abstract class MasterApp extends StatelessWidget {
-  final Map<String, dynamic> datas;
+  final Data datas;
   final double width;
   final double height;
   final bool hasHeader;

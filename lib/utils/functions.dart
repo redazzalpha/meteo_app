@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/color_stops.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// normalizeTemperature is a function that convert
 /// the given temperature in double to int
@@ -105,4 +106,60 @@ int fixInt(final dynamic value) {
   if (valDouble != null) return int.parse("$value".split('.')[0]);
 
   return 0;
+}
+
+Future<List<String>> getFavCity() async {
+  final Future<SharedPreferences> prefsInstance =
+      SharedPreferences.getInstance();
+
+  final SharedPreferences prefs = await prefsInstance;
+  List<String> cityNames =
+      prefs.getStringList('favCityNames') ?? <String>["Paris"];
+
+  return cityNames;
+}
+
+Future<bool> addFavCity(final String cityName) async {
+  final Future<SharedPreferences> prefsInstance =
+      SharedPreferences.getInstance();
+
+  final SharedPreferences prefs = await prefsInstance;
+  List<String> cityNames = prefs.getStringList('favCityNames') ?? <String>[];
+  if (!cityNames.contains(cityName)) cityNames.add(cityName);
+
+  return await prefs.setStringList('favCityNames', cityNames);
+}
+
+Future<bool> removeFavCity(final String cityName) async {
+  final Future<SharedPreferences> prefsInstance =
+      SharedPreferences.getInstance();
+
+  final SharedPreferences prefs = await prefsInstance;
+  List<String> cityNames =
+      prefs.getStringList('favCityNames') ?? <String>[cityName];
+
+  bool inserted = cityNames.remove(cityName);
+  bool ready = await prefs.setStringList('favCityNames', cityNames);
+
+  return inserted && ready;
+}
+
+Future<bool> clearFavCity(final String cityName) async {
+  final Future<SharedPreferences> prefsInstance =
+      SharedPreferences.getInstance();
+
+  final SharedPreferences prefs = await prefsInstance;
+  List<String> cityNames =
+      prefs.getStringList('favCityNames') ?? <String>[cityName];
+  cityNames.clear();
+
+  return await prefs.setStringList('favCityNames', cityNames);
+}
+
+Future<bool> clearSharedPrefs() async {
+  final Future<SharedPreferences> prefsInstance =
+      SharedPreferences.getInstance();
+
+  final SharedPreferences prefs = await prefsInstance;
+  return await prefs.clear();
 }

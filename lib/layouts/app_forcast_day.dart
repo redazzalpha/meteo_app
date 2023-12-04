@@ -3,6 +3,7 @@ import 'package:meteo_app_v2/classes/master_app.dart';
 import 'package:meteo_app_v2/classes/prevision_day.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
+import 'package:meteo_app_v2/utils/types.dart';
 import 'package:meteo_app_v2/views/forcast_day_view.dart';
 
 class AppForcastDay extends MasterApp {
@@ -20,7 +21,7 @@ class AppForcastDay extends MasterApp {
     super.backgroundColor = defaultAppBackgroundColor,
   });
 
-  String _normalizeDay(final Map<String, dynamic> dailyDatas) {
+  String _normalizeDay(final Data dailyDatas) {
     return dailyDatas["day_short"] == datas["fcst_day_0"]["day_short"]
         ? "Auj."
         : dailyDatas["day_short"];
@@ -69,7 +70,7 @@ class AppForcastDay extends MasterApp {
     final List<PrevisionDay> previsions = <PrevisionDay>[];
 
     for (int i = 0; i < 5; i++) {
-      final Map<String, dynamic> dailyDatas = datas["fcst_day_$i"];
+      final Data dailyDatas = datas["fcst_day_$i"];
       // const min = -20;
       // const max = 50;
       final min = dailyDatas["tmin"];

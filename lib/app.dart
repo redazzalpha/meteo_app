@@ -9,7 +9,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "meteo_app",
-      home: const Home(cityName: "paris"),
+      home: const Home(),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: const ColorScheme.dark(),

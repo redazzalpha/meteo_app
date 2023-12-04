@@ -17,15 +17,13 @@ import 'package:meteo_app_v2/ui/bar_bottom.dart';
 import 'package:meteo_app_v2/ui/sliver_heading.dart';
 import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
-  final String cityName;
-
   // constructor
   const Home({
     super.key,
-    required this.cityName,
   });
 
   // overrides
@@ -34,19 +32,65 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  List<String> _favCityNames = <String>["Paris"];
+
+  late final GlobalKey _scaffoldMessenger;
+
   // variables
   late String _cityName;
   late String _cityNameTemp;
-  Map<String, dynamic> _datas = const <String, dynamic>{};
   late final ScrollController _controller;
   final String _dataUrl = dataUrl;
   final int _timeoutTimer = 3000;
   final double _scrollOffset = 45;
   late final FontHelper _fontHelper;
+  Map<String, dynamic> _datas = const <String, dynamic>{};
   String _background = defaultBackground;
   bool _headingShort = false;
 
   // methods
+  Future<List<String>> getFavCity() async {
+    final SharedPreferences prefs = await _prefs;
+    List<String> cityNames =
+        prefs.getStringList('favCityNames') ?? <String>["Paris"];
+
+    return cityNames;
+  }
+
+  Future<bool> addFavCity(final String cityName) async {
+    final SharedPreferences prefs = await _prefs;
+    List<String> cityNames = prefs.getStringList('favCityNames') ?? <String>[];
+    cityNames.add(cityName);
+
+    return await prefs.setStringList('favCityNames', cityNames);
+  }
+
+  Future<bool> removeFavCity(final String cityName) async {
+    final SharedPreferences prefs = await _prefs;
+    List<String> cityNames =
+        prefs.getStringList('favCityNames') ?? <String>[cityName];
+
+    bool inserted = cityNames.remove(cityName);
+    bool ready = await prefs.setStringList('favCityNames', cityNames);
+
+    return inserted && ready;
+  }
+
+  Future<bool> clearFavCity(final String cityName) async {
+    final SharedPreferences prefs = await _prefs;
+    List<String> cityNames =
+        prefs.getStringList('favCityNames') ?? <String>[cityName];
+    cityNames.clear();
+
+    return await prefs.setStringList('favCityNames', cityNames);
+  }
+
+  Future<bool> clearPrefs(final String cityName) async {
+    final SharedPreferences prefs = await _prefs;
+    return await prefs.clear();
+  }
+
   Future<Map<String, dynamic>?> _fetchData(final String localisation) async {
     try {
       final response = await http.get(Uri.parse("$_dataUrl/$_cityName"));
@@ -66,12 +110,20 @@ class _HomeState extends State<Home> {
             if (datas["errors"] != null) {
               // possible values for errors
               // 'code', 'text' or 'description'
-              ScaffoldMessenger.of(context).showSnackBar(
+
+              ScaffoldMessengerState scaffoldMessengerState =
+                  ScaffoldMessenger.of(context);
+
+              scaffoldMessengerState.showSnackBar(
                 SnackBar(
                   backgroundColor: Theme.of(context).colorScheme.background,
                   content: Text(
                     "$_cityName : ${datas['errors'][0]['text']} !",
                     style: _fontHelper.label(),
+                  ),
+                  action: SnackBarAction(
+                    label: "Close",
+                    onPressed: scaffoldMessengerState.hideCurrentSnackBar,
                   ),
                 ),
               );
@@ -88,15 +140,20 @@ class _HomeState extends State<Home> {
               });
             }
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                content: Text(
-                  "error fetch data server is unavailable",
-                  style: _fontHelper.label(),
-                ),
+            ScaffoldMessengerState scaffoldMessengerState =
+                ScaffoldMessenger.of(context);
+
+            scaffoldMessengerState.showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              content: Text(
+                "error fetch data server is unavailable",
+                style: _fontHelper.label(),
               ),
-            );
+              action: SnackBarAction(
+                label: "Close",
+                onPressed: scaffoldMessengerState.hideCurrentSnackBar,
+              ),
+            ));
           }
         });
       },
@@ -198,18 +255,25 @@ class _HomeState extends State<Home> {
   // overrides
   @override
   void initState() {
-    _cityName = widget.cityName;
-    _cityNameTemp = _cityName;
+    super.initState();
+
+    getFavCity().then((value) {
+      _cityName = value[0];
+      _cityNameTemp = _cityName;
+    });
+
     _fontHelper = FontHelper(context: context);
+    _scaffoldMessenger = GlobalKey();
     _controller = ScrollController();
     _controller.addListener(() => _onScroll());
-    super.initState();
     _refreshDataTimer(milliseconds: _timeoutTimer);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldMessenger,
       body: PageView(
         children: [
           // first page

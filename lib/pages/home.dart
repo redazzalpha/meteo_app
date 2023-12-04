@@ -62,27 +62,41 @@ class _HomeState extends State<Home> {
       Duration(milliseconds: milliseconds),
       (_) {
         _fetchData(_cityName).then((datas) {
-          if (datas != null && datas['errors'] == null) {
-            setState(() {
-              _datas = datas;
-              _background =
-                  "assets/weather/${_datas['current_condition']['condition_key']}.gif";
-              _cityNameTemp = _cityName;
-              log("-- async data fetched");
-            });
+          if (datas != null) {
+            if (datas["errors"] != null) {
+              // possible values for errors
+              // 'code', 'text' or 'description'
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  content: Text(
+                    "$_cityName : ${datas['errors'][0]['text']} !",
+                    style: _fontHelper.label(),
+                  ),
+                ),
+              );
+              // switch back to the old value
+              _cityName = _cityNameTemp;
+            } else {
+              setState(() {
+                _datas = datas;
+                _background =
+                    "assets/weather/${_datas['current_condition']['condition_key']}.gif";
+                // store current value to get it back if needeed
+                _cityNameTemp = _cityName;
+                log("-- async data fetched");
+              });
+            }
           } else {
-            // possible values for errors
-            // 'code', 'text' or 'description'
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Theme.of(context).colorScheme.background,
                 content: Text(
-                  "$_cityName : ${datas!['errors'][0]['text']} !",
+                  "error fetch data server is unavailable",
                   style: _fontHelper.label(),
                 ),
               ),
             );
-            _cityName = _cityNameTemp;
           }
         });
       },

@@ -110,23 +110,8 @@ class _HomeState extends State<Home> {
             if (datas["errors"] != null) {
               // possible values for errors
               // 'code', 'text' or 'description'
+              showSnackBar("$_cityName : ${datas['errors'][0]['text']} !");
 
-              ScaffoldMessengerState scaffoldMessengerState =
-                  ScaffoldMessenger.of(context);
-
-              scaffoldMessengerState.showSnackBar(
-                SnackBar(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  content: Text(
-                    "$_cityName : ${datas['errors'][0]['text']} !",
-                    style: _fontHelper.label(),
-                  ),
-                  action: SnackBarAction(
-                    label: "Close",
-                    onPressed: scaffoldMessengerState.hideCurrentSnackBar,
-                  ),
-                ),
-              );
               // switch back to the old value
               _cityName = _cityNameTemp;
             } else {
@@ -140,23 +125,30 @@ class _HomeState extends State<Home> {
               });
             }
           } else {
-            ScaffoldMessengerState scaffoldMessengerState =
-                ScaffoldMessenger.of(context);
-
-            scaffoldMessengerState.showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).colorScheme.background,
-              content: Text(
-                "error fetch data server is unavailable",
-                style: _fontHelper.label(),
-              ),
-              action: SnackBarAction(
-                label: "Close",
-                onPressed: scaffoldMessengerState.hideCurrentSnackBar,
-              ),
-            ));
+            showSnackBar("error fetch data server is unavailable");
           }
         });
       },
+    );
+  }
+
+  void showSnackBar(final String message) {
+    ScaffoldMessengerState scaffoldMessengerState =
+        ScaffoldMessenger.of(context);
+
+    scaffoldMessengerState.showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        content: Text(
+          message,
+          style: _fontHelper.label(),
+        ),
+        action: SnackBarAction(
+          textColor: _fontHelper.label().color,
+          label: "Close",
+          onPressed: scaffoldMessengerState.hideCurrentSnackBar,
+        ),
+      ),
     );
   }
 

@@ -17,7 +17,7 @@ class SliverHeaderBar extends StatelessWidget {
       primary: true,
       title: const Text("météo"),
       pinned: true,
-      toolbarHeight: 100,
+      toolbarHeight: 86,
       expandedHeight: 200,
       backgroundColor: Colors.transparent,
       bottom: PreferredSize(

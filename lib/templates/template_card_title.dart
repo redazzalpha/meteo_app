@@ -3,8 +3,6 @@ import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_template.dart';
 
 class TemplateCardTitle extends MasterTemplate {
-  final FontHelper? fontHelper;
-
   const TemplateCardTitle({
     super.key,
     super.title,
@@ -12,7 +10,7 @@ class TemplateCardTitle extends MasterTemplate {
     super.hasHeader = true,
     super.hasBackground = true,
     super.backgroundColor = Colors.transparent,
-    this.fontHelper,
+    super.fontHelper,
   });
 
   @override

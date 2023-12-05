@@ -3,6 +3,7 @@ import 'package:meteo_app_v2/ui/bar_search.dart';
 import 'package:meteo_app_v2/ui/sliver_header_bar.dart';
 import 'package:meteo_app_v2/ui/sliver_meteo_card.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
+import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/utils/types.dart';
 
 class Search extends StatefulWidget {
@@ -22,18 +23,48 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   late final ListDataNullable _favCityDatas;
+  // String _cityName = "";
+
+  // void setCityName(final String cityName) {
+  //   _cityName = cityName;
+  // }
+
+  // event handlers
+  void onTapMeteoCard(BuildContext context, final String cityName) {
+    Navigator.pop(context, cityName);
+  }
+
+  void onAddFavCity(final String cityName) {
+    addFavCity(cityName);
+  }
+
+  void onRemoveFavCity(final String cityName) {
+    removeFavCity(cityName);
+  }
+
+  void onNavigatorPop(BuildContext context, final String cityName) {
+    if (cityName.isNotEmpty) {
+      Navigator.pop(context, cityName);
+    }
+  }
 
   // methods
   List<Widget> _buildSearchPage() {
-    List<Widget> meteoCards = <Widget>[
-      const SliverHeaderBar(
-        bottom: BarSearch(),
-      )
+    List<Widget> children = <Widget>[
+      SliverHeaderBar(
+        bottom: BarSearch(
+          // setCityName: setCityName,
+          onNavigatorPop: onNavigatorPop,
+          onAdd: onAddFavCity,
+        ),
+      ),
     ];
 
     for (int i = 0; i < _favCityDatas.length; i++) {
-      meteoCards.add(
+      children.add(
         SliverMeteoCard(
+          onTap: onTapMeteoCard,
+          onRemove: onRemoveFavCity,
           cityName: _favCityDatas[i]?["city_info"]["name"],
           conditions: _favCityDatas[i]?["current_condition"]["condition"],
           currentTemperature: _favCityDatas[i]?["current_condition"]["tmp"],
@@ -45,7 +76,7 @@ class _SearchState extends State<Search> {
       );
     }
 
-    return meteoCards;
+    return children;
   }
 
   List<Widget> _buildLoadingPage() {

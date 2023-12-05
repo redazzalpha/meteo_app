@@ -5,7 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/utils/defines.dart';
 
 class BarSearch extends StatefulWidget {
-  const BarSearch({super.key});
+  final void Function(String) onAdd;
+  final void Function(BuildContext context, String) onNavigatorPop;
+  // final void Function(String) setCityName;
+  const BarSearch({
+    super.key,
+    required this.onAdd,
+    required this.onNavigatorPop,
+    // required this.setCityName,
+  });
 
   @override
   State<StatefulWidget> createState() => _BarSearchState();
@@ -14,6 +22,8 @@ class BarSearch extends StatefulWidget {
 class _BarSearchState extends State<BarSearch> {
   List<dynamic> _searchResults = <dynamic>[];
   final double _height = 35;
+  late SearchController _searchController;
+  bool _isAdding = false;
 
 // methods
   String checkZipCode(final int index) {
@@ -32,67 +42,100 @@ class _BarSearchState extends State<BarSearch> {
     }
   }
 
+  void addToFavorite() {
+    _isAdding = true;
+    _searchController.openView();
+  }
+
   @override
   void initState() {
     super.initState();
+    _searchController = SearchController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(
-        top: 60,
-        bottom: 40,
-        left: 15,
-        right: 15,
-      ),
-      child: SearchAnchor(
-        // search bar
-        builder: (BuildContext context, SearchController controller) {
-          return Container(
-            width: double.maxFinite,
-            height: _height,
-            padding: const EdgeInsets.only(
-              left: 10,
-            ),
-            decoration: const BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.all(
-                Radius.circular(15),
-              ),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.search),
-                SizedBox(width: 15),
-                Text("rechercher une ville")
-              ],
-            ),
-          );
-        },
+    return ButtonBar(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+            top: 35,
+            bottom: 35,
+            left: 15,
+            right: 15,
+          ),
+          child: SearchAnchor(
+            searchController: _searchController,
+            // search bar
+            builder: (BuildContext context, SearchController controller) {
+              return Container(
+                width: double.maxFinite,
+                height: _height,
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    // search icon
+                    const Icon(Icons.search),
+                    // padding
+                    const SizedBox(width: 15),
+                    // placeholder
+                    const Text("rechercher une ville"),
+                    // spacer
+                    const Spacer(),
+                    // add buttonIcon
+                    IconButton(
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      onPressed: addToFavorite,
+                      icon: const Icon(Icons.add_circle_outline),
+                    ),
+                    const SizedBox(width: 15),
+                  ],
+                ),
+              );
+            },
 
-        // result list
-        suggestionsBuilder:
-            (BuildContext context, SearchController controller) async {
-          await _onSearchAction(controller.text);
+            // result list
+            suggestionsBuilder:
+                (BuildContext context, SearchController controller) async {
+              await _onSearchAction(controller.text);
 
-          return List<ListTile>.generate(_searchResults.length, (int index) {
-            String cityName = _searchResults[index]['nom'];
-            String zipCode = checkZipCode(index);
-            String suggestion = "$cityName - $zipCode";
+              return List<ListTile>.generate(_searchResults.length,
+                  (int index) {
+                String cityName = _searchResults[index]['nom'];
+                String zipCode = checkZipCode(index);
+                String suggestion = "$cityName - $zipCode";
 
-            return ListTile(
-                title: Text(suggestion),
-                onTap: () {
-                  // setState(() {});
-                  controller.closeView(suggestion);
-                  Navigator.pop(context, cityName);
-                  // if (_cityName.isNotEmpty) {
-                  // }
-                });
-          });
-        },
-      ),
+                return ListTile(
+                  title: Text(suggestion),
+                  onTap: () {
+                    if (_isAdding) {
+                      widget.onAdd(cityName);
+                      _isAdding = false;
+                    }
+
+                    // widget.setCityName(cityName);
+                    controller.closeView(suggestion);
+                    widget.onNavigatorPop(context, cityName);
+
+                    // Navigator.pop(context, cityName);
+                    // if (_cityName.isNotEmpty) {
+                    // }
+                  },
+                );
+              });
+            },
+          ),
+        )
+      ],
     );
   }
 }

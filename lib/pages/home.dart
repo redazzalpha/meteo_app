@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
   // variables
   FutureDataNullable _futureData = Future(() => null);
   Data _data = Data();
-  final List<FutureDataNullable> _futureFavCityDatas = <FutureDataNullable>[];
+  final ListDataNullable _futureFavCityDatas = [];
   final String _dataUrl = dataUrl;
   late String _cityName;
   late final FontHelper _fontHelper;
@@ -276,7 +276,6 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => Search(
-          data: _data,
           futureFavCityDatas: _futureFavCityDatas,
         ),
       ),
@@ -299,16 +298,16 @@ class _HomeState extends State<Home> {
     // addFavCity("Marseille");
     // addFavCity("Lyon");
     // clearSharedPrefs();
-    getFavCity().then((cities) {
+    getFavCity().then((cities) async {
       late String lastCityName;
       for (int i = 0; i < cities.length; i++) {
-        _futureFavCityDatas.add(_fetchData(cities[i]));
+        _futureFavCityDatas.add(await _fetchData(cities[i]));
         lastCityName = cities[i];
       }
 
       setState(() {
         _cityName = lastCityName;
-        _futureData = _futureFavCityDatas.last;
+        _futureData = Future(() => _futureFavCityDatas.last);
         _refreshDataTimer(milliseconds: _timeoutRefreshTimer);
       });
     });

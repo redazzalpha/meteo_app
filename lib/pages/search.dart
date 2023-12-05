@@ -7,14 +7,12 @@ import 'package:meteo_app_v2/utils/types.dart';
 
 class Search extends StatefulWidget {
   // variables
-  final List<FutureDataNullable> futureFavCityDatas;
-  final Data data;
+  final ListDataNullable futureFavCityDatas;
 
   // constructor
   const Search({
     super.key,
     required this.futureFavCityDatas,
-    required this.data,
   });
 
   // overrides
@@ -23,8 +21,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  late final Future<List<Data>> _computation;
-  final List<Data> _favCityDatas = <Data>[];
+  late final ListDataNullable _favCityDatas;
 
   // methods
   List<Widget> _buildSearchPage() {
@@ -37,13 +34,13 @@ class _SearchState extends State<Search> {
     for (int i = 0; i < _favCityDatas.length; i++) {
       meteoCards.add(
         SliverMeteoCard(
-          cityName: _favCityDatas[i]["city_info"]["name"],
-          conditions: _favCityDatas[i]["current_condition"]["condition"],
-          currentTemperature: _favCityDatas[i]["current_condition"]["tmp"],
-          minTemperature: _favCityDatas[i]["fcst_day_0"]["tmin"],
-          maxTemperature: _favCityDatas[i]["fcst_day_0"]["tmax"],
+          cityName: _favCityDatas[i]?["city_info"]["name"],
+          conditions: _favCityDatas[i]?["current_condition"]["condition"],
+          currentTemperature: _favCityDatas[i]?["current_condition"]["tmp"],
+          minTemperature: _favCityDatas[i]?["fcst_day_0"]["tmin"],
+          maxTemperature: _favCityDatas[i]?["fcst_day_0"]["tmax"],
           backgroundImage:
-              "assets/weather/${_favCityDatas[i]['current_condition']['condition_key']}.gif",
+              "assets/weather/${_favCityDatas[i]?['current_condition']['condition_key']}.gif",
         ),
       );
     }
@@ -94,22 +91,9 @@ class _SearchState extends State<Search> {
     ];
   }
 
-  Future<List<Data>> _fetchPromisedData() async {
-    for (int i = 0; i < widget.futureFavCityDatas.length; i++) {
-      DataNullable data = await widget.futureFavCityDatas[i];
-      if (data != null) _favCityDatas.add(data);
-    }
-    return _favCityDatas;
-  }
-
   @override
   void initState() {
     super.initState();
-
-    _computation = Future<List<Data>>.delayed(
-      const Duration(seconds: 1),
-      _fetchPromisedData,
-    );
 
     setState(() {});
   }
@@ -118,16 +102,27 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder(
-      future: _computation,
-      builder: (BuildContext context, AsyncSnapshot<List<Data>> snapshot) {
+      future: Future(() => widget.futureFavCityDatas),
+      builder:
+          (BuildContext context, AsyncSnapshot<ListDataNullable> snapshot) {
         List<Widget> children;
+
+        // search page
         if (snapshot.hasData) {
+          _favCityDatas = snapshot.data as ListDataNullable;
           children = _buildSearchPage();
-        } else if (snapshot.hasError) {
+        }
+
+        // error page
+        else if (snapshot.hasError) {
           children = <Widget>[];
-        } else {
+        }
+
+        // loading page
+        else {
           children = _buildLoadingPage();
         }
+
         return CustomScrollView(
           slivers: children,
         );

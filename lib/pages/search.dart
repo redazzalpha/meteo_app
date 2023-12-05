@@ -2,49 +2,104 @@ import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/ui/bar_search.dart';
 import 'package:meteo_app_v2/ui/sliver_header_bar.dart';
 import 'package:meteo_app_v2/ui/sliver_meteo_card.dart';
+import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/types.dart';
 
 class Search extends StatefulWidget {
-  final Data datas;
-  final List<FutureDataNullable> favCityDatas;
+  // variables
+  final List<FutureDataNullable> futureFavCityDatas;
+  final Data data;
 
+  // constructor
   const Search({
     super.key,
-    required this.datas,
-    required this.favCityDatas,
+    required this.futureFavCityDatas,
+    required this.data,
   });
 
+  // overrides
   @override
   State<StatefulWidget> createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
   late final Future<List<Data>> _computation;
-  final List<Data> _cityDatas = <Data>[];
+  final List<Data> _favCityDatas = <Data>[];
 
   // methods
-  List<Widget> _buildSliverMeteo() {
+  List<Widget> _buildSearchPage() {
     List<Widget> meteoCards = <Widget>[
       const SliverHeaderBar(
         bottom: BarSearch(),
       )
     ];
 
-    for (int i = 0; i < _cityDatas.length; i++) {
+    for (int i = 0; i < _favCityDatas.length; i++) {
       meteoCards.add(
         SliverMeteoCard(
-          cityName: _cityDatas[i]["city_info"]["name"],
-          conditions: _cityDatas[i]["current_condition"]["condition"],
-          currentTemperature: _cityDatas[i]["current_condition"]["tmp"],
-          minTemperature: _cityDatas[i]["fcst_day_0"]["tmin"],
-          maxTemperature: _cityDatas[i]["fcst_day_0"]["tmax"],
+          cityName: _favCityDatas[i]["city_info"]["name"],
+          conditions: _favCityDatas[i]["current_condition"]["condition"],
+          currentTemperature: _favCityDatas[i]["current_condition"]["tmp"],
+          minTemperature: _favCityDatas[i]["fcst_day_0"]["tmin"],
+          maxTemperature: _favCityDatas[i]["fcst_day_0"]["tmax"],
           backgroundImage:
-              "assets/weather/${_cityDatas[i]['current_condition']['condition_key']}.gif",
+              "assets/weather/${_favCityDatas[i]['current_condition']['condition_key']}.gif",
         ),
       );
     }
 
     return meteoCards;
+  }
+
+  List<Widget> _buildLoadingPage() {
+    return <Widget>[
+      SliverFillViewport(
+        delegate: SliverChildListDelegate(
+          [
+            Container(
+              padding: const EdgeInsets.all(basePadding),
+
+              // shaped background
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(49, 0, 0, 0),
+                image: DecorationImage(
+                  image: AssetImage(
+                    defaultBackgroundImage,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: const Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                      backgroundColor: Colors.blue,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text("loading please wait..."),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      )
+    ];
+  }
+
+  Future<List<Data>> _fetchPromisedData() async {
+    for (int i = 0; i < widget.futureFavCityDatas.length; i++) {
+      DataNullable data = await widget.futureFavCityDatas[i];
+      if (data != null) _favCityDatas.add(data);
+    }
+    return _favCityDatas;
   }
 
   @override
@@ -53,13 +108,7 @@ class _SearchState extends State<Search> {
 
     _computation = Future<List<Data>>.delayed(
       const Duration(seconds: 1),
-      () async {
-        for (int i = 0; i < widget.favCityDatas.length; i++) {
-          DataNullable data = await widget.favCityDatas[i];
-          if (data != null) _cityDatas.add(data);
-        }
-        return _cityDatas;
-      },
+      _fetchPromisedData,
     );
 
     setState(() {});
@@ -73,36 +122,11 @@ class _SearchState extends State<Search> {
       builder: (BuildContext context, AsyncSnapshot<List<Data>> snapshot) {
         List<Widget> children;
         if (snapshot.hasData) {
-          children = _buildSliverMeteo();
+          children = _buildSearchPage();
         } else if (snapshot.hasError) {
           children = <Widget>[];
         } else {
-          children = <Widget>[
-            SliverFillViewport(
-              delegate: SliverChildListDelegate(
-                [
-                  const Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                          backgroundColor: Colors.blue,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text("loading please wait..."),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ];
+          children = _buildLoadingPage();
         }
         return CustomScrollView(
           slivers: children,
@@ -111,178 +135,3 @@ class _SearchState extends State<Search> {
     ));
   }
 }
-
-// @override
-// Widget build(BuildContext context) {
-//   return DefaultTextStyle(
-//     style: Theme.of(context).textTheme.displayMedium!,
-//     textAlign: TextAlign.center,
-//     child: FutureBuilder<String>(
-//       future: _computation, // a previously-obtained Future<String> or null
-//       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-//         List<Widget> children;
-//         if (snapshot.hasData) {
-//           children = <Widget>[
-//             const Icon(
-//               Icons.check_circle_outline,
-//               color: Colors.green,
-//               size: 60,
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(top: 16),
-//               child: Text('Result: ${snapshot.data}'),
-//             ),
-//           ];
-//         } else if (snapshot.hasError) {
-//           children = <Widget>[
-//             const Icon(
-//               Icons.error_outline,
-//               color: Colors.red,
-//               size: 60,
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(top: 16),
-//               child: Text('Error: ${snapshot.error}'),
-//             ),
-//           ];
-//         } else {
-//           children = const <Widget>[
-//             SizedBox(
-//               width: 60,
-//               height: 60,
-//               child: CircularProgressIndicator(),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(top: 16),
-//               child: Text('Awaiting result...'),
-//             ),
-//           ];
-//         }
-
-
-
-
-//         return Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: children,
-//           ),
-//         );
-//       },
-//     ),
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // CustomScrollView(
-      //   slivers: <Widget>[
-      //     const SliverHeaderBar(
-      //       bottom: BarSearch(),
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //     SliverMeteoCard(
-      //       cityName: widget.datas["city_info"]["name"],
-      //       conditions: widget.datas["current_condition"]["condition"],
-      //       currentTemperature: widget.datas["current_condition"]["tmp"],
-      //       minTemperature: widget.datas["fcst_day_0"]["tmin"],
-      //       maxTemperature: widget.datas["fcst_day_0"]["tmax"],
-      //       backgroundImage:
-      //           "assets/weather/${widget.datas['current_condition']['condition_key']}.gif",
-      //     ),
-      //   ],
-      // ),
-

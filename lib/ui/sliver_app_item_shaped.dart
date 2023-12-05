@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app_v2/ui/sliver_item.dart';
+import 'package:meteo_app_v2/ui/sliver_app_item.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverItemShaped extends SliverItem {
+class SliverAppItemShaped extends SliverAppItem {
   final Color backgroundColor;
 
-  const SliverItemShaped({
+  const SliverAppItemShaped({
     super.key,
     required super.masterApp,
     super.fontHelper,

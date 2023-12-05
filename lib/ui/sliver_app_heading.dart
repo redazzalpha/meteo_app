@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app_v2/classes/master_sliver.dart';
+import 'package:meteo_app_v2/classes/master_app_sliver.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverHeading extends MasterSliver {
+class SliverAppHeading extends MasterAppSliver {
   final Color backgroundColor;
 
-  const SliverHeading({
+  const SliverAppHeading({
     super.key,
     required super.masterApp,
     this.backgroundColor = Colors.transparent,

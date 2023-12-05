@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:meteo_app_v2/classes/font_helper.dart';
-import 'package:meteo_app_v2/classes/master_sliver.dart';
+import 'package:meteo_app_v2/classes/master_app_sliver.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
@@ -14,8 +13,8 @@ import 'package:meteo_app_v2/layouts/app_rain.dart';
 import 'package:meteo_app_v2/layouts/app_wind.dart';
 import 'package:meteo_app_v2/pages/search.dart';
 import 'package:meteo_app_v2/ui/bar_bottom.dart';
-import 'package:meteo_app_v2/ui/sliver_heading.dart';
-import 'package:meteo_app_v2/ui/sliver_item_shaped.dart';
+import 'package:meteo_app_v2/ui/sliver_app_heading.dart';
+import 'package:meteo_app_v2/ui/sliver_app_item_shaped.dart';
 import 'package:meteo_app_v2/utils/defines.dart';
 import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/utils/types.dart';
@@ -23,9 +22,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 class Home extends StatefulWidget {
   // constructor
-  const Home({
-    super.key,
-  });
+  const Home({super.key});
 
   // overrides
   @override
@@ -34,57 +31,53 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // variables
-  final List<FutureDataNullable> _favCityDatas = <FutureDataNullable>[];
-  late String _cityName;
-  late String _cityNameTemp;
-  late final ScrollController _controller;
+  FutureDataNullable _futureData = Future(() => null);
+  Data _data = Data();
+  final List<FutureDataNullable> _futureFavCityDatas = <FutureDataNullable>[];
   final String _dataUrl = dataUrl;
-  final int _timeoutTimer = 3000;
-  final double _scrollOffset = 45;
+  late String _cityName;
   late final FontHelper _fontHelper;
-  Data _datas = Data();
-  String _background = defaultBackground;
-  bool _headingShort = false;
+  late final ScrollController _scrollController;
+  final int _timeoutRefreshTimer = 3000;
+  final double _scrollOffsetAppHeading = 45;
+  String _backgroundImage = defaultBackgroundImage;
+  bool _isHeadingShort = false;
 
   // methods
-
   Future<DataNullable> _fetchData(final String localisation) async {
     try {
-      _cityName = localisation;
       final response = await http.get(Uri.parse("$_dataUrl/$localisation"));
-      return jsonDecode(response.body) as Data;
-    } catch (e) {
-      log("-- error fetch data: $e");
-      return null;
+      final result = jsonDecode(response.body) as Data;
+
+      // if error on api response
+      // return the old data
+      if (result['errors'] != null) {
+        showSnackBar("$localisation : ${result['errors'][0]['text']}");
+        return _data;
+      }
+
+      // if no error return result
+      // that will be set to _data
+      // inside the FutureBuilder
+      return result;
+    }
+
+    // if exception thrown
+    // return the old data
+    catch (e) {
+      showSnackBar(
+          "error fetch data : server is unavailable or network is not connected");
+      return _data;
     }
   }
 
-  void _refreshDataTimer({final int milliseconds = defalutTimeoutTimer}) async {
+  Future<void> _refreshDataTimer(
+      {final int milliseconds = defalutTimeoutTimer}) async {
     Timer.periodic(
       Duration(milliseconds: milliseconds),
       (_) {
-        _fetchData(_cityName).then((datas) {
-          if (datas != null) {
-            if (datas["errors"] != null) {
-              // possible values for errors
-              // 'code', 'text' or 'description'
-              showSnackBar("$_cityName : ${datas['errors'][0]['text']} !");
-
-              // switch back to the old value
-              _cityName = _cityNameTemp;
-            } else {
-              setState(() {
-                _datas = datas;
-                _background =
-                    "assets/weather/${_datas['current_condition']['condition_key']}.gif";
-                // store current value to get it back if needeed
-                _cityNameTemp = _cityName;
-                log("-- async data fetched");
-              });
-            }
-          } else {
-            showSnackBar("error fetch data server is unavailable");
-          }
+        setState(() {
+          _futureData = _fetchData(_cityName);
         });
       },
     );
@@ -110,64 +103,64 @@ class _HomeState extends State<Home> {
     );
   }
 
-  MultiSliver _masterSlivers() {
+  MultiSliver _masterAppSlivers() {
     FontHelper fontHelper = FontHelper(context: context);
-    if (_datas.isEmpty) return MultiSliver(children: const <MasterSliver>[]);
+    // if (_data.isEmpty) return MultiSliver(children: const <MasterSliver>[]);
 
     return MultiSliver(
-      children: <MasterSliver>[
+      children: <MasterAppSliver>[
         // if has heading
         //heading must be first
 
         // app heading
-        SliverHeading(
+        SliverAppHeading(
           masterApp: AppHeading(
-            datas: _datas,
-            isShort: _headingShort,
+            datas: _data,
+            isShort: _isHeadingShort,
             fontHelper: _fontHelper,
           ),
         ),
 
         // app forcast hour
-        SliverItemShaped(
+        SliverAppItemShaped(
           masterApp: AppForcastHour(
-            datas: _datas,
+            datas: _data,
             fontHelper: fontHelper,
           ),
           backgroundColor: defaultAppBackgroundColor,
         ),
 
         // app forcast day
-        SliverItemShaped(
+        SliverAppItemShaped(
           masterApp: AppForcastDay(
-            datas: _datas,
+            datas: _data,
             fontHelper: fontHelper,
           ),
           backgroundColor: defaultAppBackgroundColor,
         ),
 
         // app wind
-        SliverItemShaped(
+        SliverAppItemShaped(
           masterApp: AppWind(
-            datas: _datas,
+            datas: _data,
             fontHelper: fontHelper,
           ),
           backgroundColor: defaultAppBackgroundColor,
         ),
 
         // app air
-        SliverItemShaped(
+        SliverAppItemShaped(
           masterApp: AppAir(
-            datas: _datas,
+            datas: _data,
             fontHelper: fontHelper,
           ),
           backgroundColor: defaultAppBackgroundColor,
         ),
 
         // app rain
-        SliverItemShaped(
+        SliverAppItemShaped(
           masterApp: AppRain(
-            datas: _datas,
+            datas: _data,
             fontHelper: fontHelper,
           ),
           backgroundColor: defaultAppBackgroundColor,
@@ -176,13 +169,104 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void setStatePage() {
+    _backgroundImage =
+        "assets/weather/${_data['current_condition']['condition_key']}.gif";
+    _cityName = _data["city_info"]["name"];
+  }
+
+  List<Widget> _buildHomePage() {
+    setStatePage();
+    return [
+      // first page
+      Stack(
+        children: <Widget>[
+          // main content
+          Container(
+            padding: const EdgeInsets.all(basePadding),
+
+            // shaped background
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(49, 0, 0, 0),
+              image: DecorationImage(
+                image: AssetImage(
+                  _backgroundImage,
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            // scroll view
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                // master sliver items
+                _masterAppSlivers(),
+
+                // padding for stacked bottom app bar
+                const SliverPadding(
+                  padding: EdgeInsets.only(bottom: 80),
+                ),
+              ],
+            ),
+          ),
+
+          // bottom bar
+          BarBottom(
+            onPressIconList: () => onNavigatorPush(),
+          ),
+        ],
+      ),
+
+      // other pages here
+      // ...
+    ];
+  }
+
+  List<Widget> _buildLoadingPage() {
+    return <Widget>[
+      Container(
+        padding: const EdgeInsets.all(basePadding),
+
+        // shaped background
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(49, 0, 0, 0),
+          image: DecorationImage(
+            image: AssetImage(
+              defaultBackgroundImage,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: const Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+                backgroundColor: Colors.blue,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 15),
+              child: Text("loading please wait..."),
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
   // event handlers
   void _onScroll() {
     setState(() {
-      if (_controller.offset >= _scrollOffset) {
-        _headingShort = true;
+      if (_scrollController.offset >= _scrollOffsetAppHeading) {
+        _isHeadingShort = true;
       } else {
-        _headingShort = false;
+        _isHeadingShort = false;
       }
     });
   }
@@ -192,14 +276,15 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => Search(
-          datas: _datas,
-          favCityDatas: _favCityDatas,
+          data: _data,
+          futureFavCityDatas: _futureFavCityDatas,
         ),
       ),
     );
 
     if (result.isNotEmpty) {
       setState(() {
+        _futureData = _fetchData(result);
         _cityName = result;
       });
     }
@@ -209,77 +294,55 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // clearSharedPrefs();
+
     // addFavCity("Paris");
     // addFavCity("Marseille");
     // addFavCity("Lyon");
-
+    // clearSharedPrefs();
     getFavCity().then((cities) {
       late String lastCityName;
       for (int i = 0; i < cities.length; i++) {
-        _favCityDatas.add(_fetchData(cities[i]));
+        _futureFavCityDatas.add(_fetchData(cities[i]));
         lastCityName = cities[i];
       }
+
       setState(() {
         _cityName = lastCityName;
-        _cityNameTemp = _cityName;
+        _futureData = _futureFavCityDatas.last;
+        _refreshDataTimer(milliseconds: _timeoutRefreshTimer);
       });
     });
 
     _fontHelper = FontHelper(context: context);
-    _controller = ScrollController();
-    _controller.addListener(() => _onScroll());
-    _refreshDataTimer(milliseconds: _timeoutTimer);
+    _scrollController = ScrollController();
+    _scrollController.addListener(() => _onScroll());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        children: [
-          // first page
-          Stack(
-            children: [
-              // main content
-              Container(
-                padding: const EdgeInsets.all(basePadding),
+      body: FutureBuilder(
+        future: _futureData,
+        builder: (BuildContext context, AsyncSnapshot<DataNullable> snapshot) {
+          List<Widget> children;
+          // home page
+          if (snapshot.hasData) {
+            _data = snapshot.data as Data;
+            children = _buildHomePage();
+          }
 
-                // shaped background
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(49, 0, 0, 0),
-                  image: DecorationImage(
-                    image: AssetImage(
-                      _background,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          // error page
+          else if (snapshot.hasError) {
+            children = <Widget>[];
+          }
 
-                // scroll view
-                child: CustomScrollView(
-                  controller: _controller,
-                  slivers: [
-                    // master sliver items
-                    _masterSlivers(),
+          // loading page
+          else {
+            children = _buildLoadingPage();
+          }
 
-                    // padding for stacked bottom app bar
-                    const SliverPadding(
-                      padding: EdgeInsets.only(bottom: 80),
-                    ),
-                  ],
-                ),
-              ),
-
-              // bottom bar
-              BarBottom(
-                onPressIconList: () => onNavigatorPush(),
-              ),
-            ],
-          ),
-
-          // other pages here
-          // ...
-        ],
+          return PageView(children: children);
+        },
       ),
     );
   }

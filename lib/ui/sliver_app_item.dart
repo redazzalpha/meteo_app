@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/classes/master_app.dart';
-import 'package:meteo_app_v2/classes/master_sliver.dart';
+import 'package:meteo_app_v2/classes/master_app_sliver.dart';
 import 'package:meteo_app_v2/layouts/app_air.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_day.dart';
 import 'package:meteo_app_v2/layouts/app_forcast_hour.dart';
@@ -12,10 +12,10 @@ import 'package:meteo_app_v2/ui/sliver_body.dart';
 import 'package:meteo_app_v2/ui/sliver_header.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SliverItem extends MasterSliver {
+class SliverAppItem extends MasterAppSliver {
   final FontHelper? fontHelper;
 
-  const SliverItem({
+  const SliverAppItem({
     super.key,
     required super.masterApp,
     this.fontHelper,

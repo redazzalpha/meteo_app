@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const String dataUrl = "https://www.prevision-meteo.ch/services/json";
 const String searchUrl = "https://geo.api.gouv.fr/communes?nom=";
-const String defaultBackground = "assets/weather/base.gif";
+const String defaultBackgroundImage = "assets/weather/base.gif";
 
 const int maxTemp = 50;
 const int minTemp = -20;

@@ -23,23 +23,10 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   late final ListDataNullable _favCityDatas;
-  // String _cityName = "";
-
-  // void setCityName(final String cityName) {
-  //   _cityName = cityName;
-  // }
 
   // event handlers
   void onTapMeteoCard(BuildContext context, final String cityName) {
     Navigator.pop(context, cityName);
-  }
-
-  void onAddFavCity(final String cityName) {
-    addFavCity(cityName);
-  }
-
-  void onRemoveFavCity(final String cityName) {
-    removeFavCity(cityName);
   }
 
   void onNavigatorPop(BuildContext context, final String cityName) {
@@ -55,7 +42,7 @@ class _SearchState extends State<Search> {
         bottom: BarSearch(
           // setCityName: setCityName,
           onNavigatorPop: onNavigatorPop,
-          onAdd: onAddFavCity,
+          onAdd: addFavCity,
         ),
       ),
     ];
@@ -64,7 +51,7 @@ class _SearchState extends State<Search> {
       children.add(
         SliverMeteoCard(
           onTap: onTapMeteoCard,
-          onRemove: onRemoveFavCity,
+          onRemove: removeFavCity,
           cityName: _favCityDatas[i]?["city_info"]["name"],
           conditions: _favCityDatas[i]?["current_condition"]["condition"],
           currentTemperature: _favCityDatas[i]?["current_condition"]["tmp"],

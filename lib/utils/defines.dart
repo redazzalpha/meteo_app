@@ -15,3 +15,5 @@ const double defaultAppWidth = 800;
 const double defaultAppHeight = 100;
 
 const Color defaultAppBackgroundColor = Color.fromARGB(97, 0, 0, 0);
+
+const String defaultCity = "Paris";

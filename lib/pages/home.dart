@@ -304,6 +304,10 @@ class _HomeState extends State<Home> {
         _futureFavCityDatas.add(await _fetchData(cities[i]));
         lastCityName = cities[i];
       }
+      if (_futureFavCityDatas.isEmpty) {
+        _futureFavCityDatas.add(await _fetchData(defaultCity));
+        lastCityName = defaultCity;
+      }
 
       setState(() {
         _cityName = lastCityName;

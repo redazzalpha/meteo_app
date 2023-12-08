@@ -113,8 +113,7 @@ Future<List<String>> getFavCity() async {
       SharedPreferences.getInstance();
 
   final SharedPreferences prefs = await prefsInstance;
-  List<String> cityNames =
-      prefs.getStringList('favCityNames') ?? <String>["Paris"];
+  List<String> cityNames = prefs.getStringList('favCityNames') ?? <String>[];
 
   return cityNames;
 }
@@ -124,7 +123,7 @@ Future<bool> addFavCity(final String cityName) async {
       SharedPreferences.getInstance();
 
   final SharedPreferences prefs = await prefsInstance;
-  List<String> cityNames = prefs.getStringList('favCityNames') ?? <String>[];
+  List<String> cityNames = await getFavCity();
   if (!cityNames.contains(cityName)) cityNames.add(cityName);
 
   return await prefs.setStringList('favCityNames', cityNames);
@@ -135,13 +134,12 @@ Future<bool> removeFavCity(final String cityName) async {
       SharedPreferences.getInstance();
 
   final SharedPreferences prefs = await prefsInstance;
-  List<String> cityNames =
-      prefs.getStringList('favCityNames') ?? <String>[cityName];
+  List<String> cityNames = await getFavCity();
 
-  bool inserted = cityNames.remove(cityName);
-  bool ready = await prefs.setStringList('favCityNames', cityNames);
+  bool isRemoved = cityNames.remove(cityName);
+  bool isReady = await prefs.setStringList('favCityNames', cityNames);
 
-  return inserted && ready;
+  return isRemoved && isReady;
 }
 
 Future<bool> clearFavCity(final String cityName) async {
@@ -149,8 +147,7 @@ Future<bool> clearFavCity(final String cityName) async {
       SharedPreferences.getInstance();
 
   final SharedPreferences prefs = await prefsInstance;
-  List<String> cityNames =
-      prefs.getStringList('favCityNames') ?? <String>[cityName];
+  List<String> cityNames = await getFavCity();
   cityNames.clear();
 
   return await prefs.setStringList('favCityNames', cityNames);

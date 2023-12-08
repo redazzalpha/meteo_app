@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:meteo_app_v2/classes/font_helper.dart';
 import 'package:meteo_app_v2/ui/bar_search.dart';
 import 'package:meteo_app_v2/ui/sliver_header_bar.dart';
 import 'package:meteo_app_v2/ui/sliver_meteo_card.dart';
@@ -7,13 +11,12 @@ import 'package:meteo_app_v2/utils/functions.dart';
 import 'package:meteo_app_v2/utils/types.dart';
 
 class Search extends StatefulWidget {
-  // variables
-  final ListDataNullable futureFavCityDatas;
+  final FontHelper? fontHelper;
 
   // constructor
   const Search({
     super.key,
-    required this.futureFavCityDatas,
+    this.fontHelper,
   });
 
   // overrides
@@ -22,27 +25,49 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  late final ListDataNullable _favCityDatas;
+  final String _dataUrl = dataUrl;
+  final ListDataNullable _favCityDatas = <DataNullable>[];
+  late final FontHelper _fontHelper;
 
   // event handlers
-  void onTapMeteoCard(BuildContext context, final String cityName) {
+  void _onTapMeteoCard(BuildContext context, final String cityName) {
     Navigator.pop(context, cityName);
   }
 
-  void onNavigatorPop(BuildContext context, final String cityName) {
+  void _onNavigatorPop(BuildContext context, final String cityName) {
     if (cityName.isNotEmpty) {
       Navigator.pop(context, cityName);
     }
   }
 
+  Future<void> _onAddFavorite(final String cityName) async {
+    DataNullable data = await _fetchData(cityName);
+    if (data != null) {
+      addFavCity(cityName);
+      _favCityDatas.add(data);
+    }
+
+    setState(() {});
+  }
+
   // methods
+  Future<void> _getFavoriteCityDatas() async {
+    _favCityDatas.clear();
+
+    getFavCity().then((cities) async {
+      for (int i = 0; i < cities.length; i++) {
+        _favCityDatas.add(await _fetchData(cities[i]));
+      }
+      setState(() {});
+    });
+  }
+
   List<Widget> _buildSearchPage() {
     List<Widget> children = <Widget>[
       SliverHeaderBar(
         bottom: BarSearch(
-          // setCityName: setCityName,
-          onNavigatorPop: onNavigatorPop,
-          onAdd: addFavCity,
+          onNavigatorPop: _onNavigatorPop,
+          onAdd: _onAddFavorite,
         ),
       ),
     ];
@@ -50,7 +75,7 @@ class _SearchState extends State<Search> {
     for (int i = 0; i < _favCityDatas.length; i++) {
       children.add(
         SliverMeteoCard(
-          onTap: onTapMeteoCard,
+          onTap: _onTapMeteoCard,
           onRemove: removeFavCity,
           cityName: _favCityDatas[i]?["city_info"]["name"],
           conditions: _favCityDatas[i]?["current_condition"]["condition"],
@@ -109,25 +134,72 @@ class _SearchState extends State<Search> {
     ];
   }
 
+  void showSnackBar(final String message) {
+    ScaffoldMessengerState scaffoldMessengerState =
+        ScaffoldMessenger.of(context);
+
+    scaffoldMessengerState.showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        content: Text(
+          message,
+          style: _fontHelper.label(),
+        ),
+        action: SnackBarAction(
+          textColor: _fontHelper.label().color,
+          label: "Close",
+          onPressed: scaffoldMessengerState.hideCurrentSnackBar,
+        ),
+      ),
+    );
+  }
+
+  Future<DataNullable> _fetchData(final String localisation) async {
+    try {
+      final response = await http.get(Uri.parse("$_dataUrl/$localisation"));
+      final resultsData = jsonDecode(response.body) as Data;
+
+      // if error on api response
+      // return the old data
+      if (resultsData['errors'] != null) {
+        showSnackBar("$localisation : ${resultsData['errors'][0]['text']}");
+        return null;
+      }
+
+      // if no error return resultsData
+      // that will be set to _data
+      // inside the FutureBuilder
+      return resultsData;
+    }
+
+    // if exception thrown
+    // return the old data
+    catch (e) {
+      showSnackBar(
+          "error fetch data : server is unavailable or network is not connected");
+      return null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    setState(() {});
+    _getFavoriteCityDatas();
+    _fontHelper = widget.fontHelper ?? FontHelper(context: context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder(
-      future: Future(() => widget.futureFavCityDatas),
+      future: Future(() => _favCityDatas),
       builder:
           (BuildContext context, AsyncSnapshot<ListDataNullable> snapshot) {
         List<Widget> children;
 
         // search page
         if (snapshot.hasData) {
-          _favCityDatas = snapshot.data as ListDataNullable;
           children = _buildSearchPage();
         }
 

@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
   // variables
   FutureDataNullable _futureData = Future(() => null);
   Data _data = Data();
-  final ListDataNullable _futureFavCityDatas = [];
   final String _dataUrl = dataUrl;
   late String _cityName;
   late final FontHelper _fontHelper;
@@ -52,7 +51,7 @@ class _HomeState extends State<Home> {
       // if error on api response
       // return the old data
       if (result['errors'] != null) {
-        showSnackBar("$localisation : ${result['errors'][0]['text']}");
+        _showSnackBar("$localisation : ${result['errors'][0]['text']}");
         return _data;
       }
 
@@ -65,7 +64,7 @@ class _HomeState extends State<Home> {
     // if exception thrown
     // return the old data
     catch (e) {
-      showSnackBar(
+      _showSnackBar(
           "error fetch data : server is unavailable or network is not connected");
       return _data;
     }
@@ -83,7 +82,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void showSnackBar(final String message) {
+  void _showSnackBar(final String message) {
     ScaffoldMessengerState scaffoldMessengerState =
         ScaffoldMessenger.of(context);
 
@@ -103,9 +102,30 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Future<void> _getFavoriteCityData() async {
+    // addFavCity("Paris");
+    // addFavCity("Marseille");
+    // addFavCity("Lyon");
+    // clearSharedPrefs();
+    getFavCity().then((cities) async {
+      late String lastCityName;
+      if (cities.isNotEmpty) {
+        _futureData = _fetchData(cities.last);
+        lastCityName = cities.last;
+      } else {
+        _futureData = _fetchData(defaultCity);
+        lastCityName = defaultCity;
+      }
+
+      setState(() {
+        _cityName = lastCityName;
+        _refreshDataTimer(milliseconds: _timeoutRefreshTimer);
+      });
+    });
+  }
+
   MultiSliver _masterAppSlivers() {
     FontHelper fontHelper = FontHelper(context: context);
-    // if (_data.isEmpty) return MultiSliver(children: const <MasterSliver>[]);
 
     return MultiSliver(
       children: <MasterAppSliver>[
@@ -276,7 +296,7 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => Search(
-          futureFavCityDatas: _futureFavCityDatas,
+          fontHelper: _fontHelper,
         ),
       ),
     );
@@ -294,28 +314,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    // addFavCity("Paris");
-    // addFavCity("Marseille");
-    // addFavCity("Lyon");
-    // clearSharedPrefs();
-    getFavCity().then((cities) async {
-      late String lastCityName;
-      for (int i = 0; i < cities.length; i++) {
-        _futureFavCityDatas.add(await _fetchData(cities[i]));
-        lastCityName = cities[i];
-      }
-      if (_futureFavCityDatas.isEmpty) {
-        _futureFavCityDatas.add(await _fetchData(defaultCity));
-        lastCityName = defaultCity;
-      }
-
-      setState(() {
-        _cityName = lastCityName;
-        _futureData = Future(() => _futureFavCityDatas.last);
-        _refreshDataTimer(milliseconds: _timeoutRefreshTimer);
-      });
-    });
-
+    _getFavoriteCityData();
     _fontHelper = FontHelper(context: context);
     _scrollController = ScrollController();
     _scrollController.addListener(() => _onScroll());

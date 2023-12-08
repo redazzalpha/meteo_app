@@ -34,6 +34,11 @@ class _SearchState extends State<Search> {
     Navigator.pop(context, cityName);
   }
 
+  void _onRemove(final String cityName) async {
+    await removeFavCity(cityName);
+    _getFavoriteCityDatas();
+  }
+
   void _onNavigatorPop(BuildContext context, final String cityName) {
     if (cityName.isNotEmpty) {
       Navigator.pop(context, cityName);
@@ -76,7 +81,7 @@ class _SearchState extends State<Search> {
       children.add(
         SliverMeteoCard(
           onTap: _onTapMeteoCard,
-          onRemove: removeFavCity,
+          onRemove: _onRemove,
           cityName: _favCityDatas[i]?["city_info"]["name"],
           conditions: _favCityDatas[i]?["current_condition"]["condition"],
           currentTemperature: _favCityDatas[i]?["current_condition"]["tmp"],

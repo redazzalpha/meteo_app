@@ -42,7 +42,7 @@ class _BarSearchState extends State<BarSearch> {
     }
   }
 
-  void _addToFavoriteOpenView() {
+  void _onclikAddFavorite() {
     _isAdding = true;
     _searchController.openView();
   }
@@ -74,6 +74,10 @@ class _BarSearchState extends State<BarSearch> {
       ),
       child: SearchAnchor(
         searchController: _searchController,
+
+        /*NOTE: SearchAnchor (aka the search bar)
+         auto handles on click events
+        and auto open suggestion list*/
         // search bar
         builder: (BuildContext context, SearchController controller) {
           return Container(
@@ -102,7 +106,7 @@ class _BarSearchState extends State<BarSearch> {
                 IconButton(
                   highlightColor: Colors.transparent,
                   hoverColor: Colors.transparent,
-                  onPressed: _addToFavoriteOpenView,
+                  onPressed: _onclikAddFavorite,
                   icon: const Icon(Icons.add_circle_outline),
                 ),
                 const SizedBox(width: 15),
@@ -111,7 +115,7 @@ class _BarSearchState extends State<BarSearch> {
           );
         },
 
-        // result list
+        // suggestion list
         suggestionsBuilder:
             (BuildContext context, SearchController controller) async {
           await _fetchSuggestions(controller.text);

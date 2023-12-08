@@ -49,7 +49,7 @@ class _SearchState extends State<Search> {
     DataNullable data = await _fetchData(cityName);
     if (data != null) {
       addFavCity(cityName);
-      _favCityDatas.add(data);
+      _favCityDatas.insert(0, data);
     }
 
     setState(() {});

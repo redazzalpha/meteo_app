@@ -124,7 +124,9 @@ Future<bool> addFavCity(final String cityName) async {
 
   final SharedPreferences prefs = await prefsInstance;
   List<String> cityNames = await getFavCity();
-  if (!cityNames.contains(cityName)) cityNames.add(cityName);
+  if (!cityNames.contains(cityName)) {
+    cityNames.insert(0, cityName);
+  }
 
   return await prefs.setStringList('favCityNames', cityNames);
 }

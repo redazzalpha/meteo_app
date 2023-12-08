@@ -110,8 +110,8 @@ class _HomeState extends State<Home> {
     getFavCity().then((cities) async {
       late String lastCityName;
       if (cities.isNotEmpty) {
-        _futureData = _fetchData(cities.last);
-        lastCityName = cities.last;
+        _futureData = _fetchData(cities.first);
+        lastCityName = cities.first;
       } else {
         _futureData = _fetchData(defaultCity);
         lastCityName = defaultCity;
